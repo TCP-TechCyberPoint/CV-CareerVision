@@ -144,6 +144,7 @@ This project is a collaborative effort between **JuniorsHead by Ben Harari** and
 ## 🔗 **Links**
 
 * [TCP Community](https://www.techcyberpoint.co.il)
+* [TCP About-Page](https://www.techcyberpoint.co.il/%d7%90%d7%95%d7%93%d7%95%d7%aa/)
 * [GitHub Repository](https://github.com/yosileviev/CV-CareerVision)
 
 ---
