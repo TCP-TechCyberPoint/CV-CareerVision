@@ -1,8 +1,13 @@
+import { Box } from "@chakra-ui/react";
+import { Outlet } from "react-router-dom";
+
 const MainLayout = () => {
   return (
-    <div>
-     MainLayout
-    </div>
+    <Box minH="100vh">
+      <Box as="main" py={4}>
+        <Outlet />
+      </Box>
+    </Box>
   );
 };
 

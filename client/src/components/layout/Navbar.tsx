@@ -17,7 +17,30 @@ const Navbar = () => {
 
   return (
     <Box bg="gray.800" px={4}>
-      <Flex h={16} alignItems="center" justifyContent="space-between">
+      <Flex
+        h={16}
+        alignItems="center"
+        justifyContent="space-between"
+        flexDir="row-reverse"
+      >
+        {/* Desktop Links */}
+        <HStack
+          gap={8}
+          alignItems="center"
+          display={{ base: "none", md: "flex" }}
+          flexDir={"row-reverse"}
+        >
+          <BaseButton variant="ghost" color="white">
+            Home
+          </BaseButton>
+          <BaseButton variant="ghost" color="white">
+            Profile
+          </BaseButton>
+          <BaseButton variant="ghost" color="white">
+            About
+          </BaseButton>
+        </HStack>
+
         {/* Logo */}
         <Text fontSize="xl" color="white" fontWeight="bold">
           Career Vision
@@ -33,37 +56,21 @@ const Navbar = () => {
         >
           <Icon as={isOpen ? HiX : HiMenu} />
         </IconButton>
-
-        {/* Desktop Links */}
-        <HStack
-          gap={8}
-          alignItems="center"
-          display={{ base: "none", md: "flex" }}
-        >
-          <BaseButton variant="ghost" color="white">
-            Home
-          </BaseButton>
-          <BaseButton variant="ghost" color="white">
-            About
-          </BaseButton>
-          <BaseButton variant="ghost" color="white">
-            Contact
-          </BaseButton>
-        </HStack>
       </Flex>
 
       {/* Mobile Links */}
       {isOpen ? (
         <Box pb={4} display={{ md: "none" }}>
-          <Stack spaceY={4}>
+          <Stack spaceY={4} alignItems="flex-end">
             <BaseButton variant="ghost" color="white">
               Home
             </BaseButton>
+
             <BaseButton variant="ghost" color="white">
-              About
+              Profile
             </BaseButton>
             <BaseButton variant="ghost" color="white">
-              Contact
+              About
             </BaseButton>
           </Stack>
         </Box>

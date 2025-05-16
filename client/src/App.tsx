@@ -1,15 +1,8 @@
-import Navbar from "./components/layout/Navbar";
-import { Box } from "@chakra-ui/react";
-import LoginPage from "./pages/LoginPage";
-import SignUpPage from "./pages/SignUpPage";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
+
 function App() {
-  return (
-    <Box>
-      {/* <Navbar /> */}
-      {/* <LoginPage /> */}
-      <SignUpPage />
-    </Box>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

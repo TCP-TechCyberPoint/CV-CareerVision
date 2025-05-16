@@ -11,6 +11,7 @@ import {
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { useColorModeValue } from "@chakra-ui/color-mode";
+import { Link as RouterLink } from "react-router-dom";
 import loginBg from "../assets/images/login-background.png";
 
 const SignUpPage: React.FC = () => {
@@ -91,7 +92,10 @@ const SignUpPage: React.FC = () => {
                   Sign Up
                 </Button>
                 <Text fontSize="sm" textAlign="center">
-                  Already have an account? <strong>Log in</strong>
+                  Already have an account?{" "}
+                  <RouterLink to="/login">
+                    <strong>Log in</strong>
+                  </RouterLink>
                 </Text>
               </Stack>
             </Stack>

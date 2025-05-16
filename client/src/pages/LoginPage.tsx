@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -8,11 +8,38 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { toaster } from "@/components/ui/toaster"
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { useColorModeValue } from "@chakra-ui/color-mode";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 import loginBg from "../assets/images/login-background.png";
+
 const LoginPage: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await login(email, password);
+      navigate("/");
+    } catch (error: Error | unknown) {
+      if (error instanceof Error) {
+        toaster.create({
+          title: "Error",
+          description: `Failed to login. Please try again. ${error.message}`,
+          type: "error",
+          duration: 3000,
+          closable: true,
+        });
+      }
+    }
+  };
+
   return (
     <Flex
       minH="100vh"
@@ -38,7 +65,7 @@ const LoginPage: React.FC = () => {
             rounded="lg"
             shadow="lg"
           >
-            <Stack gap={4}>
+            <Stack gap={4} as="form" onSubmit={handleSubmit}>
               <Heading fontSize="2xl" textAlign="center">
                 Welcome Back
               </Heading>
@@ -53,6 +80,8 @@ const LoginPage: React.FC = () => {
                   width="100%"
                   maxW="320px"
                   mx="auto"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </FormControl>
               <FormControl id="password">
@@ -63,14 +92,24 @@ const LoginPage: React.FC = () => {
                   width="100%"
                   maxW="320px"
                   mx="auto"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </FormControl>
               <Stack gap={6}>
-                <Button bg="blue.400" color="white" _hover={{ bg: "blue.500" }}>
+                <Button
+                  type="submit"
+                  bg="blue.400"
+                  color="white"
+                  _hover={{ bg: "blue.500" }}
+                >
                   Sign In
                 </Button>
                 <Text fontSize="sm" textAlign="center">
-                  Don't have an account? <strong>Sign up</strong>
+                  Don't have an account?{" "}
+                  <RouterLink to="/signup">
+                    <strong>Sign up</strong>
+                  </RouterLink>
                 </Text>
               </Stack>
             </Stack>
