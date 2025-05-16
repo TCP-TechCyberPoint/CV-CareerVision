@@ -13,6 +13,7 @@
     "@chakra-ui/color-mode": "^2.2.0",
     "@chakra-ui/form-control": "^2.2.0",
     "@chakra-ui/input": "^2.1.2",
+    "@chakra-ui/menu": "^2.2.1",
     "@chakra-ui/react": "^3.19.0",
     "@chakra-ui/theme": "^3.4.6",
     "@chakra-ui/toast": "^7.0.2",

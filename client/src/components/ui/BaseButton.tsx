@@ -5,11 +5,17 @@ type Props = {
   variant?: "outline" | "solid" | "subtle" | "surface" | "ghost" | "plain";
   color?: string;
   onClick?: () => void;
+  size?: "sm" | "md" | "lg";
 };
 
 const BaseButton = (props: Props) => {
   return (
-    <Button variant={props.variant} color={props.color} onClick={props.onClick}>
+    <Button
+      variant={props.variant}
+      color={props.color}
+      onClick={props.onClick}
+      size={props.size}
+    >
       {props.children}
     </Button>
   );
