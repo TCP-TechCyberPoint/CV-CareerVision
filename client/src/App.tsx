@@ -1,9 +1,11 @@
+import Navbar from "./components/layout/Navbar";
+import { Box } from "@chakra-ui/react";
 function App() {
   return (
-    <>
-      <h1>Hello World</h1>
-    </>
-  )
+    <Box>
+      <Navbar />
+    </Box>
+  );
 }
 
 export default App;
