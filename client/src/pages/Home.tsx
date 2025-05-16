@@ -1,15 +1,14 @@
 import Navbar from "@/components/layout/Navbar";
-import { Box, Container, Text } from "@chakra-ui/react";
+import {  Container, Text } from "@chakra-ui/react";
 
 const Home = () => {
   return (
-    <Container>
+    <>
       <Navbar />
-
-      <Box>
+      <Container>
         <Text>Home</Text>
-      </Box>
-    </Container>
+      </Container>
+    </>
   );
 };
 

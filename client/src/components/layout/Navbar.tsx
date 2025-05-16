@@ -8,12 +8,13 @@ import {
   IconButton,
   useDisclosure,
 } from "@chakra-ui/react";
-
+import { Link, useNavigate } from "react-router-dom";
 import BaseButton from "../ui/BaseButton";
 import { HiMenu, HiX } from "react-icons/hi";
 
 const Navbar = () => {
   const { open: isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
 
   return (
     <Box bg="gray.800" px={4}>
@@ -30,13 +31,13 @@ const Navbar = () => {
           display={{ base: "none", md: "flex" }}
           flexDir={"row-reverse"}
         >
-          <BaseButton variant="ghost" color="white">
-            Home
-          </BaseButton>
-          <BaseButton variant="ghost" color="white">
+          <BaseButton variant="ghost" color="white" onClick={() => navigate("/edit-profile")}>
             Profile
           </BaseButton>
-          <BaseButton variant="ghost" color="white">
+          <BaseButton variant="ghost" color="white" onClick={() => navigate("/")}  >
+            Home
+          </BaseButton>
+          <BaseButton variant="ghost" color="white" onClick={() => navigate("/about")}>
             About
           </BaseButton>
         </HStack>
@@ -62,14 +63,14 @@ const Navbar = () => {
       {isOpen ? (
         <Box pb={4} display={{ md: "none" }}>
           <Stack spaceY={4} alignItems="flex-end">
-            <BaseButton variant="ghost" color="white">
-              Home
-            </BaseButton>
 
-            <BaseButton variant="ghost" color="white">
+            <BaseButton variant="ghost" color="white" onClick={() => navigate("/edit-profile")} >
               Profile
             </BaseButton>
-            <BaseButton variant="ghost" color="white">
+            <BaseButton variant="ghost" color="white" onClick={() => navigate("/")} >
+              Home
+            </BaseButton>
+            <BaseButton variant="ghost" color="white" onClick={() => navigate("/about")}>
               About
             </BaseButton>
           </Stack>

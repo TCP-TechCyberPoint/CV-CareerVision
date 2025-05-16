@@ -1,9 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import SignUpPage from "./pages/SignUpPage";
-import Home from "./pages/Home";
-import MainLayout from "./components/layout/MainLayout";
-import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import { Home, About, LoginPage, SignUpPage, EditProfilePage } from "@/pages";
+import MainLayout from "@/components/layout/MainLayout";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +16,11 @@ export const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
+      {
+        path: "/about",
+        element: <About
+         />,
+      },
       // Add more protected routes here
     ],
   },
@@ -28,5 +31,9 @@ export const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUpPage />,
+  },
+  {
+    path: "/edit-profile",
+    element: <EditProfilePage />,
   },
 ]);

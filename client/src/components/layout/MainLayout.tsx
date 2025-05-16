@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 const MainLayout = () => {
   return (
     <Box minH="100vh">
-      <Box as="main" py={4}>
+      <Box as="main">
         <Outlet />
       </Box>
     </Box>
