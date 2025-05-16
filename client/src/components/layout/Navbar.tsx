@@ -36,7 +36,7 @@ const Navbar = () => {
 
         {/* Desktop Links */}
         <HStack
-          spaceX={8}
+          gap={8}
           alignItems="center"
           display={{ base: "none", md: "flex" }}
         >
