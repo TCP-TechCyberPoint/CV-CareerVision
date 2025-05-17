@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Box,
-  Button,
   Container,
   Flex,
   Heading,
@@ -13,6 +12,7 @@ import { Input } from "@chakra-ui/input";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { Link as RouterLink } from "react-router-dom";
 import loginBg from "../assets/images/login-background.png";
+import BaseButton from "@/components/ui/BaseButton";
 
 const SignUpPage: React.FC = () => {
   return (
@@ -88,9 +88,9 @@ const SignUpPage: React.FC = () => {
                 />
               </FormControl>
               <Stack gap={6}>
-                <Button bg="teal.400" color="white" _hover={{ bg: "teal.500" }}>
+                <BaseButton variant="solid" colorPalette="blue" color="white">
                   Sign Up
-                </Button>
+                </BaseButton>
                 <Text fontSize="sm" textAlign="center">
                   Already have an account?{" "}
                   <RouterLink to="/login">

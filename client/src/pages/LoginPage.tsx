@@ -1,20 +1,13 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Container,
-  Flex,
-  Heading,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import { toaster } from "@/components/ui/toaster"
+import { Box, Container, Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import { toaster } from "@/components/ui/toaster";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import loginBg from "../assets/images/login-background.png";
+import BaseButton from "@/components/ui/BaseButton";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -97,14 +90,14 @@ const LoginPage: React.FC = () => {
                 />
               </FormControl>
               <Stack gap={6}>
-                <Button
+                <BaseButton
                   type="submit"
-                  bg="blue.400"
+                  colorPalette="blue"
                   color="white"
-                  _hover={{ bg: "blue.500" }}
+                  variant="solid"
                 >
                   Sign In
-                </Button>
+                </BaseButton>
                 <Text fontSize="sm" textAlign="center">
                   Don't have an account?{" "}
                   <RouterLink to="/signup">

@@ -1,6 +1,7 @@
-import { Box, Container, Heading, Button, Input, Text } from '@chakra-ui/react';
+import { Box, Container, Heading,  Input, Text } from '@chakra-ui/react';
 import { FormControl, FormLabel } from '@chakra-ui/form-control';
 import Navbar from '@/components/layout/Navbar';
+import BaseButton from '@/components/ui/BaseButton';
 
 const EditProfilePage: React.FC = () => {
   return (
@@ -46,15 +47,17 @@ const EditProfilePage: React.FC = () => {
           />
         </FormControl>
         <Box display="flex" justifyContent="flex-end">
-          <Button 
+          <BaseButton  
             colorScheme="blue" 
+            variant="outline"
+            color="blue.500"
             size="lg"
-            px={8}
+            minW="120px"
             _hover={{ transform: 'translateY(-2px)', boxShadow: 'lg' }}
             transition="all 0.2s"
           >
             Save Changes
-          </Button>
+          </BaseButton>
         </Box>
       </Box>
     </Container>

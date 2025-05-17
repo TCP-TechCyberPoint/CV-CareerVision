@@ -1,12 +1,13 @@
 import Navbar from "@/components/layout/Navbar";
-import {  Container, Text } from "@chakra-ui/react";
+import SlideshowForm from "@/features/slideshow-form/SlideshowForm";
+import {  Container} from "@chakra-ui/react";
 
 const Home = () => {
   return (
     <>
       <Navbar />
       <Container>
-        <Text>Home</Text>
+        <SlideshowForm />
       </Container>
     </>
   );

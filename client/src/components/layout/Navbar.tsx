@@ -31,6 +31,7 @@ const Navbar = () => {
   const handleClick = (label: string, path?: string) => {
     if(label==="Profile" && path){
         navigate(path);  
+        console.log(`${label} clicked`);
     }  
   };
 
@@ -49,8 +50,9 @@ const Navbar = () => {
             {links.map(({ label, path }) => (
                <BaseButton
                   key={label}
-                  variant="ghost"
-                  color="white"
+                  variant="outline"
+                  color="orange.500"
+                  colorScheme="orange"
                   onClick={() => handleClick(label, path)}
                 >
                   {label}

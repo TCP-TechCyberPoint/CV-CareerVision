@@ -1,8 +1,12 @@
+import { Box } from "@chakra-ui/react";
+import StepVitals from "./steps/StepVitals";
+
 const SlideshowForm = () => {
   return (
-    <div>
-      <h1>SlideshowForm</h1>
-    </div>
+    <Box>
+      <StepVitals />
+    </Box>
+ 
   );
 };
 
