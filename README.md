@@ -1,151 +1,352 @@
-# Career Vision (CV)
+# Career Vision (CV) 🚀
 
-Career Vision (CV) is an innovative digital platform designed to redefine how junior professionals in the Israeli tech industry secure their place in the job market. More than just a resume builder or interview preparation tool, CV crafts a holistic journey that transforms uncertainty into confidence, lack of direction into clear career paths, and aspirations into concrete roles. Through a blend of advanced AI technology, practical tools, and a vibrant community, CV guides juniors from building their professional identity to achieving successful job placements.
+## 🌟 Vision & Mission
 
-## 🌟 **Vision and Mission**
+Career Vision is a digital platform designed to empower job seekers in the Israeli tech industry, particularly juniors and career switchers. Our mission is to provide smart, accessible tools that help users build their professional identity, create compelling CVs, and navigate their career journey with confidence.
 
-Our mission is to transform every junior candidate into an irresistible choice for recruiters by providing both emotional and professional support, minimizing frustration, and enhancing career success. CV is committed to delivering a personalized experience, meticulously tailored to the competitive Israeli job landscape.
+### Core Values
+- **Accessibility**: High-quality tools available to everyone
+- **Innovation**: Smart AI-powered solutions
+- **Community**: Supportive environment for growth
+- **Empowerment**: Building confidence through technology
 
-## 🔎 **Key Differentiators**
+## 🎯 Core Features
 
-* **Advanced AI:** Real-time analysis and enhancement of resumes, interview responses, and career progress.
-* **Practical Tools:** Comprehensive CV building, targeted interview preparation, and automated resume distribution to employers.
-* **Supportive Community:** Active forums for experience sharing, networking, and career development.
-* **Localized Adaptation:** Custom-tailored for the Israeli market with relevant resume formats and interview guidelines.
+### 1. Career Identity Builder
+- Smart 8-page questionnaire with real-time analysis
+- Dual language support (Hebrew/English)
+- Real-time draft saving via WebSocket
+- AI-powered role matching and skill analysis
+- Progress tracking and motivational feedback
 
----
+### 2. Professional CV Builder
+- ATS-friendly templates
+- Smart content suggestions
+- Dual language support
+- Real-time preview
+- Export to multiple formats
 
-## 📂 **Project Structure**
+### 3. RealTalk AI Coach
+- HR interview simulations
+- Personalized feedback
+- Voice input support
+- Question adaptation based on profile
+- Performance analytics
 
-```
-CV-CareerVision/
-│
-├── frontend/             # React + TailwindCSS 3
-│   ├── components/       # UI Components
-│   ├── pages/            # Main Pages
-│   └── assets/           # Images, styles, icons
-│
-├── backend/              # (To be defined)
-│
-├── utils/                # Utility functions and helpers
-│
-├── db/                   # Firebase configuration and integration
-│
-└── README.md             # This file
-```
+### 4. Progress Tracker
+- Interactive dashboard
+- Goal setting and tracking
+- Achievement system
+- Real-time updates
+- Personalized recommendations
 
----
+### 5. LinkedIn Job Fetcher
+- Smart job matching
+- Automated applications
+- Status tracking
+- Custom filters
+- Match percentage analysis
 
-## 🔧 **Technologies Used**
+### 6. CV Connect
+- Smart CV distribution
+- Application tracking
+- Status updates
+- Analytics dashboard
+- Success rate tracking
 
-* **Frontend:** React, Tailwind CSS 3
-* **Database & Storage:** Firebase (Firestore, Firebase Storage)
-* **State Management:** React Context / Redux (TBD)
-* **Authentication:** Firebase Authentication
-* **Cloud Storage:** Firebase Storage for images, PDFs, and Word documents
-* **Branch Management:**
+### 7. TCP Community & Mentoring
+- Professional networking
+- Mentorship opportunities
+- Community events
+- Resource sharing
+- Career guidance
 
-  * `main`: Production-ready code
-  * `dev`: Active development
-  * `staging`: Pre-production testing
+## 💰 Subscription Plans
 
----
+### Free Tier
+- Basic Career Identity Builder
+- One CV template
+- Limited interview simulations
+- Basic progress tracking
+- Community access
 
-## 🚀 **Getting Started**
+### Regular Tier (₪50/month)
+- Enhanced identity analysis
+- Multiple CV templates
+- Extended interview features
+- Advanced progress tracking
+- Job matching features
 
-### 1️⃣ **Clone the repository:**
+### Premium Tier (₪100/month)
+- Advanced AI analysis
+- All CV templates
+- Full interview suite
+- Comprehensive tracking
+- Priority support
 
-```bash
- git clone https://github.com/yosileviev/CV-CareerVision.git
- cd CV-CareerVision
-```
+## 🔧 Technical Stack
 
-### 2️⃣ **Switch to the development branch:**
+### Frontend
+- **Framework**: React.js with TypeScript
+- **State Management**: Redux Toolkit / React Context
+- **Styling**: Tailwind CSS
+- **Internationalization**: react-i18next
+- **Accessibility**: React Aria / axe DevTools
+- **Animations**: Framer Motion
+- **Forms**: Formik + Yup / React Hook Form
+- **API Client**: Axios
+- **Routing**: React Router
+- **Notifications**: React Toastify
 
-```bash
- git checkout dev
-```
+### Backend
+- **API Framework**: FastAPI
+- **Database**: PostgreSQL
+- **Authentication**: Firebase Auth
+- **Storage**: Firebase Storage
+- **Real-time**: WebSockets
+- **Caching**: Redis
+- **Containerization**: Docker Compose
+- **Deployment**: Railway.app
 
-### 3️⃣ **Install dependencies:**
+### AI/ML
+- **NLP**: SpaCy & TextBlob (Free)
+- **Advanced Analysis**: LLaMA 2 (Premium)
+- **Transformers**: HuggingFace
+- **Embeddings**: Sentence Transformers
+- **OCR**: Tesseract
+- **Cloud Services**: Various APIs
 
-```bash
- npm install
-```
+## 🛡️ Security & Privacy
 
-### 4️⃣ **Configure Firebase:**
+### Data Protection
+- HTTPS encryption
+- AES-256 for sensitive data
+- JWT authentication
+- Rate limiting
+- Input validation
 
-Create a `.env` file with your Firebase credentials:
+### Privacy Features
+- GDPR compliance
+- Data encryption
+- User consent management
+- Data deletion rights
+- Privacy controls
 
-```
-REACT_APP_API_KEY=your_api_key
-REACT_APP_AUTH_DOMAIN=your_auth_domain
-REACT_APP_PROJECT_ID=your_project_id
-REACT_APP_STORAGE_BUCKET=your_storage_bucket
-REACT_APP_MESSAGING_SENDER_ID=your_messaging_id
-REACT_APP_APP_ID=your_app_id
-```
+### Security Measures
+- Regular security audits
+- Automated scanning
+- Access control
+- Session management
+- Secure APIs
 
-### 5️⃣ **Run the application:**
+## 🎨 User Experience
 
-```bash
- npm start
-```
+### Design Principles
+- Intuitive navigation
+- Responsive design
+- Accessibility (WCAG 2.1)
+- RTL/LTR support
+- Performance optimization
 
-Visit [http://localhost:3000](http://localhost:3000) to explore the platform.
+### Features
+- Real-time feedback
+- Progress indicators
+- Motivational messages
+- Achievement system
+- Interactive elements
 
----
+## 👥 Development Team
 
-## 📌 **Current Features (MVP)**
+### Leadership
+- Yosi Leviev - Founder & Vision
+- Ben Harari - Team Leader Developer
 
-1. **Smart Questionnaire** - AI-driven career profiling.
-2. **Career CV Builder** - Advanced CV creation with real-time suggestions.
-3. **RealTalk AI Coach** - Simulated interview training with feedback.
-4. **Candidate Growth & Awareness Report (CGR)** - Visual progress tracking and improvement suggestions.
+### Development
+- Yosi Kariv - Junior Front-End
+- Guy First - Junior Back-End
+- Lior Shavit - Junior Front-End
 
----
+### Quality & Operations
+- Eilon Manela - Junior QA
+- Bar Berkovich - Junior DevOps
 
-## 🌐 **Future Roadmap**
+## 📚 Documentation
 
-* **Automated CV Distribution** to targeted employers.
-* **TCP Community Integration** for networking and project sharing.
-* **Premium Features:** Enhanced CV templates, extended CGR insights, and AI-powered interview coaching.
-* **Multilingual Support:** Hebrew and English.
+For detailed documentation, please refer to:
+- [Technical Architecture](docs/technical-architecture.md)
+- [AI/ML Features](docs/ai-ml-features.md)
+- [User Experience](docs/user-experience.md)
+- [Security & Privacy](docs/security-privacy.md)
 
----
+## 🔗 Links
 
-## 🤝 **Contribution Guidelines**
+- [TCP Community](https://www.techcyberpoint.co.il)
+- [TCP About-Page](https://www.techcyberpoint.co.il/%d7%90%d7%95%d7%93%d7%95%d7%aa/)
+- [GitHub Repository](https://github.com/TCP-TechCyberPoint/CV-CareerVision)
 
-We welcome contributions! Feel free to open issues, submit pull requests, and suggest improvements. Join us in building a better future for junior developers.
+## 📊 Project Status
 
----
+### Current Phase
+- 🟡 Planning & Architecture
+- 🟡 Documentation
+- 🔴 Development
+- 🔴 Testing
+- 🔴 Deployment
 
-## 📜 **License**
+### Current Working Branches
+- **main** - Production branch (protected)
+- **develop** - Development branch (protected)
+- **feature/career-identity** - Career Identity Builder implementation
+- **feature/cv-builder** - CV Builder implementation
+- **feature/progress-tracker** - Progress Tracker implementation
+- **docs/architecture** - Technical documentation updates
 
-*To be decided.*
+### Branch Strategy
+1. **Feature Branches**
+   - Created from `develop`
+   - Naming: `feature/feature-name`
+   - Merged back to `develop` via PR
 
----
+2. **Documentation Branches**
+   - Created from `develop`
+   - Naming: `docs/topic-name`
+   - Merged back to `develop` via PR
 
-## 👥 **Development Team**
+3. **Hotfix Branches**
+   - Created from `main`
+   - Naming: `hotfix/issue-description`
+   - Merged to both `main` and `develop`
 
-This project is a collaborative effort between **JuniorsHead by Ben Harari** and **TCP - TechCyberPoint by Yosi Leviev**.
+### Development Workflow
+1. Create feature branch from `develop`
+2. Implement changes
+3. Write tests
+4. Update documentation
+5. Create PR to `develop`
+6. Code review
+7. Merge to `develop`
+8. Deploy to staging
+9. QA testing
+10. Merge to `main` for production
 
-**Team Members:**
+## 🤝 Contributing
 
-* Yosi Leviev - SOC Analyst
-* Ben Harari - Team Leader Developer
-* Yosi Kariv - Junior Front-End
-* Eilon Manela - Junior QA
-* Guy First - Junior Back-End
-* Bar Berkovich - Junior DevOps
-* Lior Shavit - Junior Front-End
+### Development Setup
+1. **Prerequisites**
+   - Node.js (v18+)
+   - Python (v3.9+)
+   - Docker & Docker Compose
+   - PostgreSQL
+   - Redis
 
----
+2. **Installation**
+   ```bash
+   # Clone the repository
+   git clone https://github.com/TCP-TechCyberPoint/CV-CareerVision.git
+   cd CV-CareerVision
 
-## 🔗 **Links**
+   # Install dependencies
+   # Frontend
+   cd client
+   npm install
 
-* [TCP Community](https://www.techcyberpoint.co.il)
-* [TCP About-Page](https://www.techcyberpoint.co.il/%d7%90%d7%95%d7%93%d7%95%d7%aa/)
-* [GitHub Repository](https://github.com/yosileviev/CV-CareerVision)
+   # Backend
+   cd ../server
+   python -m venv venv
+   source venv/bin/activate  # or `venv\Scripts\activate` on Windows
+   pip install -r requirements.txt
+   ```
+
+3. **Environment Setup**
+   ```bash
+   # Create .env files
+   cp .env.example .env
+   # Configure your environment variables
+   ```
+
+4. **Running the Project**
+   ```bash
+   # Using Docker Compose
+   docker-compose up
+
+   # Or run services separately
+   # Frontend
+   cd client
+   npm run dev
+
+   # Backend
+   cd server
+   uvicorn main:app --reload
+   ```
+
+### Contribution Guidelines
+1. **Code Style**
+   - Follow TypeScript/React best practices
+   - Use ESLint and Prettier
+   - Write meaningful commit messages
+
+2. **Pull Request Process**
+   - Create feature branch
+   - Write tests
+   - Update documentation
+   - Submit PR with description
+
+3. **Testing**
+   - Write unit tests
+   - Run integration tests
+   - Ensure CI passes
+
+## 🐛 Known Issues
+
+### Current Limitations
+- Limited Hebrew NLP support
+- Basic CV templates only
+- No mobile app yet
+
+### Planned Fixes
+- Enhanced Hebrew language processing
+- More CV templates
+- Mobile responsiveness improvements
+
+## 📈 Performance Metrics
+
+### Target Metrics
+- Page Load: < 2s
+- API Response: < 200ms
+- Real-time Updates: < 100ms
+- AI Processing: < 3s
+
+### Monitoring
+- Frontend: Google Analytics
+- Backend: Prometheus
+- AI: Custom metrics
+
+## 🔄 CI/CD Pipeline
+
+### Development
+- Automated testing
+- Code quality checks
+- Security scanning
+
+### Staging
+- Integration testing
+- Performance testing
+- User acceptance testing
+
+### Production
+- Blue-green deployment
+- Automated rollback
+- Health monitoring
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- TCP Community for support
+- Open source contributors
+- Beta testers
 
 ---
 
