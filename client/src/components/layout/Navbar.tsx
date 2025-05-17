@@ -28,13 +28,7 @@ const Navbar = () => {
     navigate("/edit-profile");
   };
 
-  const handleClick = (label: string, path?: string) => {
-    if(label==="Profile" && path){
-        navigate(path);  
-        console.log(`${label} clicked`);
-    }  
-  };
-
+ 
   return (
     <Box bg="gray.800" px={4} position="relative">
       <Flex
@@ -53,7 +47,7 @@ const Navbar = () => {
                   variant="outline"
                   color="orange.500"
                   colorScheme="orange"
-                  onClick={() => handleClick(label, path)}
+                  onClick={() => navigate(path)}
                 >
                   {label}
                 </BaseButton>       
