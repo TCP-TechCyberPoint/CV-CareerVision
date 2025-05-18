@@ -1,16 +1,35 @@
-import { Box, Input, VStack } from "@chakra-ui/react";
-import { HStack, RadioGroup } from "@chakra-ui/react";
+import { Box, Input, RadioGroup, VStack } from "@chakra-ui/react";
+import { HStack } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
-import { useSlideshowForm } from "../store/useSlideshowForm";
+// import { useSlideshowForm } from "../store/useSlideshowForm";
 import BaseButton from "@/components/ui/BaseButton";
+import { useSlideshowFormStore } from "../store";
+import { Gender, type StepVitalsFields } from "../store/types";
+import { useState } from "react";
 
 const StepVitals = () => {
-  const { formData, setFormData, nextStep, prevStep } = useSlideshowForm();
+  const { formData, updateFormData } = useSlideshowFormStore();
+
+  /** TODO: Add next step and prev step logic here */
+  // const { nextStep, prevStep } = createSlideshowActions();
+
+  const [localData, setLocalData] = useState<StepVitalsFields>({
+    name: formData.name ?? "",
+    age: formData.age ?? 0,
+    gender: formData.gender ?? Gender.Male,
+    email: formData.email ?? "",
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setLocalData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleNext = () => {
+    updateFormData(localData); // Save all data to store at once
+    /** TODO: Add next step logic here */
+    // nextStep(); // Move to next step
+  };
   return (
     <Box
       mt={20}
@@ -23,11 +42,12 @@ const StepVitals = () => {
       bg="white"
     >
       <VStack gap={6} align="stretch">
+        {/* Name input field */}
         <FormControl>
           <FormLabel fontWeight="medium">Name</FormLabel>
           <Input
             name="name"
-            value={formData.name}
+            value={localData.name}
             onChange={handleChange}
             placeholder="Your full name"
             size="lg"
@@ -39,11 +59,12 @@ const StepVitals = () => {
           />
         </FormControl>
 
+        {/* Age input field */}
         <FormControl>
           <FormLabel fontWeight="medium">Age</FormLabel>
           <Input
             name="age"
-            value={formData.age}
+            value={localData.age}
             onChange={handleChange}
             type="number"
             placeholder="Your age"
@@ -56,36 +77,28 @@ const StepVitals = () => {
           />
         </FormControl>
 
+        {/* Gender input field */}
         <FormControl>
           <FormLabel fontWeight="medium">Gender</FormLabel>
-          <RadioGroup.Root
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-          >
-            <HStack gap={8} py={2}>
-              {["Male", "Female", "Other"].map((gender) => (
-                <RadioGroup.Item
-                  key={gender}
-                  value={gender}
-                  _checked={{ bg: "teal.50", borderColor: "teal.500" }}
-                >
-                  <RadioGroup.ItemHiddenInput />
-                  <RadioGroup.ItemIndicator />
-                  <RadioGroup.ItemText fontWeight="medium">
-                    {gender}
-                  </RadioGroup.ItemText>
-                </RadioGroup.Item>
-              ))}
-            </HStack>
+          <RadioGroup.Root defaultValue="1">
+          <HStack gap={8} py={2}>
+            {["Male", "Female", "Other"].map((gender) => (
+              <RadioGroup.Item key={gender} value={gender}>
+                <RadioGroup.ItemHiddenInput />
+                <RadioGroup.ItemIndicator />
+                <RadioGroup.ItemText>{gender}</RadioGroup.ItemText>
+              </RadioGroup.Item>
+            ))}
+          </HStack>
           </RadioGroup.Root>
         </FormControl>
-
+        
+        {/* Email input field */}
         <FormControl>
           <FormLabel fontWeight="medium">Email</FormLabel>
           <Input
             name="email"
-            value={formData.email}
+            value={localData.email}
             onChange={handleChange}
             type="email"
             placeholder="you@example.com"
@@ -100,7 +113,10 @@ const StepVitals = () => {
 
         <Box display="flex" justifyContent="space-between" pt={6}>
           <BaseButton
-            onClick={prevStep}
+            /** TODO: Add prev step logic here
+             *  onClick={()=>{}}
+             */
+
             colorScheme="red"
             variant="subtle"
             size="lg"
@@ -109,7 +125,7 @@ const StepVitals = () => {
             Back
           </BaseButton>
           <BaseButton
-            onClick={nextStep}
+            onClick={handleNext}
             size="lg"
             variant="subtle"
             colorScheme="green"
