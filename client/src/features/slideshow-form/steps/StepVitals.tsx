@@ -6,12 +6,12 @@ import BaseButton from "@/components/ui/BaseButton";
 import { useSlideshowFormStore } from "../store";
 import { Gender, type StepVitalsFields } from "../store/types";
 import { useForm, Controller } from "react-hook-form";
+import { useSlideshowForm } from "../store/useSlideshowForm";
 
 const StepVitals = () => {
   const { formData, updateFormData } = useSlideshowFormStore();
-
-  // * TODO: Add next step and prev step logic here */
-  // const { nextStep, prevStep } = createSlideshowActions();
+  const nextStep = useSlideshowForm().nextStep;
+  const prevStep = useSlideshowForm().prevStep;
 
   const { control, handleSubmit } = useForm<StepVitalsFields>({
     defaultValues: {
@@ -23,10 +23,8 @@ const StepVitals = () => {
   });
 
   const onSubmit = (data: StepVitalsFields) => {
-    console.log(data);
     updateFormData(data);
-    // * TODO: Add next step logic here */
-    // nextStep(); // Move to next step
+    nextStep();
   };
 
   return (
@@ -134,10 +132,7 @@ const StepVitals = () => {
 
         <Box display="flex" justifyContent="space-between" pt={6}>
           <BaseButton
-            /** TODO: Add prev step logic here
-             *  onClick={()=>{}}
-             */
-
+            onClick={prevStep}
             colorScheme="red"
             variant="subtle"
             size="lg"
