@@ -5,31 +5,30 @@ import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import BaseButton from "@/components/ui/BaseButton";
 import { useSlideshowFormStore } from "../store";
 import { Gender, type StepVitalsFields } from "../store/types";
-import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
 
 const StepVitals = () => {
   const { formData, updateFormData } = useSlideshowFormStore();
 
-  /** TODO: Add next step and prev step logic here */
+  // * TODO: Add next step and prev step logic here */
   // const { nextStep, prevStep } = createSlideshowActions();
 
-  const [localData, setLocalData] = useState<StepVitalsFields>({
-    name: formData.name ?? "",
-    age: formData.age ?? 0,
-    gender: formData.gender ?? Gender.Male,
-    email: formData.email ?? "",
+  const { control, handleSubmit } = useForm<StepVitalsFields>({
+    defaultValues: {
+      name: formData.name ?? "",
+      age: formData.age ?? 0,
+      gender: formData.gender ?? Gender.Male,
+      email: formData.email ?? "",
+    },
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setLocalData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleNext = () => {
-    updateFormData(localData); // Save all data to store at once
-    /** TODO: Add next step logic here */
+  const onSubmit = (data: StepVitalsFields) => {
+    console.log(data);
+    updateFormData(data);
+    // * TODO: Add next step logic here */
     // nextStep(); // Move to next step
   };
+
   return (
     <Box
       mt={20}
@@ -43,71 +42,93 @@ const StepVitals = () => {
     >
       <VStack gap={6} align="stretch">
         {/* Name input field */}
+
         <FormControl>
           <FormLabel fontWeight="medium">Name</FormLabel>
-          <Input
+          <Controller
+            control={control}
             name="name"
-            value={localData.name}
-            onChange={handleChange}
-            placeholder="Your full name"
-            size="lg"
-            borderRadius="md"
-            _focus={{
-              borderColor: "teal.400",
-              boxShadow: "0 0 0 1px teal.400",
-            }}
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder="Your full name"
+                size="lg"
+                borderRadius="md"
+                _focus={{
+                  borderColor: "teal.400",
+                  boxShadow: "0 0 0 1px teal.400",
+                }}
+              />
+            )}
           />
         </FormControl>
 
         {/* Age input field */}
         <FormControl>
           <FormLabel fontWeight="medium">Age</FormLabel>
-          <Input
+          <Controller
+            control={control}
             name="age"
-            value={localData.age}
-            onChange={handleChange}
-            type="number"
-            placeholder="Your age"
-            size="lg"
-            borderRadius="md"
-            _focus={{
-              borderColor: "teal.400",
-              boxShadow: "0 0 0 1px teal.400",
-            }}
+            render={({ field }) => (
+              <Input
+                {...field}
+                type="number"
+                placeholder="Your age"
+                size="lg"
+                borderRadius="md"
+                _focus={{
+                  borderColor: "teal.400",
+                  boxShadow: "0 0 0 1px teal.400",
+                }}
+              />
+            )}
           />
         </FormControl>
 
         {/* Gender input field */}
         <FormControl>
           <FormLabel fontWeight="medium">Gender</FormLabel>
-          <RadioGroup.Root defaultValue="1">
-          <HStack gap={8} py={2}>
-            {["Male", "Female", "Other"].map((gender) => (
-              <RadioGroup.Item key={gender} value={gender}>
-                <RadioGroup.ItemHiddenInput />
-                <RadioGroup.ItemIndicator />
-                <RadioGroup.ItemText>{gender}</RadioGroup.ItemText>
-              </RadioGroup.Item>
-            ))}
-          </HStack>
-          </RadioGroup.Root>
+          <Controller
+            control={control}
+            name="gender"
+            render={({ field }) => (
+              <RadioGroup.Root
+                defaultValue={field.value}
+                onValueChange={field.onChange}
+              >
+                <HStack gap={8} py={2}>
+                  {["Male", "Female", "Other"].map((gender) => (
+                    <RadioGroup.Item key={gender} value={gender}>
+                      <RadioGroup.ItemHiddenInput />
+                      <RadioGroup.ItemIndicator />
+                      <RadioGroup.ItemText>{gender}</RadioGroup.ItemText>
+                    </RadioGroup.Item>
+                  ))}
+                </HStack>
+              </RadioGroup.Root>
+            )}
+          />
         </FormControl>
-        
+
         {/* Email input field */}
         <FormControl>
           <FormLabel fontWeight="medium">Email</FormLabel>
-          <Input
+          <Controller
+            control={control}
             name="email"
-            value={localData.email}
-            onChange={handleChange}
-            type="email"
-            placeholder="you@example.com"
-            size="lg"
-            borderRadius="md"
-            _focus={{
-              borderColor: "teal.400",
-              boxShadow: "0 0 0 1px teal.400",
-            }}
+            render={({ field }) => (
+              <Input
+                {...field}
+                type="email"
+                placeholder="you@example.com"
+                size="lg"
+                borderRadius="md"
+                _focus={{
+                  borderColor: "teal.400",
+                  boxShadow: "0 0 0 1px teal.400",
+                }}
+              />
+            )}
           />
         </FormControl>
 
@@ -125,7 +146,7 @@ const StepVitals = () => {
             Back
           </BaseButton>
           <BaseButton
-            onClick={handleNext}
+            onClick={handleSubmit(onSubmit)}
             size="lg"
             variant="subtle"
             colorScheme="green"
