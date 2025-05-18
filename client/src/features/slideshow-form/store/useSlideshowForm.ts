@@ -12,8 +12,7 @@ interface SlideshowFormState {
   currentStep: number;
   formData: FormData;
   setFormData: (data: Partial<FormData>) => void;
-  nextStep: () => void;
-  prevStep: () => void;
+
   resetForm: () => void;
 }
 
@@ -33,14 +32,7 @@ export const useSlideshowForm = create<SlideshowFormState>((set) => ({
         ...data,
       },
     })),
-  nextStep: () =>
-    set((state) => ({
-      currentStep: state.currentStep + 1,
-    })),
-  prevStep: () =>
-    set((state) => ({
-      currentStep: state.currentStep - 1,
-    })),
+
   resetForm: () =>
     set(() => ({
       currentStep: 0,

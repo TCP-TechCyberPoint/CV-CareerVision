@@ -6,12 +6,15 @@ import BaseButton from "@/components/ui/BaseButton";
 import { useSlideshowFormStore } from "../store";
 import { Gender, type StepVitalsFields } from "../store/types";
 import { useForm, Controller } from "react-hook-form";
-import { useSlideshowForm } from "../store/useSlideshowForm";
 
-const StepVitals = () => {
+const StepVitals = ({
+  nextStep,
+  prevStep,
+}: {
+  nextStep: () => void;
+  prevStep: () => void;
+}) => {
   const { formData, updateFormData } = useSlideshowFormStore();
-  const nextStep = useSlideshowForm().nextStep;
-  const prevStep = useSlideshowForm().prevStep;
 
   const { control, handleSubmit } = useForm<StepVitalsFields>({
     defaultValues: {

@@ -17,6 +17,7 @@ const Navbar = () => {
     
     { label: "Home", path: "/" },
     { label: "About", path: "/about" },
+    { label: "Create CV", path: "/create-cv" },
   ];
 
   const handleSignOut = () => {

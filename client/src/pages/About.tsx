@@ -4,7 +4,6 @@ import { Container, Text } from "@chakra-ui/react";
 const About = () => {
   return (
     <>
-    <Navbar />
     <div>
       <Container>
         <Text>About</Text>

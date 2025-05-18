@@ -6,7 +6,6 @@ import BaseButton from '@/components/ui/BaseButton';
 const EditProfilePage: React.FC = () => {
   return (
     <>
-    <Navbar />
     <Container maxW="container.md" py={12} mx={"auto"} w={"5/12"}>
       <Box mb={8} textAlign="center">
         <Heading size="xl" mb={2}>Edit Profile</Heading>

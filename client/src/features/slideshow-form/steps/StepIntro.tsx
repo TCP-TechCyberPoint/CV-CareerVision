@@ -1,12 +1,13 @@
 import BaseButton from "@/components/ui/BaseButton";
 import { Box, Heading, Text, Image, Flex } from "@chakra-ui/react";
-import { useSlideshowForm } from "../store/useSlideshowForm";
 
-
-
-
-const StepIntro = () => {
-  const  nextStep  = useSlideshowForm().nextStep;
+const StepIntro = ({
+  nextStep,
+  prevStep,
+}: {
+  nextStep: () => void;
+  prevStep: () => void;
+}) => {
   return (
     <Box
       mt={24}
@@ -24,8 +25,9 @@ const StepIntro = () => {
       <Flex direction="column" align="flex-start" gap={6}>
         <Heading size="xl">Welcome to the Health Form</Heading>
         <Text fontSize="md" color="gray.600">
-          This quick and simple slideshow will guide you through a few short steps.
-          It helps us understand your basic profile so we can tailor your experience.
+          This quick and simple slideshow will guide you through a few short
+          steps. It helps us understand your basic profile so we can tailor your
+          experience.
         </Text>
         <Image
           src="/intro-illustration.svg"
