@@ -8,17 +8,13 @@ import {
 } from "@chakra-ui/react";
 import ProfileDropdown from "./ProfileDropdown";
 import BaseButton from "@/components/ui/BaseButton";
+import { pages } from "@/constants/pages";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const  {logout}  = useAuth();
 
-  const links = [
-    
-    { label: "Home", path: "/" },
-    { label: "About", path: "/about" },
-    { label: "Create CV", path: "/create-cv" },
-  ];
+
 
   const handleSignOut = () => {
     logout();
@@ -42,7 +38,7 @@ const Navbar = () => {
           <HStack gap={8} alignItems="center" flexDir="row-reverse">
             <ProfileDropdown onSignOut={handleSignOut} onRedirectEditProfile={handleRedirectEditProfile}  />
        
-            {links.map(({ label, path }) => (
+            {pages.map(({ label, path }) => (
                <BaseButton
                   key={label}
                   variant="outline"
