@@ -1,0 +1,55 @@
+name: CI/CD - Staging
+
+on:
+  push:
+    branches:
+      - staging
+  pull_request:
+    branches:
+      - staging
+  workflow_run:
+    workflows: ["CI/CD - Development"]
+    branches: [dev]
+    types:
+      - completed
+
+jobs:
+  check-dev-status:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_run' }}
+    steps:
+      - name: Check development workflow status
+        run: |
+          if [[ "${{ github.event.workflow_run.conclusion }}" != "success" ]]; then
+            echo "Development workflow did not succeed. Skipping staging deployment."
+            exit 1
+          fi
+
+  staging-pipeline:
+    needs: check-dev-status
+    if: ${{ github.event_name != 'workflow_run' || success() }}
+    uses: ./.github/workflows/shared.yml
+    with:
+      environment: staging
+      run_smoke_test: true
+      run_e2e: true
+      deploy: true
+
+  create-pr-to-main:
+    needs: staging-pipeline
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup GitHub CLI
+        uses: cli/cli-action@v2
+
+      - name: Create Pull Request from staging to main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh auth setup-git
+          gh pr create --title "Sync staging to main" --body "Automated PR from staging to main branch" --base main --head staging || echo "PR might already exist"
+
