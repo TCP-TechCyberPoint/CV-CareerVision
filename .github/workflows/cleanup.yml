@@ -1,0 +1,101 @@
+# .github/workflows/cleanup.yml
+name: Cleanup Resources
+
+on:
+  schedule:
+    # Run every Monday at 2AM
+    - cron: '0 2 * * 1'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to clean (development, staging, all)'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - staging
+          - all
+
+jobs:
+  cleanup-docker-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get environment to clean
+        id: env
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "env=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+          else
+            echo "env=all" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Clean up old development images
+        if: steps.env.outputs.env == 'development' || steps.env.outputs.env == 'all'
+        run: |
+          echo "Cleaning up old development docker images..."
+          # Keep only the 5 most recent development images
+          REPO="${{ github.repository }}-development"
+          KEEP=5
+          
+          # Get list of image digests sorted by creation date (oldest first)
+          DIGESTS=$(curl -s \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/orgs/${{ github.repository_owner }}/packages/container/${REPO}/versions" \
+            | jq -r 'sort_by(.created_at) | .[0:-('"$KEEP"'+1)] | .[].id')
+          
+          # Delete old images
+          for digest in $DIGESTS; do
+            echo "Deleting image digest: $digest"
+            curl -X DELETE \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/orgs/${{ github.repository_owner }}/packages/container/${REPO}/versions/${digest}"
+          done
+
+      - name: Clean up old staging images
+        if: steps.env.outputs.env == 'staging' || steps.env.outputs.env == 'all'
+        run: |
+          echo "Cleaning up old staging docker images..."
+          # Keep only the 10 most recent staging images
+          REPO="${{ github.repository }}-staging"
+          KEEP=10
+          
+          # Get list of image digests sorted by creation date (oldest first)
+          DIGESTS=$(curl -s \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/orgs/${{ github.repository_owner }}/packages/container/${REPO}/versions" \
+            | jq -r 'sort_by(.created_at) | .[0:-('"$KEEP"'+1)] | .[].id')
+          
+          # Delete old images
+          for digest in $DIGESTS; do
+            echo "Deleting image digest: $digest"
+            curl -X DELETE \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/orgs/${{ github.repository_owner }}/packages/container/${REPO}/versions/${digest}"
+          done
+
+  cleanup-workflow-runs:
+    needs: cleanup-docker-images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete old workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          retain_days: 30
+          keep_minimum_runs: 5
