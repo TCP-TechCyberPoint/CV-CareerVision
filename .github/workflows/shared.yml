@@ -57,9 +57,9 @@ jobs:
           path: |
             client/node_modules/.cache
             client/dist
-          key: build-${{ runner.os }}-${{ hashFiles('../../client/package-lock.json') }}-${{ github.sha }}
+          key: build-${{ runner.os }}-${{ hashFiles('client/package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            build-${{ runner.os }}-${{ hashFiles('../../client/package-lock.json') }}-
+            build-${{ runner.os }}-${{ hashFiles('client/package-lock.json') }}-
 
       - name: Lint
         run: npm run lint
