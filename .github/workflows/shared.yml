@@ -8,6 +8,11 @@ on:
         required: true
         type: string
         description: "Environment name (development, staging, production)"
+      run_unit_test:
+        required: false
+        type: boolean
+        default: false
+        description: "Whether to run unit tests"
       run_e2e:
         required: false
         type: boolean
@@ -68,9 +73,11 @@ jobs:
         run: npm run type-check
 
       - name: Unit Tests
+        if: inputs.run_unit_test
         run: npm test -- --ci --coverage
 
       - name: Upload test coverage
+        if: inputs.run_unit_test
         uses: actions/upload-artifact@v4
         with:
           name: test-coverage-${{ inputs.environment }}

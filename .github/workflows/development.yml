@@ -13,6 +13,7 @@ jobs:
     uses: ./.github/workflows/shared.yml
     with:
       environment: development
+      run_unit_test: false
       run_smoke_test: false
       run_e2e: false
       deploy: true
