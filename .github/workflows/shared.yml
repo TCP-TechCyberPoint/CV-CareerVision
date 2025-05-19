@@ -136,6 +136,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
+      - name: Set lowercase repository
+        id: repo
+        run: echo "repo_lower=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
       - name: Build and Push Docker image
         uses: docker/build-push-action@v6
         with:
@@ -143,9 +147,9 @@ jobs:
           file: client/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ toLower(github.repository) }}-${{ inputs.environment }}:${{ needs.build-and-test.outputs.version }}
-            ghcr.io/${{ toLower(github.repository) }}-${{ inputs.environment }}:${{ github.sha }}
-            ${{ inputs.environment == 'production' && format('ghcr.io/{0}-{1}:latest', toLower(github.repository), inputs.environment) || '' }}
+            ghcr.io/${{ steps.repo.outputs.repo_lower }}-${{ inputs.environment }}:${{ needs.build-and-test.outputs.version }}
+            ghcr.io/${{ steps.repo.outputs.repo_lower }}-${{ inputs.environment }}:${{ github.sha }}
+            ${{ inputs.environment == 'production' && format('ghcr.io/{0}-{1}:latest', steps.repo.outputs.repo_lower, inputs.environment) || '' }}
           build-args: |
             NODE_ENV=${{ inputs.environment }}
           cache-from: type=local,src=/tmp/.buildx-cache
@@ -197,5 +201,6 @@ jobs:
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
-          git tag -a "deploy-${{ inputs.environment }}-v${{ needs.build-and-test.outputs.version }}" -m "Deployed ${{ inputs.environment }} version ${{ needs.build-and-test.outputs.version }}"
-          git push origin "deploy-${{ inputs.environment }}-v${{ needs.build-and-test.outputs.version }}"
+          TAG="deploy-${{ inputs.environment }}-v${{ needs.build-and-test.outputs.version }}"
+          git tag -a "$TAG" -m "Deployed ${{ inputs.environment }} version ${{ needs.build-and-test.outputs.version }}"
+          git push origin "$TAG"
