@@ -143,9 +143,9 @@ jobs:
           file: client/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}-${{ inputs.environment }}:${{ needs.build-and-test.outputs.version }}
-            ghcr.io/${{ github.repository }}-${{ inputs.environment }}:${{ github.sha }}
-            ${{ inputs.environment == 'production' && format('ghcr.io/{0}-{1}:latest', github.repository, inputs.environment) || '' }}
+            ghcr.io/${{ toLower(github.repository) }}-${{ inputs.environment }}:${{ needs.build-and-test.outputs.version }}
+            ghcr.io/${{ toLower(github.repository) }}-${{ inputs.environment }}:${{ github.sha }}
+            ${{ inputs.environment == 'production' && format('ghcr.io/{0}-{1}:latest', toLower(github.repository), inputs.environment) || '' }}
           build-args: |
             NODE_ENV=${{ inputs.environment }}
           cache-from: type=local,src=/tmp/.buildx-cache
