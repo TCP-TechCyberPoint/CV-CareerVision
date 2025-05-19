@@ -6,8 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "preview": "vite preview",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "accessibility": "pa11y http://localhost:5173"
+    
   },
   "dependencies": {
     "@chakra-ui/color-mode": "^2.2.0",
