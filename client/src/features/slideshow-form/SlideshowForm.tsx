@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { slideMap } from "@/constants/slidesMap";
+import { slideMap } from "./constants/slides-map";
 import StepIntro from "./steps/StepIntro";
 import StepVitals from "./steps/StepVitals";
 import StepSkills from "./steps/StepSkills";

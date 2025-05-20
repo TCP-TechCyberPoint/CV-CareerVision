@@ -1,18 +1,13 @@
 import BaseButton from "@/components/ui/BaseButton";
-import { Box, Heading, Text, Image, Flex } from "@chakra-ui/react";
+import { Box, Heading, Text, Image, Flex, Stack } from "@chakra-ui/react";
+import introFormImage from "@/assets/images/intro-form.png";
 
-const StepIntro = ({
-  nextStep,
-  prevStep,
-}: {
-  nextStep: () => void;
-  prevStep: () => void;
-}) => {
+const StepIntro = ({ nextStep }: { nextStep: () => void }) => {
   return (
     <Box
       mt={24}
       mx="auto"
-      maxW="600px"
+      maxW="800px"
       p={10}
       borderRadius="2xl"
       boxShadow="2xl"
@@ -20,28 +15,52 @@ const StepIntro = ({
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
-      minH="500px"
+      minH="600px"
     >
-      <Flex direction="column" align="flex-start" gap={6}>
-        <Heading size="xl">Welcome to the Health Form</Heading>
-        <Text fontSize="md" color="gray.600">
-          This quick and simple slideshow will guide you through a few short
-          steps. It helps us understand your basic profile so we can tailor your
-          experience.
-        </Text>
+      <Stack gap={8}>
+        <Stack gap={4}>
+          <Heading size="2xl" color="blue.600">
+            Create Your Professional CV
+          </Heading>
+          <Text fontSize="xl" color="gray.600">
+            Let's build a compelling CV that showcases your professional journey
+          </Text>
+        </Stack>
+
+        <Stack gap={6}>
+          <Text fontSize="lg">
+            In this guided process, we'll help you:
+          </Text>
+          <Stack gap={4}>
+            <Flex align="center" gap={3}>
+              <Box w={2} h={2} bg="blue.500" borderRadius="full" />
+              <Text>Highlight your key skills and expertise</Text>
+            </Flex>
+            <Flex align="center" gap={3}>
+              <Box w={2} h={2} bg="blue.500" borderRadius="full" />
+              <Text>Showcase your professional experience</Text>
+            </Flex>
+            <Flex align="center" gap={3}>
+              <Box w={2} h={2} bg="blue.500" borderRadius="full" />
+              <Text>Present your achievements and qualifications</Text>
+            </Flex>
+          </Stack>
+        </Stack>
+
         <Image
-          src="/intro-illustration.svg"
-          alt="Intro Illustration"
+          src={introFormImage}
+          alt="CV Creation Illustration"
           borderRadius="lg"
-          maxH="200px"
-          objectFit="cover"
+          maxH="250px"
+          objectFit="contain"
           mt={4}
+          
         />
-      </Flex>
+      </Stack>
 
       <Flex justify="flex-end" mt={8}>
         <BaseButton colorPalette="blue" size="lg" onClick={nextStep}>
-          Get Started
+          Start Creating My CV
         </BaseButton>
       </Flex>
     </Box>
