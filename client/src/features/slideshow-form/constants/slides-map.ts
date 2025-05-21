@@ -1,7 +1,8 @@
 export const slideMap = {
   intro: 0,
   vitals: 1,
-  skills: 2,
+  hardSkills: 2,
+  softSkills: 3,
   end: 3,
 } as const;
 
