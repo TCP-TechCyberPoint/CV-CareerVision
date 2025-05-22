@@ -22,6 +22,8 @@ export interface Slide {
     skills?: string[];
     description?: string;
     slides?: Slide[];
+    softSkills?: string[];
+    hardSkills?: string[];
   }
 
   export interface SlideshowState {

@@ -1,9 +1,9 @@
 import BaseButton from "@/components/ui/BaseButton";
 import { Box, Heading, TagLabel, Text, VStack, Wrap, WrapItem, Tag, Flex, Badge } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
-import { useState } from "react";
-import { HARD_SKILLS_HIERARCHY } from "../constants/skills-hierarchy";
 import { motion } from "framer-motion";
+import { HARD_SKILLS_HIERARCHY } from "../constants/skills-hierarchy";
+import { useHardSkills } from "../hooks/useHardSkills";
 
 const MotionBox = motion(Box);
 const MotionTag = motion(Tag.Root);
@@ -15,61 +15,18 @@ const StepHardSkills = ({
   nextStep: () => void;
   prevStep: () => void;
 }) => {
-  
-  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-  const [expandedSkills, setExpandedSkills] = useState<string[]>([]);
+  const {
+    selectedSkills,
+    expandedSkills,
+    handleSkillClick,
+    handleRemoveSkill,
+    getNextSkills,
+    getColorScheme,
+  } = useHardSkills();
   
   const bgColor = useColorModeValue("white", "gray.800");
   const cardBg = useColorModeValue("gray.50", "gray.700");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-  
-  const handleSkillClick = (skill: string) => {
-    const isMainCategory = HARD_SKILLS_HIERARCHY[skill as keyof typeof HARD_SKILLS_HIERARCHY] !== undefined;
-    
-    if (isMainCategory) {
-      if (!expandedSkills.includes(skill)) {
-        setExpandedSkills((prev) => [...prev, skill]);
-      } else {
-        setExpandedSkills((prev) => prev.filter((s) => s !== skill));
-      }
-    } else {
-      if (!selectedSkills.includes(skill)) {
-        setSelectedSkills((prev) => [...prev, skill]);
-      } else {
-        setSelectedSkills((prev) => prev.filter((s) => s !== skill));
-      }
-    }
-  };
-
-  const handleRemoveSkill = (skillToRemove: string) => {
-    setSelectedSkills((prev) => prev.filter((skill) => skill !== skillToRemove));
-  };
-  
-  const getNextSkills = () => {
-    const next: string[] = [];
-    expandedSkills.forEach((skill) => {
-      const category = HARD_SKILLS_HIERARCHY[skill as keyof typeof HARD_SKILLS_HIERARCHY];
-      if (category) {
-        next.push(...category.skills.filter((child: string) => !selectedSkills.includes(child)));
-      }
-    });
-    return next;
-  };
-
-  const getColorScheme = (skill: string) => {
-    const category = HARD_SKILLS_HIERARCHY[skill as keyof typeof HARD_SKILLS_HIERARCHY];
-    if (category) {
-      return category.color;
-    }
-    
-    for (const [_, categoryData] of Object.entries(HARD_SKILLS_HIERARCHY)) {
-      if (categoryData.skills.some((s: string) => s === skill)) {
-        return categoryData.color;
-      }
-    }
-    
-    return "gray";
-  };
 
   return (
     <MotionBox
