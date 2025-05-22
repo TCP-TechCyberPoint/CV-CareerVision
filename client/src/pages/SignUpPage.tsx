@@ -1,20 +1,26 @@
 import React from "react";
 import {
   Box,
-  Button,
   Container,
+  Field,
   Flex,
   Heading,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { Link as RouterLink } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useSignUpForm } from "../hooks/useSignUpForm";
+import type { SignUpFormData } from "../hooks/useSignUpForm";
 import loginBg from "../assets/images/login-background.png";
+import BaseButton from "@/components/ui/BaseButton";
 
 const SignUpPage: React.FC = () => {
+  const { register, handleSubmit: hookFormSubmit } = useForm<SignUpFormData>();
+  const { handleSubmit, errors, isLoading } = useSignUpForm();
+
   return (
     <Flex
       minH="100vh"
@@ -40,57 +46,70 @@ const SignUpPage: React.FC = () => {
             rounded="lg"
             shadow="lg"
           >
-            <Stack gap={4}>
+            <Stack gap={4} as="form" onSubmit={hookFormSubmit(handleSubmit)}>
               <Heading fontSize="2xl" textAlign="center">
                 Create an Account
               </Heading>
               <Text fontSize="sm" color="gray.500" textAlign="center">
                 Sign up to get started
               </Text>
-              <FormControl id="name">
-                <FormLabel>Full Name</FormLabel>
+              <Field.Root id="name" invalid={!!errors.name}>
+                <Field.Label>Full Name</Field.Label>
                 <Input
                   type="text"
                   placeholder="John Doe"
                   width="100%"
                   maxW="320px"
                   mx="auto"
+                  {...register("name")}
                 />
-              </FormControl>
-              <FormControl id="email">
-                <FormLabel>Email address</FormLabel>
+                <Field.ErrorText>{errors.name}</Field.ErrorText>
+              </Field.Root>
+              <Field.Root id="email" invalid={!!errors.email}>
+                <Field.Label>Email address</Field.Label>
                 <Input
                   type="email"
                   placeholder="email@example.com"
                   width="100%"
                   maxW="320px"
                   mx="auto"
+                  {...register("email")}
                 />
-              </FormControl>
-              <FormControl id="password">
-                <FormLabel>Password</FormLabel>
+                <Field.ErrorText>{errors.email}</Field.ErrorText>
+              </Field.Root>
+              <Field.Root id="password" invalid={!!errors.password}>
+                <Field.Label>Password</Field.Label>
                 <Input
                   type="password"
                   placeholder="••••••••"
                   width="100%"
                   maxW="320px"
                   mx="auto"
+                  {...register("password")}
                 />
-              </FormControl>
-              <FormControl id="confirmPassword">
-                <FormLabel>Confirm Password</FormLabel>
+                <Field.ErrorText>{errors.password}</Field.ErrorText>
+              </Field.Root>
+              <Field.Root id="confirmPassword" invalid={!!errors.confirmPassword}>
+                <Field.Label>Confirm Password</Field.Label>
                 <Input
                   type="password"
                   placeholder="••••••••"
                   width="100%"
                   maxW="320px"
                   mx="auto"
+                  {...register("confirmPassword")}
                 />
-              </FormControl>
+                <Field.ErrorText>{errors.confirmPassword}</Field.ErrorText>
+              </Field.Root>
               <Stack gap={6}>
-                <Button bg="teal.400" color="white" _hover={{ bg: "teal.500" }}>
-                  Sign Up
-                </Button>
+                <BaseButton
+                  type="submit"
+                  variant="solid"
+                  colorPalette="teal"
+                  isDisabled={isLoading}
+                >
+                  {isLoading ? "Creating Account..." : "Sign Up"}
+                </BaseButton>
                 <Text fontSize="sm" textAlign="center">
                   Already have an account?{" "}
                   <RouterLink to="/login">
