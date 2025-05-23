@@ -15,15 +15,22 @@ export interface Slide {
   
 
   export interface SlideshowFormData {
+    // Vitals fields
     name: string;
     age?: number;
     gender?: Gender;
     email?: string;
+    // Skills fields
     skills?: string[];
     description?: string;
     slides?: Slide[];
     softSkills?: string[];
     hardSkills?: string[];
+    // Education fields   
+    degree?: string;
+    fieldOfStudy?: string;
+    institution?: string;
+    graduationYear?: string;
   }
 
   export interface SlideshowState {
@@ -43,3 +50,4 @@ export interface Slide {
   
 export type StepVitalsFields = Pick<SlideshowFormData, 'name' | 'age' | 'gender' | 'email'>;
 export type StepSkillsFields = Pick<SlideshowFormData, 'skills'>;
+export type StepEducationFields = Pick<SlideshowFormData, 'degree' | 'fieldOfStudy' | 'institution' | 'graduationYear'>;

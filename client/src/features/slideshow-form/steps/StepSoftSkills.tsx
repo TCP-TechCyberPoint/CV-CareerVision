@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { SOFT_SKILLS_HIERARCHY } from "../constants/skills-hierarchy";
 import { useSoftSkills } from "../hooks/useSoftSkills";
 
-const MotionBox = motion(Box);
+const MotionBox = motion.create(Box);
 
 const StepSoftSkills = ({
   nextStep,

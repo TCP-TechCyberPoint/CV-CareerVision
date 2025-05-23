@@ -1,17 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { slideMap } from "./constants/slides-map";
-import StepIntro from "./steps/StepIntro";
-import StepVitals from "./steps/StepVitals";
-import StepHardSkills from "./steps/StepHardSkills";
-import StepSoftSkills from "./steps/StepSoftSkills";
-
+import { StepIntro, StepVitals, StepHardSkills, StepSoftSkills, StepEducation, StepEnd } from "./steps";
 
 const slideComponents = {
   intro: StepIntro,
   vitals: StepVitals,
   hardSkills: StepHardSkills,
   softSkills: StepSoftSkills,
-  end: () => <div>end Placeholder</div>,
+  education: StepEducation,
+  end: StepEnd,
+ 
 };
 
 const SlideshowForm = () => {

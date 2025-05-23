@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import { HARD_SKILLS_HIERARCHY } from "../constants/skills-hierarchy";
 import { useHardSkills } from "../hooks/useHardSkills";
 
-const MotionBox = motion(Box);
-const MotionTag = motion(Tag.Root);
+const MotionBox = motion.create(Box);
+const MotionTag = motion.create(Tag.Root);
 
 const StepHardSkills = ({
   nextStep,
