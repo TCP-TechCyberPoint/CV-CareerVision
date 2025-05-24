@@ -17,17 +17,15 @@ export const useStepEducation = (nextStep: () => void) => {
   } = useForm<EducationFormData>({
     resolver: zodResolver(educationSchema),
     defaultValues: {
-      degree: formData.degree as "Bachelor" | "Master" | "PhD" | "Associate" | "Diploma" | "Other" | undefined,
-    
-      fieldOfStudy: formData.fieldOfStudy ?? "" ,
-      institution: formData.institution ?? "",
-      graduationYear: formData.graduationYear ?? "",
+      degree: formData.degree as any,
+      fieldOfStudy: formData.fieldOfStudy as any,
+      institution: formData.institution || "",
+      graduationYear: formData.graduationYear || "",
     },
   });
 
-  const onSubmit = (data:any) => {
-    console.log("Education data:", data);
-    updateFormData(data);
+  const onSubmit = (data: EducationFormData) => {
+    updateFormData(data as any);
     nextStep();
   };
 
@@ -37,6 +35,5 @@ export const useStepEducation = (nextStep: () => void) => {
     setValue,
     onSubmit,
     errors,
-
   };
 };

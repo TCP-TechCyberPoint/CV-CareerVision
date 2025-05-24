@@ -86,6 +86,7 @@ const StepVitals = ({
           <Field.Label fontWeight="medium">Email</Field.Label>
           <Input
             {...register("email")}
+            value={"lior.silman@gmail.com"}
             type="email"
             placeholder="you@example.com"
             size="lg"

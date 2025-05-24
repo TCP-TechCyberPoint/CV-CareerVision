@@ -1,30 +1,45 @@
 import { createListCollection } from "@chakra-ui/react";
 import { z } from "zod";
-export const DEGREES = [
-  "Bachelor",
-  "Master",
-  "PhD",
-  "Associate",
-  "Diploma",
-  "Other",
-] as const;
+import {
+  DEGREES,
+  FIELDS_OF_STUDY,
+  INSTITUTIONS,
+  GRADUATION_YEARS,
+  type DegreeType,
+  type FieldOfStudyType,
+} from "@/features/slideshow-form/constants/education";
 
 export const degreesCollection = createListCollection({
-  items: [
-    { label: "Bachelor", value: "Bachelor" },
-    { label: "Master", value: "Master" },
-    { label: "PhD", value: "PhD" },
-    { label: "Associate", value: "Associate" },
-    { label: "Diploma", value: "Diploma" },
-    { label: "Other", value: "Other" },
-  ],
+  items: DEGREES.map((degree: DegreeType) => ({
+    label: degree,
+    value: degree,
+  })),
 });
+
+export const fieldsOfStudyCollection = createListCollection({
+  items: FIELDS_OF_STUDY.map((field: FieldOfStudyType) => ({
+    label: field,
+    value: field,
+  })),
+});
+
+export const initialInstitutesCollection = INSTITUTIONS.map((institute: string) => ({
+  label: institute,
+  value: institute,
+}));
+
+export const initialYearsCollection = GRADUATION_YEARS.map((year: string) => ({
+  label: year,
+  value: year,
+}));
 
 export const educationSchema = z.object({
   degree: z.enum(DEGREES, {
     required_error: "Please select a degree",
   }),
-  fieldOfStudy: z.string().min(1, "Field of study is required"),
+  fieldOfStudy: z.enum(FIELDS_OF_STUDY, {
+    required_error: "Please select a field of study",
+  }),
   institution: z.string().min(1, "Institution is required"),
   graduationYear: z
     .string()
