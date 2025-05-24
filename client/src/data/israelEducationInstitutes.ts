@@ -243,7 +243,7 @@ export const israelEducationInstitutes: EducationInstitute[] = [
     id: "40",
     name: "מכון טכנולוגי חולון – HIT",
     hebrewName: "מכון טכנולוגי חולון – HIT",
-    englishName: "Holon Institute of Technology",
+    englishName: "HIT Holon Institute of Technology",
   },
   {
     id: "41",
