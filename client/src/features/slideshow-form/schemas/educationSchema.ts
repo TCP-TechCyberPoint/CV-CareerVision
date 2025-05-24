@@ -4,31 +4,33 @@ import {
   DEGREES,
   FIELDS_OF_STUDY,
   INSTITUTIONS,
-  GRADUATION_YEARS,
-  type DegreeType,
-  type FieldOfStudyType,
+    GRADUATION_YEARS,
+  
 } from "@/features/slideshow-form/constants/education";
+import type { Degree, FieldOfStudy, Year } from "../types/education.type";
 
 export const degreesCollection = createListCollection({
-  items: DEGREES.map((degree: DegreeType) => ({
+  items: DEGREES.map((degree: Degree) => ({
     label: degree,
     value: degree,
   })),
 });
 
 export const fieldsOfStudyCollection = createListCollection({
-  items: FIELDS_OF_STUDY.map((field: FieldOfStudyType) => ({
+  items: FIELDS_OF_STUDY.map((field: FieldOfStudy) => ({
     label: field,
     value: field,
   })),
 });
 
-export const initialInstitutesCollection = INSTITUTIONS.map((institute: string) => ({
-  label: institute,
-  value: institute,
-}));
+export const initialInstitutesCollection = INSTITUTIONS.map(
+  (institute: string) => ({
+    label: institute,
+    value: institute,
+  })
+);
 
-export const initialYearsCollection = GRADUATION_YEARS.map((year: string) => ({
+export const initialYearsCollection = GRADUATION_YEARS.map((year: Year) => ({
   label: year,
   value: year,
 }));

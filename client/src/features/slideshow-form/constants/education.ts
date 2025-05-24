@@ -1,4 +1,5 @@
 import { israelEducationInstitutes } from "@/data/israelEducationInstitutes";
+import type { Year } from "../types/education.type";
 
 export const DEGREES = [
   "Bachelor",
@@ -22,15 +23,13 @@ export const FIELDS_OF_STUDY = [
 
 // Generate graduation years from 1950 to current year + 4
 const currentYear = new Date().getFullYear();
-export const GRADUATION_YEARS = Array.from(
+
+export const GRADUATION_YEARS: Partial<Year>[] = Array.from(
   { length: currentYear + 4 - 1950 + 1 },
-  (_, i) => (1950 + i).toString()
+  (_, i) => (1950 + i).toString() as Year
 ).reverse(); // Most recent years first
 
 // Extract institutions from the main data source
-export const INSTITUTIONS = israelEducationInstitutes.map((institute) => 
-  institute.englishName || institute.hebrewName
+export const INSTITUTIONS = israelEducationInstitutes.map(
+  (institute) => institute.englishName || institute.hebrewName
 );
-
-export type DegreeType = typeof DEGREES[number];
-export type FieldOfStudyType = typeof FIELDS_OF_STUDY[number]; 
