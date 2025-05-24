@@ -9,6 +9,7 @@ import {
   StepEnd,
 } from "./steps";
 import { useSlideshowFormStore } from "./store";
+import StepExperience from "./steps/StepExperience";
 
 const slideComponents = {
   intro: StepIntro,
@@ -16,6 +17,7 @@ const slideComponents = {
   hardSkills: StepHardSkills,
   softSkills: StepSoftSkills,
   education: StepEducation,
+  experience: StepExperience,
   end: StepEnd,
 };
 

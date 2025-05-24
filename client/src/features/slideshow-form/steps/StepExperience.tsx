@@ -1,0 +1,88 @@
+import { Box, Stack, Text, VStack } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import { useStepExperience } from "../hooks/useStepExperience";
+import {
+  ExperienceHeader,
+  ExperienceCard,
+  AddExperienceButton,
+  StepNavigationButtons,
+} from "@/features/slideshow-form/components";
+
+const MotionBox = motion.create(Box);
+
+interface StepExperienceProps {
+  nextStep: () => void;
+  prevStep: () => void;
+}
+
+const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
+  const {
+    register,
+    handleSubmit,
+    fields,
+    addNewExperience,
+    removeExperience,
+    setValue,
+    onSubmit,
+    errors,
+    watchedExperiences,
+  } = useStepExperience(nextStep);
+
+  return (
+    <MotionBox
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <Box
+        p={8}
+        borderRadius="xl"
+        boxShadow="xl"
+        bg="white"
+        maxW="900px"
+        mx="auto"
+      >
+        <VStack gap={8} align="stretch">
+          {/* Header */}
+          <ExperienceHeader />
+
+          {/* Dynamic Experience Fields */}
+          <Stack gap={6}>
+            {fields.map((field, index) => (
+              <ExperienceCard
+                key={field.id}
+                field={field}
+                index={index}
+                totalFields={fields.length}
+                register={register}
+                errors={errors}
+                setValue={setValue}
+                watchedExperiences={watchedExperiences}
+                onRemove={removeExperience}
+              />
+            ))}
+          </Stack>
+
+          {/* Add New Experience Button */}
+          <AddExperienceButton onAdd={addNewExperience} />
+
+          {/* Form Error */}
+          {errors.experiences && (
+            <Text color="red.500" textAlign="center" fontSize="sm">
+              {errors.experiences.message}
+            </Text>
+          )}
+
+          {/* Navigation Buttons */}
+          <StepNavigationButtons
+            onPrevStep={prevStep}
+            onNextStep={handleSubmit(onSubmit)}
+          />
+        </VStack>
+      </Box>
+    </MotionBox>
+  );
+};
+
+export default StepExperience;
