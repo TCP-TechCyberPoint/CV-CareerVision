@@ -1,6 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { slideMap } from "./constants/slides-map";
-import { StepIntro, StepVitals, StepHardSkills, StepSoftSkills, StepEducation, StepEnd } from "./steps";
+import {
+  StepIntro,
+  StepVitals,
+  StepHardSkills,
+  StepSoftSkills,
+  StepEducation,
+  StepEnd,
+} from "./steps";
+import { useSlideshowFormStore } from "./store";
 
 const slideComponents = {
   intro: StepIntro,
@@ -9,7 +17,6 @@ const slideComponents = {
   softSkills: StepSoftSkills,
   education: StepEducation,
   end: StepEnd,
- 
 };
 
 const SlideshowForm = () => {
@@ -18,6 +25,7 @@ const SlideshowForm = () => {
 
   const currentIndex = slideMap[step];
   const entries = Object.entries(slideMap);
+  const { formData } = useSlideshowFormStore();
 
   const nextStep = () => {
     const nextEntry = entries.find(([, i]) => i === currentIndex + 1);
@@ -30,6 +38,7 @@ const SlideshowForm = () => {
   };
 
   const Component = slideComponents[step] || (() => <div>Step not found</div>);
+  console.log("formData", formData);
 
   return <Component nextStep={nextStep} prevStep={prevStep} />;
 };

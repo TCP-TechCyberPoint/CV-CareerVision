@@ -4,7 +4,7 @@ import { useColorModeValue } from "@chakra-ui/system";
 import { motion } from "framer-motion";
 import { HARD_SKILLS_HIERARCHY } from "../constants/skills-hierarchy";
 import { useHardSkills } from "../hooks/useHardSkills";
-
+import type { HardSkillCategory } from "../types/skills.type";
 const MotionBox = motion.create(Box);
 const MotionTag = motion.create(Tag.Root);
 
@@ -75,10 +75,10 @@ const StepHardSkills = ({
               <WrapItem key={skill}>
                 <MotionTag
                   size="lg"
-                  variant={expandedSkills.includes(skill) ? "outline" : "solid"}
-                  colorPalette={getColorScheme(skill)}
+                  variant={expandedSkills.includes(skill as HardSkillCategory) ? "outline" : "solid"}
+                  colorPalette={getColorScheme(skill as HardSkillCategory)}
                   cursor="pointer"
-                  onClick={() => handleSkillClick(skill)}
+                  onClick={() => handleSkillClick(skill as HardSkillCategory)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ duration: 0.2 }}

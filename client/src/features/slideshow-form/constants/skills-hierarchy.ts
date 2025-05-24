@@ -1,4 +1,6 @@
-export const SOFT_SKILLS_HIERARCHY = {
+import type { SoftSkillsHierarchy, HardSkillsHierarchy } from "../types/skills.type";
+
+export const SOFT_SKILLS_HIERARCHY: SoftSkillsHierarchy = {
   Communication: {
     skills: ["Written", "Verbal", "Feedback"],
     color: "cyan",
@@ -21,7 +23,7 @@ export const SOFT_SKILLS_HIERARCHY = {
   },
 } as const;
 
-export const HARD_SKILLS_HIERARCHY = {
+export const HARD_SKILLS_HIERARCHY: HardSkillsHierarchy = {
   Fullstack: {
     skills: ["React.js", "Node.js", "MongoDB", "Express", "TypeScript"],
     color: "purple",

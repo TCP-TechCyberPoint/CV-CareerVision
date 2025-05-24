@@ -1,9 +1,9 @@
-import { useSlideshowFormStore } from './store';
-import { Gender } from './types';
+import { useSlideshowFormStore } from "./store";
+import { Gender } from "../types/vitals.type";
 
 // Individual field selectors
 export const useName = () =>
-  useSlideshowFormStore((state) => state.formData.name ?? '');
+  useSlideshowFormStore((state) => state.formData.name ?? "");
 
 export const useAge = () =>
   useSlideshowFormStore((state) => state.formData.age ?? 0);
@@ -15,15 +15,15 @@ export const useSlides = () =>
   useSlideshowFormStore((state) => state.formData.slides ?? []);
 
 export const useDescription = () =>
-  useSlideshowFormStore((state) => state.formData.description ?? '');
+  useSlideshowFormStore((state) => state.formData.description ?? "");
 
 // Step selectors (optional groups)
 export const useStepVitalsFields = () =>
   useSlideshowFormStore((state) => ({
-    name: state.formData.name ?? '',
+    name: state.formData.name ?? "",
     age: state.formData.age ?? 0,
     gender: state.formData.gender ?? Gender.Male,
-    email: state.formData.email ?? '',
+    email: state.formData.email ?? "",
   }));
 
 export const useStepSkillsFields = () =>
@@ -33,12 +33,11 @@ export const useStepSkillsFields = () =>
 
 export const useStepEducationFields = () =>
   useSlideshowFormStore((state) => ({
-    degree: state.formData.degree ?? '',
-    fieldOfStudy: state.formData.fieldOfStudy ?? '',
-    institution: state.formData.institution ?? '',
-    graduationYear: state.formData.graduationYear ?? '',
+    degree: state.formData.degree ?? "",
+    fieldOfStudy: state.formData.fieldOfStudy ?? "",
+    institution: state.formData.institution ?? "",
+    graduationYear: state.formData.graduationYear ?? "",
   }));
-
 
 // Full form data
 export const useFormPreview = () =>

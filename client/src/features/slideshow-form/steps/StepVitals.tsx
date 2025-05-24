@@ -2,7 +2,7 @@ import { Box, Input, RadioGroup, VStack } from "@chakra-ui/react";
 import { HStack, Field } from "@chakra-ui/react";
 import BaseButton from "@/components/ui/BaseButton";
 import { useStepVitals } from "../hooks/useStepVitals";
-import { Gender } from "../store/types";
+import { Gender } from "../types/vitals.type";
 
 const StepVitals = ({
   nextStep,

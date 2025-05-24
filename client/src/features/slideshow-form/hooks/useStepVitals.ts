@@ -23,7 +23,6 @@ export const useStepVitals = (nextStep: () => void) => {
   });
 
   const onSubmit = (data: VitalsFormData) => {
-    console.log(data);
     updateFormData(data);
     nextStep();
   };
