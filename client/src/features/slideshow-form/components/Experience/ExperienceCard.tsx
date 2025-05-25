@@ -7,19 +7,18 @@ import type {
   UseFormSetValue,
 } from "react-hook-form";
 import type { FieldArrayWithId } from "react-hook-form";
-import type { ExperienceFormData } from "../../schemas/experienceSchema";
-import type { Experience } from "../../types/experience.type";
+import type { Experience } from "../../store/types";
 import ExperienceFormFields from "./ExperienceFormFields";
 
 const MotionBox = motion.create("div");
 
 interface ExperienceCardProps {
-  field: FieldArrayWithId<ExperienceFormData, "experiences", "id">;
+  field: FieldArrayWithId<{ experiences: Experience[] }, "experiences", "id">;
   index: number;
   totalFields: number;
-  register: UseFormRegister<ExperienceFormData>;
-  errors: FieldErrors<ExperienceFormData>;
-  setValue: UseFormSetValue<ExperienceFormData>;
+  register: UseFormRegister<{ experiences: Experience[] }>;
+  errors: FieldErrors<{ experiences: Experience[] }>;
+  setValue: UseFormSetValue<{ experiences: Experience[] }>;
   watchedExperiences: Experience[];
   onRemove: (index: number) => void;
 }

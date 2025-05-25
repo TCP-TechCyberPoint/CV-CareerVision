@@ -7,15 +7,18 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Field } from "@chakra-ui/react";
-import type { UseFormRegister, FieldErrors, UseFormSetValue } from "react-hook-form";
-import type { ExperienceFormData } from "../../schemas/experienceSchema";
-import type { Experience } from "../../types/experience.type";
+import type {
+  UseFormRegister,
+  FieldErrors,
+  UseFormSetValue,
+} from "react-hook-form";
+import type { Experience } from "../../store/types";
 
 interface ExperienceFormFieldsProps {
   index: number;
-  register: UseFormRegister<ExperienceFormData>;
-  errors: FieldErrors<ExperienceFormData>;
-  setValue: UseFormSetValue<ExperienceFormData>;
+  register: UseFormRegister<{ experiences: Experience[] }>;
+  errors: FieldErrors<{ experiences: Experience[] }>;
+  setValue: UseFormSetValue<{ experiences: Experience[] }>;
   watchedExperiences: Experience[];
 }
 
@@ -26,14 +29,13 @@ const ExperienceFormFields = ({
   setValue,
   watchedExperiences,
 }: ExperienceFormFieldsProps) => {
+  const isCurrentJob = watchedExperiences?.[index]?.isCurrentJob;
+
   return (
     <VStack gap={4} align="stretch">
       {/* Job Title and Company */}
       <HStack gap={4}>
-        <Field.Root
-          invalid={!!errors.experiences?.[index]?.jobTitle}
-          flex={1}
-        >
+        <Field.Root invalid={!!errors.experiences?.[index]?.jobTitle} flex={1}>
           <Field.Label fontWeight="medium" color="gray.700">
             Job Title
           </Field.Label>
@@ -53,10 +55,7 @@ const ExperienceFormFields = ({
           </Field.ErrorText>
         </Field.Root>
 
-        <Field.Root
-          invalid={!!errors.experiences?.[index]?.company}
-          flex={1}
-        >
+        <Field.Root invalid={!!errors.experiences?.[index]?.company} flex={1}>
           <Field.Label fontWeight="medium" color="gray.700">
             Company
           </Field.Label>
@@ -79,10 +78,7 @@ const ExperienceFormFields = ({
 
       {/* Date Pickers */}
       <HStack gap={4}>
-        <Field.Root
-          invalid={!!errors.experiences?.[index]?.startDate}
-          flex={1}
-        >
+        <Field.Root invalid={!!errors.experiences?.[index]?.startDate} flex={1}>
           <Field.Label fontWeight="medium" color="gray.700">
             Start Date
           </Field.Label>
@@ -102,10 +98,7 @@ const ExperienceFormFields = ({
           </Field.ErrorText>
         </Field.Root>
 
-        <Field.Root
-          invalid={!!errors.experiences?.[index]?.endDate}
-          flex={1}
-        >
+        <Field.Root invalid={!!errors.experiences?.[index]?.endDate} flex={1}>
           <Field.Label fontWeight="medium" color="gray.700">
             End Date
           </Field.Label>
@@ -115,7 +108,7 @@ const ExperienceFormFields = ({
             size="lg"
             borderRadius="md"
             bg="white"
-            disabled={watchedExperiences?.[index]?.isCurrentJob}
+            disabled={isCurrentJob === true || isCurrentJob === "on"}
             _focus={{
               borderColor: "purple.400",
               boxShadow: "0 0 0 1px purple.400",
@@ -133,16 +126,16 @@ const ExperienceFormFields = ({
 
       {/* Current Job Checkbox */}
       <Checkbox.Root
-        {...register(`experiences.${index}.isCurrentJob`)}
+        {...register(`experiences.${index}.isCurrentJob`, {
+          setValueAs: (v) => v === "on" || v === true,
+        })}
         colorPalette="purple"
         size="lg"
         onCheckedChange={(e) => {
-          setValue(
-            `experiences.${index}.isCurrentJob`,
-            !!e.checked
-          );
-          if (e.checked) {
-            setValue(`experiences.${index}.endDate`, "");
+          const isChecked = Boolean(e.checked);
+          setValue(`experiences.${index}.isCurrentJob`, isChecked);
+          if (isChecked) {
+            setValue(`experiences.${index}.endDate`, undefined);
           }
         }}
       >
@@ -180,4 +173,4 @@ const ExperienceFormFields = ({
   );
 };
 
-export default ExperienceFormFields; 
+export default ExperienceFormFields;

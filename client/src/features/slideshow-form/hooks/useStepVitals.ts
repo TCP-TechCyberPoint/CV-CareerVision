@@ -15,15 +15,15 @@ export const useStepVitals = (nextStep: () => void) => {
   } = useForm<VitalsFormData>({
     resolver: zodResolver(vitalsSchema),
     defaultValues: {
-      name: formData.name ?? "",
-      age: formData.age ?? 0,
-      gender: formData.gender ?? Gender.Male,
-      email: formData.email ?? "",
+      name: formData.vitals?.name ?? "",
+      age: formData.vitals?.age ?? 0,
+      gender: formData.vitals?.gender ?? Gender.Male,
+      email: formData.vitals?.email ?? "",
     },
   });
 
   const onSubmit = (data: VitalsFormData) => {
-    updateFormData(data);
+    updateFormData({ vitals: data });
     nextStep();
   };
 

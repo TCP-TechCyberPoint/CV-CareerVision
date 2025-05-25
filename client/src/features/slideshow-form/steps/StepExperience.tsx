@@ -7,7 +7,7 @@ import {
   AddExperienceButton,
   StepNavigationButtons,
 } from "@/features/slideshow-form/components";
-
+import { DevTool } from "@hookform/devtools";
 const MotionBox = motion.create(Box);
 
 interface StepExperienceProps {
@@ -26,6 +26,7 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
     onSubmit,
     errors,
     watchedExperiences,
+    control,
   } = useStepExperience(nextStep);
 
   return (
@@ -81,6 +82,7 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
           />
         </VStack>
       </Box>
+      {import.meta.env.DEV && <DevTool control={control}   />}
     </MotionBox>
   );
 };
