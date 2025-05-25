@@ -51,7 +51,6 @@ export const useStepExperience = (nextStep: () => void) => {
   };
 
   const removeExperience = (index: number) => {
-    console.log("clicked");
     if (fields.length > 1) {
       remove(index);
     }

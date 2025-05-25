@@ -8,8 +8,8 @@ import {
 } from "@chakra-ui/react";
 import { Field } from "@chakra-ui/react";
 import type { UseFormRegister, FieldErrors, UseFormSetValue } from "react-hook-form";
-import type { ExperienceFormData } from "../schemas/experienceSchema";
-import type { Experience } from "../types/experience.type";
+import type { ExperienceFormData } from "../../schemas/experienceSchema";
+import type { Experience } from "../../types/experience.type";
 
 interface ExperienceFormFieldsProps {
   index: number;

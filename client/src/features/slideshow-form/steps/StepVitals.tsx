@@ -3,6 +3,7 @@ import { HStack, Field } from "@chakra-ui/react";
 import BaseButton from "@/components/ui/BaseButton";
 import { useStepVitals } from "../hooks/useStepVitals";
 import { Gender } from "../types/vitals.type";
+import StepNavigationButtons from "../components/StepNavigationButtons";
 
 const StepVitals = ({
   nextStep,
@@ -99,26 +100,10 @@ const StepVitals = ({
           <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
         </Field.Root>
 
-        <Box display="flex" justifyContent="space-between" pt={6}>
-          <BaseButton
-            onClick={prevStep}
-            colorScheme="red"
-            variant="subtle"
-            size="lg"
-            minW="120px"
-          >
-            Back
-          </BaseButton>
-          <BaseButton
-            onClick={handleSubmit(onSubmit)}
-            size="lg"
-            variant="subtle"
-            colorScheme="green"
-            minW="120px"
-          >
-            Next
-          </BaseButton>
-        </Box>
+        <StepNavigationButtons
+          onPrevStep={prevStep}
+          onNextStep={handleSubmit(onSubmit)}
+        />
       </VStack>
     </Box>
   );

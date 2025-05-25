@@ -17,6 +17,7 @@ import {
 import FormSelectField from "../components/FormSelectField";
 import FormComboboxField from "../components/FormComboboxField";
 import type { Degree, FieldOfStudy, Year } from "../types/education.type";
+import StepNavigationButtons from "../components/StepNavigationButtons";
 
 const MotionBox = motion.create(Box);
 
@@ -111,26 +112,10 @@ const StepEducation = ({ nextStep, prevStep }: StepEducationProps) => {
           </Box>
         </Stack>
 
-        <Box display="flex" justifyContent="space-between" mt={8} gap={4}>
-          <BaseButton
-            onClick={prevStep}
-            colorScheme="red"
-            variant="outline"
-            size="lg"
-            minW="140px"
-          >
-            Back
-          </BaseButton>
-          <BaseButton
-            onClick={handleSubmit(onSubmit)}
-            size="lg"
-            variant="subtle"
-            colorScheme="green"
-            minW="120px"
-          >
-            Next
-          </BaseButton>
-        </Box>
+        <StepNavigationButtons
+          onPrevStep={prevStep}
+          onNextStep={handleSubmit(onSubmit)}
+        />
       </Box>
     </MotionBox>
   );

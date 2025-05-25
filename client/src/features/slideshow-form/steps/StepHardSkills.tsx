@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { HARD_SKILLS_HIERARCHY } from "../constants/skills-hierarchy";
 import { useHardSkills } from "../hooks/useHardSkills";
 import type { HardSkillCategory } from "../types/skills.type";
+import StepNavigationButtons from "../components/StepNavigationButtons";
 const MotionBox = motion.create(Box);
 const MotionTag = motion.create(Tag.Root);
 
@@ -177,25 +178,10 @@ const StepHardSkills = ({
         </Box>
       </VStack>
 
-      <Flex justify="space-between" pt={8} gap={4}>
-        <BaseButton
-          onClick={prevStep}
-          colorScheme="red"
-          variant="outline"
-          size="lg"
-          minW="140px"
-        >
-          Back
-        </BaseButton>
-        <BaseButton
-          onClick={nextStep}
-          size="lg"
-          colorScheme="blue"
-          minW="140px"
-        >
-          Next
-        </BaseButton>
-      </Flex>
+      <StepNavigationButtons
+        onPrevStep={prevStep}
+        onNextStep={nextStep}
+      />
     </MotionBox>
   );
 };

@@ -5,6 +5,8 @@ import { ScaleFade, Fade } from "@chakra-ui/transition";
 import { motion } from "framer-motion";
 import { SOFT_SKILLS_HIERARCHY } from "../constants/skills-hierarchy";
 import { useSoftSkills } from "../hooks/useSoftSkills";
+import StepNavigationButtons from "../components/StepNavigationButtons";
+import type { SoftSkillCategory } from "../types/soft-skills.type";
 
 const MotionBox = motion.create(Box);
 
@@ -68,10 +70,10 @@ const StepSoftSkills = ({
                 <WrapItem key={skill}>
                   <Tag.Root
                     size="lg"
-                    variant={expandedSkills.includes(skill) ? "outline" : "solid"}
-                    colorPalette={getColorScheme(skill)}
+                    variant={expandedSkills.includes(skill as SoftSkillCategory) ? "outline" : "solid"}
+                    colorPalette={getColorScheme(skill as SoftSkillCategory)}
                     cursor="pointer"
-                    onClick={() => handleSkillClick(skill)}
+                    onClick={() => handleSkillClick(skill as SoftSkillCategory)}
                     transition="all 0.3s"
                     _hover={{
                       transform: "translateY(-3px)",
@@ -161,35 +163,10 @@ const StepSoftSkills = ({
         </Box>
       </VStack>
 
-      <Flex justify="space-between" pt={8} gap={4}>
-        <BaseButton
-          onClick={prevStep}
-          colorScheme="red"
-          variant="outline"
-          size="lg"
-          minW="140px"
-          _hover={{
-            transform: "translateX(-4px)",
-            boxShadow: "md",
-          }}
-          transition="all 0.2s"
-        >
-          Back
-        </BaseButton>
-        <BaseButton
-          onClick={nextStep}
-          size="lg"
-          colorScheme="blue"
-          minW="140px"
-          _hover={{
-            transform: "translateX(4px)",
-            boxShadow: "md",
-          }}
-          transition="all 0.2s"
-        >
-          Next
-        </BaseButton>
-      </Flex>
+      <StepNavigationButtons
+        onPrevStep={prevStep}
+        onNextStep={nextStep}
+      />
     </MotionBox>
   );
 };
