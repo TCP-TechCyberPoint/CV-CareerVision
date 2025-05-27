@@ -7,6 +7,9 @@ export { default as AddExperienceButton } from "./Experience/AddExperienceButton
 // Generic step components
 export { default as StepNavigationButtons } from "./StepNavigationButtons";
 
+// Skills-related components
+export * from "./Skills";
+
 // Form-related components (existing)
 export { default as FormComboboxField } from "./FormComboboxField";
 export { default as FormSelectField } from "./FormSelectField";

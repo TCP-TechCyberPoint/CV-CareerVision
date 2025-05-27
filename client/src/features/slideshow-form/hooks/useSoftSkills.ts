@@ -24,11 +24,11 @@ export const useSoftSkills = () => {
       if (!selectedSkills.includes(individualSkill)) {
         const newSelectedSkills = [...selectedSkills, individualSkill];
         setSelectedSkills(newSelectedSkills);
-        updateFormData({ softSkills: { slides: newSelectedSkills } });
+        updateFormData({ softSkills: { skills: newSelectedSkills } });
       } else {
         const newSelectedSkills = selectedSkills.filter((s) => s !== individualSkill);
         setSelectedSkills(newSelectedSkills);
-        updateFormData({ softSkills: { slides: newSelectedSkills } });
+        updateFormData({ softSkills: { skills: newSelectedSkills } });
       }
     }
   };
@@ -36,7 +36,7 @@ export const useSoftSkills = () => {
   const handleRemoveSkill = (skillToRemove: SoftSkill) => {
     const newSelectedSkills = selectedSkills.filter((skill) => skill !== skillToRemove);
     setSelectedSkills(newSelectedSkills);
-    updateFormData({ softSkills: { slides: newSelectedSkills } });
+    updateFormData({ softSkills: { skills: newSelectedSkills } });
   };
 
   const getNextSkills = (): SoftSkill[] => {
