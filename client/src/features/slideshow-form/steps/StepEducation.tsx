@@ -6,7 +6,6 @@ import {
   useFilter,
 } from "@chakra-ui/react";
 import { useStepEducation } from "../hooks/useStepEducation";
-import BaseButton from "@/components/ui/BaseButton";
 import { motion } from "framer-motion";
 import {
   degreesCollection,
@@ -32,15 +31,17 @@ const StepEducation = ({ nextStep, prevStep }: StepEducationProps) => {
 
   const { contains } = useFilter({ sensitivity: "base" });
 
-  const { collection: institutesCollection, filter: filterInstitutes } = useListCollection({
-    initialItems: initialInstitutesCollection,
-    filter: contains,
-  });
+  const { collection: institutesCollection, filter: filterInstitutes } =
+    useListCollection({
+      initialItems: initialInstitutesCollection,
+      filter: contains,
+    });
 
-  const { collection: yearsCollection, filter: filterYears } = useListCollection({
-    initialItems: initialYearsCollection,
-    filter: contains,
-  });
+  const { collection: yearsCollection, filter: filterYears } =
+    useListCollection({
+      initialItems: initialYearsCollection,
+      filter: contains,
+    });
 
   return (
     <MotionBox
@@ -85,7 +86,9 @@ const StepEducation = ({ nextStep, prevStep }: StepEducationProps) => {
               error={errors.fieldOfStudy?.message}
               invalid={!!errors.fieldOfStudy}
               value={currentValues.fieldOfStudy}
-              onValueChange={(value) => setValue("fieldOfStudy", value as FieldOfStudy)}
+              onValueChange={(value) =>
+                setValue("fieldOfStudy", value as FieldOfStudy)
+              }
             />
 
             <FormComboboxField
@@ -96,7 +99,9 @@ const StepEducation = ({ nextStep, prevStep }: StepEducationProps) => {
               invalid={!!errors.institution}
               value={currentValues.institution}
               onInputValueChange={filterInstitutes}
-              onValueChange={(value) => setValue("institution", value as string)}
+              onValueChange={(value) =>
+                setValue("institution", value as string)
+              }
             />
 
             <FormComboboxField
@@ -107,7 +112,9 @@ const StepEducation = ({ nextStep, prevStep }: StepEducationProps) => {
               invalid={!!errors.graduationYear}
               value={currentValues.graduationYear}
               onInputValueChange={filterYears}
-              onValueChange={(value) => setValue("graduationYear", value as Year)}
+              onValueChange={(value) =>
+                setValue("graduationYear", value as Year)
+              }
             />
           </Box>
         </Stack>

@@ -19,6 +19,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@eslint/js": "^9.27.0",
+    "@hookform/devtools": "^4.4.0",
     "@hookform/resolvers": "^5.0.1",
     "framer-motion": "^12.12.1",
     "globals": "^16.1.0",

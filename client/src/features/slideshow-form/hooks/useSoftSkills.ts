@@ -6,7 +6,7 @@ import type { SkillColor } from "../types/skills.type";
 
 export const useSoftSkills = () => {
   const { formData, updateFormData } = useSlideshowFormStore();
-  const [selectedSkills, setSelectedSkills] = useState<SoftSkill[]>((formData.softSkills as SoftSkill[]) || []);
+  const [selectedSkills, setSelectedSkills] = useState<SoftSkill[]>(formData.softSkills?.slides || []);
   const [expandedSkills, setExpandedSkills] = useState<SoftSkillCategory[]>([]);
 
   const handleSkillClick = (skill: SoftSkill | SoftSkillCategory) => {
@@ -24,11 +24,11 @@ export const useSoftSkills = () => {
       if (!selectedSkills.includes(individualSkill)) {
         const newSelectedSkills = [...selectedSkills, individualSkill];
         setSelectedSkills(newSelectedSkills);
-        updateFormData({ softSkills: newSelectedSkills });
+        updateFormData({ softSkills: { slides: newSelectedSkills } });
       } else {
         const newSelectedSkills = selectedSkills.filter((s) => s !== individualSkill);
         setSelectedSkills(newSelectedSkills);
-        updateFormData({ softSkills: newSelectedSkills });
+        updateFormData({ softSkills: { slides: newSelectedSkills } });
       }
     }
   };
@@ -36,7 +36,7 @@ export const useSoftSkills = () => {
   const handleRemoveSkill = (skillToRemove: SoftSkill) => {
     const newSelectedSkills = selectedSkills.filter((skill) => skill !== skillToRemove);
     setSelectedSkills(newSelectedSkills);
-    updateFormData({ softSkills: newSelectedSkills });
+    updateFormData({ softSkills: { slides: newSelectedSkills } });
   };
 
   const getNextSkills = (): SoftSkill[] => {

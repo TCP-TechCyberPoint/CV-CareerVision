@@ -1,4 +1,3 @@
-import BaseButton from "@/components/ui/BaseButton";
 import { Box, Heading, TagLabel, Text, VStack, Wrap, WrapItem, Tag, Flex, Badge } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
 import { ScaleFade, Fade } from "@chakra-ui/transition";
@@ -127,7 +126,7 @@ const StepSoftSkills = ({
             <ScaleFade initialScale={0.95} in={true}>
               <Box mt={10} p={6} bg={bgColor} borderRadius="xl" boxShadow="md">
                 <Flex justify="space-between" align="center" mb={6}>
-                  <Heading size="sm" color="gray.600">
+                  <Heading size="xl" color="gray.600">
                     Your Selected Skills
                   </Heading>
                   <Badge colorScheme="blue" fontSize="sm" px={3} py={1} borderRadius="full">

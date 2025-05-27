@@ -3,40 +3,40 @@ import { Gender } from "../types/vitals.type";
 
 // Individual field selectors
 export const useName = () =>
-  useSlideshowFormStore((state) => state.formData.name ?? "");
+  useSlideshowFormStore((state) => state.formData.vitals?.name ?? "");
 
 export const useAge = () =>
-  useSlideshowFormStore((state) => state.formData.age ?? 0);
+  useSlideshowFormStore((state) => state.formData.vitals?.age ?? 0);
 
 export const useSkills = () =>
-  useSlideshowFormStore((state) => state.formData.skills ?? []);
+  useSlideshowFormStore((state) => state.formData.hardSkills?.skills ?? []);
 
 export const useSlides = () =>
-  useSlideshowFormStore((state) => state.formData.slides ?? []);
+  useSlideshowFormStore((state) => state.formData.softSkills?.slides ?? []);
 
 export const useDescription = () =>
-  useSlideshowFormStore((state) => state.formData.description ?? "");
+  useSlideshowFormStore((state) => state.formData.softSkills?.description ?? "");
 
 // Step selectors (optional groups)
 export const useStepVitalsFields = () =>
   useSlideshowFormStore((state) => ({
-    name: state.formData.name ?? "",
-    age: state.formData.age ?? 0,
-    gender: state.formData.gender ?? Gender.Male,
-    email: state.formData.email ?? "",
+    name: state.formData.vitals?.name ?? "",
+    age: state.formData.vitals?.age ?? 0,
+    gender: state.formData.vitals?.gender ?? Gender.Male,
+    email: state.formData.vitals?.email ?? "",
   }));
 
 export const useStepSkillsFields = () =>
   useSlideshowFormStore((state) => ({
-    skills: state.formData.skills ?? [],
+    skills: state.formData.hardSkills?.skills ?? [],
   }));
 
 export const useStepEducationFields = () =>
   useSlideshowFormStore((state) => ({
-    degree: state.formData.degree ?? "",
-    fieldOfStudy: state.formData.fieldOfStudy ?? "",
-    institution: state.formData.institution ?? "",
-    graduationYear: state.formData.graduationYear ?? "",
+    degree: state.formData.education?.degree ?? "",
+    fieldOfStudy: state.formData.education?.fieldOfStudy ?? "",
+    institution: state.formData.education?.institution ?? "",
+    graduationYear: state.formData.education?.graduationYear ?? "",
   }));
 
 // Full form data

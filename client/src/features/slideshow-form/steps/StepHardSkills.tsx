@@ -1,4 +1,3 @@
-import BaseButton from "@/components/ui/BaseButton";
 import { Box, Heading, TagLabel, Text, VStack, Wrap, WrapItem, Tag, Flex, Badge } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
 import { motion } from "framer-motion";

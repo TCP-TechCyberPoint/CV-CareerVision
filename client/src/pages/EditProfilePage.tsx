@@ -1,6 +1,5 @@
 import { Box, Container, Heading,  Input, Text } from '@chakra-ui/react';
 import { FormControl, FormLabel } from '@chakra-ui/form-control';
-import Navbar from '@/components/layout/Navbar';
 import BaseButton from '@/components/ui/BaseButton';
 
 const EditProfilePage: React.FC = () => {

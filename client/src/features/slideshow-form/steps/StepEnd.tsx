@@ -1,17 +1,17 @@
 import BaseButton from "@/components/ui/BaseButton";
 import { Box, Text } from "@chakra-ui/react";
 
-interface StepEndProps {  
-    nextStep: () => void;
-    prevStep: () => void;
+interface StepEndProps {
+  nextStep: () => void;
+  prevStep: () => void;
 }
 
-const StepEnd = ({ nextStep, prevStep }: StepEndProps) => {
-    // const { onSubmit } = useStepEnd(nextStep);
+const StepEnd = ({  prevStep }: StepEndProps) => {
+  // const { onSubmit } = useStepEnd(nextStep);
   return (
     <Box>
-        <Text>End</Text>
-        <BaseButton onClick={prevStep}>Back</BaseButton>
+      <Text>End</Text>
+      <BaseButton onClick={prevStep}>Back</BaseButton>
     </Box>
   );
 };

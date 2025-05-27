@@ -35,8 +35,6 @@ export interface Experience {
   description?: string;
 }
 
-
-
 export interface SlideshowFormData {
   vitals?: Vitals;
   education?: Education;

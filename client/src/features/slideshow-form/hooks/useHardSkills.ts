@@ -6,7 +6,7 @@ import type { SkillColor } from "../types/skills.type";
 
 export const useHardSkills = () => {
     const { formData, updateFormData } = useSlideshowFormStore();
-  const [selectedSkills, setSelectedSkills] = useState<HardSkill[]>(formData.hardSkills as HardSkill[] || []);    
+  const [selectedSkills, setSelectedSkills] = useState<HardSkill[]>(formData.hardSkills?.skills || []);    
   const [expandedSkills, setExpandedSkills] = useState<HardSkillCategory[]>([]);
 
   const handleSkillClick = (skill: HardSkill | HardSkillCategory) => {
@@ -24,11 +24,11 @@ export const useHardSkills = () => {
       if (!selectedSkills.includes(individualSkill)) {
         const newSelectedSkills = [...selectedSkills, individualSkill];
         setSelectedSkills(newSelectedSkills);
-        updateFormData({ hardSkills: newSelectedSkills });
+        updateFormData({ hardSkills: { skills: newSelectedSkills } });
       } else {
         const newSelectedSkills = selectedSkills.filter((s) => s !== individualSkill);
         setSelectedSkills(newSelectedSkills);
-        updateFormData({ hardSkills: newSelectedSkills });
+        updateFormData({ hardSkills: { skills: newSelectedSkills } });
       }
     }
   };
@@ -36,7 +36,7 @@ export const useHardSkills = () => {
   const handleRemoveSkill = (skillToRemove: HardSkill) => {
     const newSelectedSkills = selectedSkills.filter((skill) => skill !== skillToRemove);
     setSelectedSkills(newSelectedSkills);
-    updateFormData({ hardSkills: newSelectedSkills });
+    updateFormData({ hardSkills: { skills: newSelectedSkills } });
   };
 
   const getNextSkills = (): HardSkill[] => {
