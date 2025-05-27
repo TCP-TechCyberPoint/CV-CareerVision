@@ -3,6 +3,7 @@ import type { SoftSkill } from "../types/soft-skills.type";
 import type { Gender } from "../types/vitals.type";
 import type { Degree, FieldOfStudy, Year } from "../types/education.type";
 import type { Project } from "../types/projects.type";
+import type { Preferences } from "../types/preferences.type";
 
 export interface Vitals {
   name: string;
@@ -43,4 +44,5 @@ export interface SlideshowFormData {
   projects?: Project[];
   hardSkills?: HardSkills;
   softSkills?: SoftSkills;
+  preferences?: Preferences;
 }
