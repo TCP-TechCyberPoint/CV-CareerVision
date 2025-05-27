@@ -13,8 +13,8 @@ import {
   initialInstitutesCollection,
   initialYearsCollection,
 } from "../schemas/educationSchema";
-import FormSelectField from "../components/FormSelectField";
-import FormComboboxField from "../components/FormComboboxField";
+
+import { FormSelectField, FormComboboxField } from "../components";
 import type { Degree, FieldOfStudy, Year } from "../types/education.type";
 import StepNavigationButtons from "../components/StepNavigationButtons";
 

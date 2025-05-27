@@ -17,5 +17,5 @@ export { default as StepNavigationButtons } from "./StepNavigationButtons";
 export * from "./Skills";
 
 // Form-related components (existing)
-export { default as FormComboboxField } from "./FormComboboxField";
-export { default as FormSelectField } from "./FormSelectField";
+export { default as FormComboboxField } from "./Education/FormComboboxField";
+export { default as FormSelectField } from "./Education/FormSelectField";

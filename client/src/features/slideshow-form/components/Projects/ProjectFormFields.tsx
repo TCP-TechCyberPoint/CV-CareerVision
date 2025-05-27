@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { Field } from "@chakra-ui/react";
 import { useState } from "react";
-import { FiPlus, FiX } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 import type {
   UseFormRegister,
   FieldErrors,
