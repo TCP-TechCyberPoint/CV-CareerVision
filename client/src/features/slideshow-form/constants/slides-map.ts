@@ -5,7 +5,8 @@ export const slideMap = {
   softSkills: 3,
   education: 4,
   experience: 5,
-  end: 6,
+  projects: 6,
+  end: 7,
 } as const;
 
 export const slideKeys = Object.keys(slideMap) as Array<keyof typeof slideMap>;

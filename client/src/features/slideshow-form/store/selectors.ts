@@ -39,6 +39,11 @@ export const useStepEducationFields = () =>
     graduationYear: state.formData.education?.graduationYear ?? "",
   }));
 
+export const useStepProjectsFields = () =>
+  useSlideshowFormStore((state) => ({
+    projects: state.formData.projects ?? [],
+  }));
+
 // Full form data
 export const useFormPreview = () =>
   useSlideshowFormStore((state) => state.formData);

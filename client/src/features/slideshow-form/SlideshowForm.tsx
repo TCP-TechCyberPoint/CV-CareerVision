@@ -6,6 +6,7 @@ import {
   StepHardSkills,
   StepSoftSkills,
   StepEducation,
+  StepProjects,
   StepEnd,
 } from "./steps";
 import { useSlideshowFormStore } from "./store";
@@ -18,6 +19,7 @@ const slideComponents = {
   softSkills: StepSoftSkills,
   education: StepEducation,
   experience: StepExperience,
+  projects: StepProjects,
   end: StepEnd,
 };
 
