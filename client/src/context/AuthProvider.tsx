@@ -1,15 +1,7 @@
-import React, { createContext, useState } from "react";
+import React, { useState } from "react";
+import { AuthContext } from "./AuthContext";
 
-interface AuthContextType {
-  isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  signup: (email: string, password: string, name: string) => Promise<void>;
-}
-
-export const AuthContext = createContext<AuthContextType | null>(null);
-
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = async (email: string, password: string) => {
@@ -35,4 +27,4 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       {children}
     </AuthContext.Provider>
   );
-};
+}; 

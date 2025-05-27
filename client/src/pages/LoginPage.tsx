@@ -1,44 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
-  Button,
   Container,
+  Field,
   Flex,
   Heading,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { toaster } from "@/components/ui/toaster"
-import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { useColorModeValue } from "@chakra-ui/color-mode";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { Link as RouterLink } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useLoginForm } from "../hooks/useLoginForm";
+import type { LoginFormData } from "../hooks/useLoginForm";
 import loginBg from "../assets/images/login-background.png";
+import BaseButton from "@/components/ui/BaseButton";
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { login } = useAuth();
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await login(email, password);
-      navigate("/");
-    } catch (error: Error | unknown) {
-      if (error instanceof Error) {
-        toaster.create({
-          title: "Error",
-          description: `Failed to login. Please try again. ${error.message}`,
-          type: "error",
-          duration: 3000,
-          closable: true,
-        });
-      }
-    }
-  };
+  const { register, handleSubmit: hookFormSubmit } = useForm<LoginFormData>();
+  const { handleSubmit, errors, isLoading } = useLoginForm();
 
   return (
     <Flex
@@ -65,46 +46,62 @@ const LoginPage: React.FC = () => {
             rounded="lg"
             shadow="lg"
           >
-            <Stack gap={4} as="form" onSubmit={handleSubmit}>
+            <Stack gap={4} as="form" onSubmit={hookFormSubmit(handleSubmit)}>
               <Heading fontSize="2xl" textAlign="center">
                 Welcome Back
               </Heading>
               <Text fontSize="sm" color="gray.500" textAlign="center">
                 Please login to your account
               </Text>
-              <FormControl id="email">
-                <FormLabel>Email address</FormLabel>
+              <Field.Root id="email" invalid={!!errors.email}>
+                <Field.Label>Email address</Field.Label>
                 <Input
                   type="email"
                   placeholder="email@example.com"
                   width="100%"
                   maxW="320px"
                   mx="auto"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  {...register("email")}
                 />
-              </FormControl>
-              <FormControl id="password">
-                <FormLabel>Password</FormLabel>
+                <Field.ErrorText>{errors.email}</Field.ErrorText>
+              </Field.Root>
+              <Field.Root id="password" invalid={!!errors.password}>
+                <Field.Label>Password</Field.Label>
                 <Input
                   type="password"
                   placeholder="••••••••"
                   width="100%"
                   maxW="320px"
                   mx="auto"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  {...register("password")}
                 />
-              </FormControl>
+                <Field.ErrorText>{errors.password}</Field.ErrorText>
+              </Field.Root>
               <Stack gap={6}>
-                <Button
+                <BaseButton
+                  colorPalette="blue"
                   type="submit"
-                  bg="blue.400"
+                  variant="solid"
                   color="white"
                   _hover={{ bg: "blue.500" }}
+                  isDisabled={isLoading}
                 >
-                  Sign In
-                </Button>
+                  {isLoading ? "Signing in..." : "Sign In"}
+                </BaseButton>
+                <BaseButton
+                  colorPalette="gray"
+                  variant="outline"
+                  onClick={() => {
+                    const quickLoginData = {
+                      email: "email@email.com",
+                      password: "Pa$$w0rd"
+                    };
+                    handleSubmit(quickLoginData);
+                  }}
+                  isDisabled={isLoading}
+                >
+                  Quick Login
+                </BaseButton>
                 <Text fontSize="sm" textAlign="center">
                   Don't have an account?{" "}
                   <RouterLink to="/signup">
