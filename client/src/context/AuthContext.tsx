@@ -7,16 +7,21 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  register: (email: string, password: string, name: string) => Promise<number>;
+  register: (email: string, password: string, name: string) => Promise<unknown>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = async (email: string, password: string) => {
-    const response = await axiosInstance.post("/auth/login", { email, password });
+    const response = await axiosInstance.post("/auth/login", {
+      email,
+      password,
+    });
     console.log("response", response);
     setIsAuthenticated(true);
   };
@@ -24,10 +29,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => setIsAuthenticated(false);
 
   const register = async (email: string, password: string, name: string) => {
-    const response = await axiosInstance.post("/auth/register", { email, password, name });
-    console.log("response", response);
-    setIsAuthenticated(false);
-    return response.status;
+    try {
+      const response = await axiosInstance.post("/auth/register", {
+        email,
+        password,
+        name,
+      });
+      setIsAuthenticated(false);
+      return response.status;
+    } catch (error: any) {
+      return error ? error.response.data.error : "An unexpected error occurred";
+    }
   };
 
   return (
