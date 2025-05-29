@@ -24,10 +24,10 @@ All feature/fix branches must be created from `dev` and merged back via Pull Req
 
 | Type          | Branch name format          |
 |---------------|-----------------------------|
-| Feature       | `feature/your-feature-name` |
-| Bug fix       | `fix/your-fix-name`         |
-| CI-related    | `ci/update-ci-pipeline`     |
-| Documentation | `docs/update-readme`        |
+| Feature       | `feature/lior/your-feature-name` |
+| Bug fix       | `fix/itay/your-fix-name`         |
+| CI-related    | `ci/lior/update-ci-pipeline`     |
+| Documentation | `docs/itay/update-readme`        |
 
 ---
 
