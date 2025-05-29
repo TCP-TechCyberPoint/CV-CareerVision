@@ -5,6 +5,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
   try {
     const message = await AuthService.register(req.body);
     res.status(201).json({ message });
+    console.log("message", message);
   } catch (err: unknown) {
     const errorMessage =
       err instanceof Error ? err.message : "An unexpected error occurred during registration.";

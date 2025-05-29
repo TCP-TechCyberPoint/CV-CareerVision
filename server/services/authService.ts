@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 interface AuthCredentials {
+  name: string;
   email: string;
   password: string;
 }
@@ -17,9 +18,9 @@ if (!JWT_SECRET) {
   throw new Error("JWT_SECRET is not defined in environment variables.");
 }
 
-export const register = async ({ email, password }: AuthCredentials): Promise<string> => {
-  if (!email || !password) {
-    throw new Error("Email and password are required.");
+export const register = async ({ name, email, password }: AuthCredentials): Promise<string> => {
+  if (!email || !password || !name) {
+    throw new Error("Email, password and name are required.");
   }
 
   const existingUser = await userRepository.findByEmail(email);
@@ -28,7 +29,7 @@ export const register = async ({ email, password }: AuthCredentials): Promise<st
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  await userRepository.createUser({ email, password: hashedPassword });
+  await userRepository.createUser({ name, email, password: hashedPassword });
 
   return "User registered successfully.";
 };

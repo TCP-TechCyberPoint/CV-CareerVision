@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "./useAuth";
+import { useAuth } from "@/context/AuthContext";
 import { toaster } from "@/components/ui/toaster";
 
 const loginSchema = z.object({
@@ -43,7 +43,7 @@ export const useLoginForm = () => {
     try {
       await Promise.all([
         login(data.email, data.password),
-        new Promise(resolve => setTimeout(resolve, 3000))
+        new Promise((resolve) => setTimeout(resolve, 3000)),
       ]);
       navigate("/");
     } catch (error: Error | unknown) {
@@ -66,4 +66,4 @@ export const useLoginForm = () => {
     errors,
     isLoading,
   };
-}; 
+};

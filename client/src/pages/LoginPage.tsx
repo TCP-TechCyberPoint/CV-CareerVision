@@ -104,7 +104,7 @@ const LoginPage: React.FC = () => {
                 </BaseButton>
                 <Text fontSize="sm" textAlign="center">
                   Don't have an account?{" "}
-                  <RouterLink to="/signup">
+                  <RouterLink to="/register">
                     <strong>Sign up</strong>
                   </RouterLink>
                 </Text>
