@@ -12,10 +12,8 @@ import { Input } from "@chakra-ui/input";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import {
-  useRegisterForm,
-  type RegisterFormData,
-} from "../hooks/useRegisterForm";
+import { useRegisterForm } from "../hooks/useRegisterForm";
+import type { RegisterFormData } from "@/utils/validations";
 import loginBg from "../assets/images/login-background.png";
 import BaseButton from "@/components/ui/BaseButton";
 

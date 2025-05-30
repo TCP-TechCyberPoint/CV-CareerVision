@@ -13,7 +13,7 @@ import { useColorModeValue } from "@chakra-ui/color-mode";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useLoginForm } from "../hooks/useLoginForm";
-import type { LoginFormData } from "../hooks/useLoginForm";
+import type { LoginFormData } from "@/utils/validations";
 import loginBg from "../assets/images/login-background.png";
 import BaseButton from "@/components/ui/BaseButton";
 

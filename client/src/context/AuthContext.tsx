@@ -1,49 +1,52 @@
 // context/AuthContext.tsx
 
-import React, { createContext, useState, useContext } from "react";
-import axiosInstance from "@/api/axios-instance";
-
-interface AuthContextType {
-  isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  register: (email: string, password: string, name: string) => Promise<unknown>;
-}
+import React, { createContext, useState, useContext, useEffect } from "react";
+import { cookieUtils } from "@/utils/cookie-utils";
+import { useAuthOperations } from "@/hooks/useAuthOperations";
+import type { AuthState, AuthContextType } from "@/utils/auth-types";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [authState, setAuthState] = useState<AuthState>({
+    user: null,
+    token: null,
+    isAuthenticated: false,
+    isLoading: false,
+    error: null,
+  });
 
-  const login = async (email: string, password: string) => {
-    const response = await axiosInstance.post("/auth/login", {
-      email,
-      password,
-    });
-    console.log("response", response);
-    setIsAuthenticated(true);
+  const logout = () => {
+    cookieUtils.clearAll();
+    setAuthState({ user: null, token: null, isAuthenticated: false, isLoading: false, error: null });
   };
 
-  const logout = () => setIsAuthenticated(false);
+  const { login, register, validateToken } = useAuthOperations({ setAuthState, logout });
 
-  const register = async (email: string, password: string, name: string) => {
-    try {
-      const response = await axiosInstance.post("/auth/register", {
-        email,
-        password,
-        name,
-      });
-      setIsAuthenticated(false);
-      return response.status;
-    } catch (error: any) {
-      return error ? error.response.data.error : "An unexpected error occurred";
-    }
+  const clearError = () => setAuthState(prev => ({ ...prev, error: null }));
+  const setLoading = (loading: boolean) => setAuthState(prev => ({ ...prev, isLoading: loading }));
+  
+  const initializeAuth = () => {
+    const token = cookieUtils.getToken();
+    const user = cookieUtils.getUser();
+    if (token) setAuthState(prev => ({ ...prev, token, user, isAuthenticated: true }));
   };
+
+  useEffect(() => initializeAuth(), []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, register }}>
+    <AuthContext.Provider 
+      value={{
+        ...authState,
+        login,
+        register,
+        logout,
+        clearError,
+        setLoading,
+        initializeAuth,
+        validateToken,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

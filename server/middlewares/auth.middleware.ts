@@ -2,16 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-dotenv.config();
-
-const JWT_SECRET = process.env.JWT_SECRET;
-
-if (!JWT_SECRET) {
-  throw new Error("JWT_SECRET is not defined in environment variables.");
-}
-
 export interface AuthenticatedRequest extends Request {
-  user?: string | jwt.JwtPayload;
+  userId?: string | jwt.JwtPayload;
 }
 
 export const authenticateToken = (
@@ -19,18 +11,23 @@ export const authenticateToken = (
   res: Response,
   next: NextFunction
 ): void => {
-  const authHeader = req.headers.authorization;
+  const token = req.header("Authorization")?.replace("Bearer ", "");
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    res.status(401).json({ error: "Access denied. No token provided." });
+  if (!token) {
+    res.status(401).json({ error: "Unauthorized" });
     return;
   }
 
-  const token = authHeader.split(" ")[1];
-
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded; 
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET!
+    ) as jwt.JwtPayload;
+    if (!decoded) {
+      res.status(403).json({ error: "Invalid or expired token." });
+      return;
+    }
+    req.userId = decoded.userId;
     next();
   } catch (err) {
     res.status(403).json({ error: "Invalid or expired token." });
