@@ -16,6 +16,7 @@ import { useRegisterForm } from "../hooks/useRegisterForm";
 import type { RegisterFormData } from "@/utils/validations";
 import loginBg from "../assets/images/login-background.png";
 import BaseButton from "@/components/ui/BaseButton";
+import BaseButton from "@/components/ui/BaseButton";
 
 const RegisterPage: React.FC = () => {
   const { register, handleSubmit: hookFormSubmit } =

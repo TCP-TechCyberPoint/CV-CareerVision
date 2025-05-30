@@ -1,35 +1,24 @@
 import { Button } from "@chakra-ui/react";
+import { forwardRef } from "react";
 
-type Props = {
-  type?: "button" | "submit" | "reset";
+type ButtonProps = {
   children?: React.ReactNode;
-  variant?: "outline" | "solid" | "subtle" | "surface" | "ghost" | "plain";
-  color?: string;
+  variant?: "outline" | "solid" | "ghost" | "subtle" | "surface" | "plain";
   colorScheme?: string;
+  color?: string;
   colorPalette?: string;
   onClick?: () => void;
   size?: "sm" | "md" | "lg";
-  isDisabled?: boolean;
+  minW?: string;
+  type?: "button" | "submit" | "reset";
   _hover?: object;
+  transition?: string;
 };
 
-const BaseButton = (props: Props) => {
-  return (
-    <Button
-      type={props.type}
-      colorPalette={props.colorPalette}
-      colorScheme={props.colorScheme}
-      variant={props.variant}
-      color={props.color}
-      onClick={props.onClick}
-      size={props.size}
-      disabled={props.isDisabled}
-      _hover={props._hover}
-      
-    >
-      {props.children}
-    </Button>
-  );
-};
+const BaseButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+  return <Button ref={ref} {...props}>{props.children || "Button"}</Button>;
+});
+
+BaseButton.displayName = "BaseButton";
 
 export default BaseButton;

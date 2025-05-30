@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { Home, About, LoginPage, RegisterPage, EditProfilePage } from "@/pages";
 import MainLayout from "@/components/layout/MainLayout";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import SlideshowForm from "./features/slideshow-form/SlideshowForm";
 
 export const router = createBrowserRouter([
   {
@@ -18,10 +19,22 @@ export const router = createBrowserRouter([
       },
       {
         path: "/about",
-        element: <About
-         />,
+        element: <About />,
       },
-      // Add more protected routes here
+
+      {
+        path: "/edit-profile",
+        element: <EditProfilePage />,
+      },
+      {
+        path: "/create-cv",
+        element: <SlideshowForm />,
+      } ,    
+      {
+        path: "/create-cv/:step",
+        element: <SlideshowForm />,
+        
+      },
     ],
   },
   {
@@ -31,9 +44,5 @@ export const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
-  },
-  {
-    path: "/edit-profile",
-    element: <EditProfilePage />,
   },
 ]);

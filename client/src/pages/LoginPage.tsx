@@ -16,6 +16,7 @@ import { useLoginForm } from "../hooks/useLoginForm";
 import type { LoginFormData } from "@/utils/validations";
 import loginBg from "../assets/images/login-background.png";
 import BaseButton from "@/components/ui/BaseButton";
+import BaseButton from "@/components/ui/BaseButton";
 
 const LoginPage: React.FC = () => {
   const { register, handleSubmit: hookFormSubmit } = useForm<LoginFormData>();

@@ -8,16 +8,13 @@ import {
 } from "@chakra-ui/react";
 import ProfileDropdown from "./ProfileDropdown";
 import BaseButton from "@/components/ui/BaseButton";
+import { pages } from "@/constants/pages";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const  {logout}  = useAuth();
 
-  const links = [
-    
-    { label: "Home", path: "/" },
-    { label: "About", path: "/about" },
-  ];
+
 
   const handleSignOut = () => {
     logout();
@@ -28,12 +25,7 @@ const Navbar = () => {
     navigate("/edit-profile");
   };
 
-  const handleClick = (label: string, path?: string) => {
-    if(label==="Profile" && path){
-      navigate(path);
-    }
-  };
-
+ 
   return (
     <Box bg="gray.800" px={4} position="relative">
       <Flex
@@ -45,16 +37,17 @@ const Navbar = () => {
         <Box>
           <HStack gap={8} alignItems="center" flexDir="row-reverse">
             <ProfileDropdown onSignOut={handleSignOut} onRedirectEditProfile={handleRedirectEditProfile}  />
-
-            {links.map(({ label, path }) => (
-              <BaseButton
-                key={label}
-                variant="ghost"
-                color="white"
-                onClick={() => handleClick(label, path)}
-              >
-                {label}
-              </BaseButton>
+       
+            {pages.map(({ label, path }) => (
+               <BaseButton
+                  key={label}
+                  variant="outline"
+                  color="orange.500"
+                  colorScheme="orange"
+                  onClick={() => navigate(path)}
+                >
+                  {label}
+                </BaseButton>       
             ))}
           </HStack>
         </Box>
