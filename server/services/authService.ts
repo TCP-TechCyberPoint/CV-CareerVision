@@ -6,45 +6,102 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-interface AuthCredentials {
-  email: string;
-  password: string;
+const JWT_SECRET = process.env.JWT_SECRET || "secret";
+const EXPIRES_IN = process.env.EXPIRES_IN || "7d";
+
+interface RegisterCredentials {
+  name: IUser["name"];
+  email: IUser["email"];
+  password: IUser["password"];
 }
 
-// טוען את הסוד של JWT מה־env
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  throw new Error("JWT_SECRET is not defined in environment variables.");
+interface LoginCredentials {
+  email: IUser["email"];
+  password: IUser["password"];
 }
 
-export const register = async ({ email, password }: AuthCredentials): Promise<string> => {
-  if (!email || !password) {
-    throw new Error("Email and password are required.");
+const register = async (credentials: RegisterCredentials) => {
+  try {
+    const { name, email, password } = credentials;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const existingUser = await userRepository.findByEmail(email);
+    if (existingUser) {
+      return {
+        status: 400,
+        message: "User already exists.",
+      };
+    }
+    await userRepository.createUser({ name, email, password: hashedPassword });
+    return {
+      status: 201,
+      message: "User created successfully",
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      message: "Failed to register.",
+    };
   }
-
-  const existingUser = await userRepository.findByEmail(email);
-  if (existingUser) {
-    throw new Error("A user with this email already exists.");
-  }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  await userRepository.createUser({ email, password: hashedPassword });
-
-  return "User registered successfully.";
 };
 
-export const login = async ({ email, password }: AuthCredentials): Promise<string> => {
-  const user = await userRepository.findByEmail(email);
+const login = async (credentials: LoginCredentials) => {
+  try {
+    const { email, password } = credentials;
+    const user = await userRepository.findByEmail(email);
+    if (!user) {
+      return {
+        status: 404,
+        message: "Email not found.",
+      };
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return {
+        status: 401,
+        message: "Invalid email or password.",
+      };
+    }
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET);
 
-  if (!user) {
-    throw new Error("User not found. Please register first.");
+    return {
+      status: 200,
+      message: "Login successful",
+      token,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      message: "Login failed",
+    };
   }
-
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
-    throw new Error("Invalid email or password.");
-  }
-
-  const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "7d" });
-  return token;
 };
+
+const validateToken = async (token: string) => {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    const user = await userRepository.findById(decoded.userId);
+    
+    if (!user) {
+      return {
+        valid: false,
+        message: "User not found",
+      };
+    }
+
+    return {
+      valid: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    };
+  } catch (error) {
+    return {
+      valid: false,
+      message: "Invalid token",
+    };
+  }
+};
+
+export { register, login, validateToken };

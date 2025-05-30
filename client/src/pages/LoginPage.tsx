@@ -13,7 +13,7 @@ import { useColorModeValue } from "@chakra-ui/color-mode";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useLoginForm } from "../hooks/useLoginForm";
-import type { LoginFormData } from "../hooks/useLoginForm";
+import type { LoginFormData } from "@/utils/validations";
 import loginBg from "../assets/images/login-background.png";
 import BaseButton from "@/components/ui/BaseButton";
 
@@ -104,7 +104,7 @@ const LoginPage: React.FC = () => {
                 </BaseButton>
                 <Text fontSize="sm" textAlign="center">
                   Don't have an account?{" "}
-                  <RouterLink to="/signup">
+                  <RouterLink to="/register">
                     <strong>Sign up</strong>
                   </RouterLink>
                 </Text>

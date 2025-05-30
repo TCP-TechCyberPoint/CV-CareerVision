@@ -1,38 +1,59 @@
-import React, { createContext, useState } from "react";
+// context/AuthContext.tsx
 
-interface AuthContextType {
-  isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  signup: (email: string, password: string, name: string) => Promise<void>;
-}
+import React, { createContext, useState, useContext, useEffect } from "react";
+import { cookieUtils } from "@/utils/cookie-utils";
+import { useAuthOperations } from "@/hooks/useAuthOperations";
+import type { AuthState, AuthContextType } from "@/utils/auth-types";
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const login = async (email: string, password: string) => {
-    console.log(email, password);
-    // TODO: Implement actual API call here
-    // For now, we'll just simulate a successful login
-    setIsAuthenticated(true);
-  };
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [authState, setAuthState] = useState<AuthState>({
+    user: null,
+    token: null,
+    isAuthenticated: false,
+    isLoading: false,
+    error: null,
+  });
 
   const logout = () => {
-    setIsAuthenticated(false);
+    cookieUtils.clearAll();
+    setAuthState({ user: null, token: null, isAuthenticated: false, isLoading: false, error: null });
   };
 
-  const signup = async (email: string, password: string, name: string) => {
-    console.log(email, password, name);
-    // TODO: Implement actual API call here
-    // For now, we'll just simulate a successful login
-    setIsAuthenticated(false);
+  const { login, register, validateToken } = useAuthOperations({ setAuthState, logout });
+
+  const clearError = () => setAuthState(prev => ({ ...prev, error: null }));
+  const setLoading = (loading: boolean) => setAuthState(prev => ({ ...prev, isLoading: loading }));
+  
+  const initializeAuth = () => {
+    const token = cookieUtils.getToken();
+    const user = cookieUtils.getUser();
+    if (token) setAuthState(prev => ({ ...prev, token, user, isAuthenticated: true }));
   };
+
+  useEffect(() => initializeAuth(), []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, signup }}>
+    <AuthContext.Provider 
+      value={{
+        ...authState,
+        login,
+        register,
+        logout,
+        clearError,
+        setLoading,
+        initializeAuth,
+        validateToken,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth must be used within an AuthProvider");
+  return context;
 };

@@ -12,14 +12,15 @@ import { Input } from "@chakra-ui/input";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useSignUpForm } from "../hooks/useSignUpForm";
-import type { SignUpFormData } from "../hooks/useSignUpForm";
+import { useRegisterForm } from "../hooks/useRegisterForm";
+import type { RegisterFormData } from "@/utils/validations";
 import loginBg from "../assets/images/login-background.png";
 import BaseButton from "@/components/ui/BaseButton";
 
-const SignUpPage: React.FC = () => {
-  const { register, handleSubmit: hookFormSubmit } = useForm<SignUpFormData>();
-  const { handleSubmit, errors, isLoading } = useSignUpForm();
+const RegisterPage: React.FC = () => {
+  const { register, handleSubmit: hookFormSubmit } =
+    useForm<RegisterFormData>();
+  const { handleSubmit, errors, isLoading } = useRegisterForm();
 
   return (
     <Flex
@@ -89,7 +90,10 @@ const SignUpPage: React.FC = () => {
                 />
                 <Field.ErrorText>{errors.password}</Field.ErrorText>
               </Field.Root>
-              <Field.Root id="confirmPassword" invalid={!!errors.confirmPassword}>
+              <Field.Root
+                id="confirmPassword"
+                invalid={!!errors.confirmPassword}
+              >
                 <Field.Label>Confirm Password</Field.Label>
                 <Input
                   type="password"
@@ -125,4 +129,4 @@ const SignUpPage: React.FC = () => {
   );
 };
 
-export default SignUpPage;
+export default RegisterPage;

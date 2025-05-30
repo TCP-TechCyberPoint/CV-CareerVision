@@ -1,12 +1,11 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { useTokenValidation } from "@/hooks/useTokenValidation";
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated } = useAuth();
+  const { isValidating, isTokenValid, isAuthenticated } = useTokenValidation();
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
+  if (isValidating) return <div>Loading...</div>;
+  if (!isAuthenticated || !isTokenValid) return <Navigate to="/login" replace />;
+  
   return <>{children}</>;
 };

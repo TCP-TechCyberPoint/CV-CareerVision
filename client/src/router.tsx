@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Home, About, LoginPage, SignUpPage, EditProfilePage } from "@/pages";
+import { Home, About, LoginPage, RegisterPage, EditProfilePage } from "@/pages";
 import MainLayout from "@/components/layout/MainLayout";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
@@ -29,8 +29,8 @@ export const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    path: "/signup",
-    element: <SignUpPage />,
+    path: "/register",
+    element: <RegisterPage />,
   },
   {
     path: "/edit-profile",

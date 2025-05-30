@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -30,8 +30,8 @@ const Navbar = () => {
 
   const handleClick = (label: string, path?: string) => {
     if(label==="Profile" && path){
-        navigate(path);  
-    }  
+      navigate(path);
+    }
   };
 
   return (
@@ -45,16 +45,16 @@ const Navbar = () => {
         <Box>
           <HStack gap={8} alignItems="center" flexDir="row-reverse">
             <ProfileDropdown onSignOut={handleSignOut} onRedirectEditProfile={handleRedirectEditProfile}  />
-       
+
             {links.map(({ label, path }) => (
-               <BaseButton
-                  key={label}
-                  variant="ghost"
-                  color="white"
-                  onClick={() => handleClick(label, path)}
-                >
-                  {label}
-                </BaseButton>       
+              <BaseButton
+                key={label}
+                variant="ghost"
+                color="white"
+                onClick={() => handleClick(label, path)}
+              >
+                {label}
+              </BaseButton>
             ))}
           </HStack>
         </Box>
