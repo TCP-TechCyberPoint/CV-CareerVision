@@ -13,10 +13,12 @@ type ButtonProps = {
   type?: "button" | "submit" | "reset";
   _hover?: object;
   transition?: string;
+  disabled?: boolean;
 };
 
 const BaseButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
-  return <Button ref={ref} {...props}>{props.children || "Button"}</Button>;
+  return <Button 
+   ref={ref} {...props}>{props.children || "Button"}</Button>;
 });
 
 BaseButton.displayName = "BaseButton";

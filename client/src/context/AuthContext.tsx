@@ -7,7 +7,9 @@ import type { AuthState, AuthContextType } from "@/utils/auth-types";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
     token: null,
@@ -18,24 +20,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     cookieUtils.clearAll();
-    setAuthState({ user: null, token: null, isAuthenticated: false, isLoading: false, error: null });
+    setAuthState({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      isLoading: false,
+      error: null,
+    });
   };
 
-  const { login, register, validateToken } = useAuthOperations({ setAuthState, logout });
+  const { login, register, validateToken } = useAuthOperations({
+    setAuthState,
+    logout,
+  });
 
-  const clearError = () => setAuthState(prev => ({ ...prev, error: null }));
-  const setLoading = (loading: boolean) => setAuthState(prev => ({ ...prev, isLoading: loading }));
-  
+  const clearError = () => setAuthState((prev) => ({ ...prev, error: null }));
+  const setLoading = (loading: boolean) =>
+    setAuthState((prev) => ({ ...prev, isLoading: loading }));
+
   const initializeAuth = () => {
     const token = cookieUtils.getToken();
     const user = cookieUtils.getUser();
-    if (token) setAuthState(prev => ({ ...prev, token, user, isAuthenticated: true }));
+    if (token)
+      setAuthState((prev) => ({ ...prev, token, user, isAuthenticated: true }));
   };
 
   useEffect(() => initializeAuth(), []);
 
   return (
-    <AuthContext.Provider 
+    <AuthContext.Provider
       value={{
         ...authState,
         login,

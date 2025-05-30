@@ -16,7 +16,6 @@ import { useLoginForm } from "../hooks/useLoginForm";
 import type { LoginFormData } from "@/utils/validations";
 import loginBg from "../assets/images/login-background.png";
 import BaseButton from "@/components/ui/BaseButton";
-import BaseButton from "@/components/ui/BaseButton";
 
 const LoginPage: React.FC = () => {
   const { register, handleSubmit: hookFormSubmit } = useForm<LoginFormData>();
@@ -85,7 +84,7 @@ const LoginPage: React.FC = () => {
                   variant="solid"
                   color="white"
                   _hover={{ bg: "blue.500" }}
-                  isDisabled={isLoading}
+                  disabled={isLoading}  
                 >
                   {isLoading ? "Signing in..." : "Sign In"}
                 </BaseButton>
@@ -99,7 +98,7 @@ const LoginPage: React.FC = () => {
                     };
                     handleSubmit(quickLoginData);
                   }}
-                  isDisabled={isLoading}
+                  disabled={isLoading}
                 >
                   Quick Login
                 </BaseButton>
