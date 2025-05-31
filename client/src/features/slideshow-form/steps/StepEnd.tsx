@@ -26,20 +26,21 @@ const StepEnd = ({ prevStep }: StepEndProps) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "cv.pdf";
-      document.body.appendChild(a); // required for Firefox
+      a.download = "cv.pdf"; // ✅ Only PDF download
+      document.body.appendChild(a);
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error("CV download failed:", err);
+      alert("Something went wrong. Please try again.");
     }
   };
 
   return (
     <Box>
       <Text>End</Text>
-      <Stack direction="row" gap={4}  mt={4}>
+      <Stack direction="row" gap={4} mt={4}>
         <BaseButton onClick={prevStep}>Back</BaseButton>
         <BaseButton onClick={handleGenerateCv}>Generate CV</BaseButton>
       </Stack>

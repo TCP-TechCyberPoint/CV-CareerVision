@@ -1,111 +1,179 @@
-import axios from 'axios';
-import { PDFDocument, StandardFonts } from 'pdf-lib';
-import { buildGeminiPrompt } from './promptBuilder';
-import dotenv from 'dotenv';
+import { Request, Response } from "express";
+import axios from "axios";
+import {
+  Document,
+  Packer,
+  Paragraph,
+  TextRun,
+  HeadingLevel,
+  AlignmentType,
+  BorderStyle,
+} from "docx";
+import { buildGeminiPrompt } from "./promptBuilder";
+import fs from "fs";
+import path from "path";
+import dotenv from "dotenv";
+import CloudConvert from "cloudconvert";
 
 dotenv.config();
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-export const generateCvPdf = async (formData: any): Promise<Buffer> => {
-  const prompt = buildGeminiPrompt(formData);
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
+const CLOUDCONVERT_API_KEY = process.env.CLOUDCONVERT_API_KEY!;
+const cloudConvert = new CloudConvert(CLOUDCONVERT_API_KEY);
 
-  const geminiRes = await axios.post(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
-    { contents: [{ parts: [{ text: prompt }] }] },
-    { headers: { 'Content-Type': 'application/json' } }
-  );
-
-  const text = geminiRes.data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error("Gemini response is empty or invalid");
-
-  const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage();
-  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-  const fontSize = 10;
-  const headerFontSize = 12;
-  const lineSpacing = 4;
-
-  const { width, height } = page.getSize();
-  const margin = 50;
-  const maxLineWidth = width - margin * 2;
-  let y = height - margin;
-
-  const wrapText = (text: string, fontToUse: any, fontSize: number): string[] => {
-    const words = text.split(' ');
-    const lines: string[] = [];
-    let currentLine = '';
-
-    for (const word of words) {
-      const testLine = currentLine ? `${currentLine} ${word}` : word;
-      const testWidth = fontToUse.widthOfTextAtSize(testLine, fontSize);
-      if (testWidth < maxLineWidth) {
-        currentLine = testLine;
-      } else {
-        if (currentLine) lines.push(currentLine);
-        currentLine = word;
-      }
-    }
-
-    if (currentLine) lines.push(currentLine);
-    return lines;
-  };
-
-  const drawText = (line: string, fontToUse: any, fontSizeToUse: number) => {
-    const wrappedLines = wrapText(line, fontToUse, fontSizeToUse);
-    for (const subLine of wrappedLines) {
-      if (y < margin + fontSizeToUse) break;
-      page.drawText(subLine, { x: margin, y, size: fontSizeToUse, font: fontToUse });
-      y -= fontSizeToUse + lineSpacing;
-    }
-  };
-
-  const lines = text.split('\n');
-  let skillBuffer: string[] = [];
-  let isInSkillsSection = false;
-
-  for (let rawLine of lines) {
-    let line = rawLine.trim();
-    if (!line) {
-      if (skillBuffer.length) {
-        drawText(skillBuffer.join('    '), font, fontSize);
-        skillBuffer = [];
-      }
-      y -= fontSize + lineSpacing;
-      continue;
-    }
-
-    const cleanedLine = line.replace(/^\*\*(.+?)\*\*$/, '$1');
-    const isHeader = cleanedLine === cleanedLine.toUpperCase() && cleanedLine.length < 50;
-
-    if (isHeader) {
-      if (skillBuffer.length) {
-        drawText(skillBuffer.join('    '), font, fontSize);
-        skillBuffer = [];
-      }
-      isInSkillsSection = cleanedLine === 'SKILLS';
-      drawText(cleanedLine, boldFont, headerFontSize);
-      y -= 4;
-      continue;
-    }
-
-    const isBullet = line.startsWith('*');
-
-    if (isInSkillsSection && isBullet) {
-      skillBuffer.push(line.replace(/^\*\s*/, '•'));
-      continue;
-    } else if (skillBuffer.length) {
-      drawText(skillBuffer.join('    '), font, fontSize);
-      skillBuffer = [];
-    }
-
-    drawText(line, font, fontSize);
+function calculateYearsOfExperience(experiences: any[]): string {
+  let totalMonths = 0;
+  for (const exp of experiences || []) {
+    const start = new Date(exp.startDate);
+    const end = exp.isCurrentJob ? new Date() : new Date(exp.endDate);
+    const months =
+      (end.getFullYear() - start.getFullYear()) * 12 +
+      (end.getMonth() - start.getMonth());
+    totalMonths += months > 0 ? months : 0;
   }
+  const years = totalMonths / 12;
+  return `${Math.ceil(years)}`;
+}
 
-  if (skillBuffer.length) {
-    drawText(skillBuffer.join('    '), font, fontSize);
+export const generateCvDocx = async (req: Request, res: Response) => {
+  try {
+    const formData = req.body;
+    const experiences = formData.experiences || [];
+    const prompt = buildGeminiPrompt(formData);
+
+    // 1. Get enhanced CV content from Gemini
+    const geminiRes = await axios.post(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+      { contents: [{ parts: [{ text: prompt }] }] },
+      { headers: { "Content-Type": "application/json" } }
+    );
+
+    let text = geminiRes.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    if (!text) throw new Error("Gemini response is empty");
+    text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+    const content = JSON.parse(text);
+
+    // 2. Build the DOCX in memory
+    const sectionChildren: Paragraph[] = [];
+    const addHeading = (label: string) =>
+      sectionChildren.push(new Paragraph({
+        text: label.toUpperCase(),
+        heading: HeadingLevel.HEADING_2,
+        spacing: { after: 200 },
+      }));
+
+    const addLine = () =>
+      sectionChildren.push(new Paragraph({
+        border: {
+          bottom: { style: BorderStyle.SINGLE, size: 6, color: "auto" },
+        },
+        spacing: { after: 100 },
+      }));
+
+    const spacedParagraph = (text: string, isBullet = false) =>
+      new Paragraph({
+        text,
+        spacing: { after: 120, line: 276 },
+        ...(isBullet ? { bullet: { level: 0 } } : {}),
+      });
+
+    const name = formData.vitals?.name || "Full Name";
+    const role = formData.preferences?.professionalPreference || "Job Title";
+    const email = formData.vitals?.email || "";
+    const expYears = calculateYearsOfExperience(experiences);
+
+    sectionChildren.push(
+      new Paragraph({
+        children: [new TextRun({ text: `${name} – ${role} – ${expYears} Years Experience`, bold: true, size: 36 })],
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 150 },
+      }),
+      new Paragraph({
+        children: [new TextRun({ text: email, size: 22 })],
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 200 },
+      })
+    );
+    addLine();
+
+    addHeading("Objective");
+    sectionChildren.push(spacedParagraph(content.summary || "Motivated professional."));
+    addLine();
+
+    addHeading("Experience");
+    for (const exp of content.experience || []) {
+      sectionChildren.push(spacedParagraph(`${exp.company} | ${exp.title} (${exp.startYear} – ${exp.endYear})`));
+      for (const bullet of exp.bullets || []) {
+        sectionChildren.push(spacedParagraph(bullet, true));
+      }
+    }
+    addLine();
+
+    addHeading("Education");
+    for (const edu of content.education || []) {
+      sectionChildren.push(spacedParagraph(`${edu.institution} | ${edu.degree} in ${edu.field} (${edu.year})`));
+    }
+    addLine();
+
+    addHeading("Projects");
+    for (const proj of content.projects || []) {
+      sectionChildren.push(
+        spacedParagraph(proj.name),
+        spacedParagraph(`• ${proj.description}`, true),
+        spacedParagraph(`• Technologies: ${proj.technologies.join(", ")}`, true)
+      );
+    }
+    addLine();
+
+    addHeading("Skills");
+    sectionChildren.push(spacedParagraph((content.skills || []).join(" • ")));
+
+    const doc = new Document({ sections: [{ children: sectionChildren }] });
+    const buffer = await Packer.toBuffer(doc);
+
+    const tempDir = path.join(__dirname, "../../temp");
+    if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
+    const docxPath = path.join(tempDir, "cv.docx");
+    fs.writeFileSync(docxPath, buffer);
+
+    // 3. Upload to CloudConvert & convert to PDF
+    const job = await cloudConvert.jobs.create({
+      tasks: {
+        upload: { operation: "import/upload" },
+        convert: {
+          operation: "convert",
+          input: "upload",
+          input_format: "docx",
+          output_format: "pdf",
+        },
+        export: { operation: "export/url", input: "convert" },
+      },
+    });
+
+    const uploadTask = job.tasks.find((task: any) => task.name === "upload");
+    if (!uploadTask) throw new Error("Upload task not found");
+
+    await cloudConvert.tasks.upload(uploadTask, fs.createReadStream(docxPath));
+
+    const completedJob = await cloudConvert.jobs.wait(job.id);
+    const exportTask = completedJob.tasks.find((t: any) => t.name === "export");
+
+    if (!exportTask?.result?.files?.[0]?.url) {
+      throw new Error("CloudConvert PDF URL not found");
+    }
+
+    const fileUrl = exportTask.result.files[0].url;
+    const pdfBuffer = await axios.get(fileUrl, { responseType: "arraybuffer" });
+
+    // 4. Send PDF to client
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", "attachment; filename=cv.pdf");
+    res.send(pdfBuffer.data);
+
+    // 5. Cleanup
+    fs.unlinkSync(docxPath);
+  } catch (err: any) {
+    console.error("🔥 Internal error:", err.message);
+    res.status(500).json({ error: err.message || "Failed to generate PDF" });
   }
-
-  const pdfBytes = await pdfDoc.save();
-  return Buffer.from(pdfBytes);
 };
