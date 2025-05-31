@@ -1,7 +1,6 @@
 import { Menu, Portal } from "@chakra-ui/react";
 import BaseButton from "../ui/BaseButton";
 
-
 type ProfileDropdownProps = {
   onSignOut: () => void;
   onRedirectEditProfile: () => void;
@@ -13,10 +12,8 @@ const ProfileDropdown = ({
 }: ProfileDropdownProps) => {
   return (
     <Menu.Root>
-      <Menu.Trigger asChild>
-        <BaseButton variant="outline" color="orange.500" colorScheme="orange">
-          Profile
-        </BaseButton>
+      <Menu.Trigger>
+        <BaseButton>Profile</BaseButton>
       </Menu.Trigger>
       <Portal>
         <Menu.Positioner>

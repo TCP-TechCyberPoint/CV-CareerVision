@@ -1,10 +1,11 @@
-import { Box, Container, Heading,  Input, Text } from '@chakra-ui/react';
+import { Box, Container, Heading, Button, Input, Text } from '@chakra-ui/react';
 import { FormControl, FormLabel } from '@chakra-ui/form-control';
-import BaseButton from '@/components/ui/BaseButton';
+import Navbar from '@/components/layout/Navbar';
 
 const EditProfilePage: React.FC = () => {
   return (
     <>
+    <Navbar />
     <Container maxW="container.md" py={12} mx={"auto"} w={"5/12"}>
       <Box mb={8} textAlign="center">
         <Heading size="xl" mb={2}>Edit Profile</Heading>
@@ -45,17 +46,15 @@ const EditProfilePage: React.FC = () => {
           />
         </FormControl>
         <Box display="flex" justifyContent="flex-end">
-          <BaseButton  
+          <Button 
             colorScheme="blue" 
-            variant="outline"
-            color="blue.500"
             size="lg"
-            minW="120px"
+            px={8}
             _hover={{ transform: 'translateY(-2px)', boxShadow: 'lg' }}
             transition="all 0.2s"
           >
             Save Changes
-          </BaseButton>
+          </Button>
         </Box>
       </Box>
     </Container>
