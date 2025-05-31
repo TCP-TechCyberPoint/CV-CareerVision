@@ -1,5 +1,5 @@
 import { useSlideshowFormStore } from "./store";
-import { Gender } from "../types/vitals.type";
+import { Gender } from "../types/vitals.types";
 
 // Individual field selectors
 export const useName = () =>

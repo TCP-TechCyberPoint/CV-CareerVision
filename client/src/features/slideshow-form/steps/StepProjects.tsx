@@ -1,9 +1,9 @@
 import { Box, Stack, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useStepProjects } from "../hooks/useStepProjects";
-import ProjectsHeader from "../components/Projects/ProjectsHeader";
-import ProjectCard from "../components/Projects/ProjectCard";
-import AddProjectButton from "../components/Projects/AddProjectButton";
+import ProjectsHeader from "../components/projects/ProjectsHeader";
+import ProjectCard from "../components/projects/ProjectCard";
+import AddProjectButton from "../components/projects/AddProjectButton";
 import StepNavigationButtons from "../components/StepNavigationButtons";
 import { DevTool } from "@hookform/devtools";
 

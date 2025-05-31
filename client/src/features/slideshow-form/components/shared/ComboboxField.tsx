@@ -1,6 +1,6 @@
 import { Field, Combobox, Portal } from "@chakra-ui/react";
 
-interface FormComboboxFieldProps {
+interface ComboboxFieldProps {  
   label: string;
   placeholder: string;
   collection: any;
@@ -11,7 +11,7 @@ interface FormComboboxFieldProps {
   value?: string;
 }
 
-const FormComboboxField = ({
+const ComboboxField = ({
   label,
   placeholder,
   collection,
@@ -20,7 +20,7 @@ const FormComboboxField = ({
   onValueChange,
   invalid = false,
   value,
-}: FormComboboxFieldProps) => {
+}: ComboboxFieldProps) => {
   return (
     <Field.Root invalid={invalid}>
       <Combobox.Root
@@ -62,4 +62,4 @@ const FormComboboxField = ({
   );
 };
 
-export default FormComboboxField;
+export default ComboboxField;

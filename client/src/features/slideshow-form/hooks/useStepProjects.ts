@@ -5,7 +5,7 @@ import {
   projectsFormSchema,
 } from "../schemas/projectsSchema";
 import { useSlideshowFormStore } from "../store";
-import type { Project } from "../types/projects.type";
+import type { Project } from "../types/index";
 
 const createEmptyProject = (): Project => ({
   id: crypto.randomUUID(),

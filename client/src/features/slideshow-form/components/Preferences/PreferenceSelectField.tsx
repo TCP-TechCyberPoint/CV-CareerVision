@@ -1,4 +1,4 @@
-import { FormSelectField } from "../index";
+import { SelectField } from "../index";
 
 interface PreferenceSelectFieldProps {
   label: string;
@@ -22,11 +22,17 @@ const PreferenceSelectField = ({
   return (
     <div>
       {description && (
-        <p style={{ fontSize: "0.875rem", color: "#718096", marginBottom: "0.5rem" }}>
+        <p
+          style={{
+            fontSize: "0.875rem",
+            color: "#718096",
+            marginBottom: "0.5rem",
+          }}
+        >
           {description}
         </p>
       )}
-      <FormSelectField
+      <SelectField
         label={label}
         placeholder={placeholder}
         collection={collection}
@@ -39,4 +45,4 @@ const PreferenceSelectField = ({
   );
 };
 
-export default PreferenceSelectField; 
+export default PreferenceSelectField;

@@ -14,8 +14,8 @@ import {
   initialYearsCollection,
 } from "../schemas/educationSchema";
 
-import { FormSelectField, FormComboboxField } from "../components";
-import type { Degree, FieldOfStudy, Year } from "../types/education.type";
+import { SelectField, ComboboxField } from "../components";
+import type { Degree, FieldOfStudy, Year } from "../types";
 import StepNavigationButtons from "../components/StepNavigationButtons";
 
 const MotionBox = motion.create(Box);
@@ -69,7 +69,7 @@ const StepEducation = ({ nextStep, prevStep }: StepEducationProps) => {
             gap={6}
             width="100%"
           >
-            <FormSelectField
+            <SelectField
               label="Degree"
               placeholder="Select a degree"
               collection={degreesCollection}
@@ -79,7 +79,7 @@ const StepEducation = ({ nextStep, prevStep }: StepEducationProps) => {
               onValueChange={(value) => setValue("degree", value as Degree)}
             />
 
-            <FormSelectField
+            <SelectField
               label="Field of Study"
               placeholder="Select a field of study"
               collection={fieldsOfStudyCollection}
@@ -91,7 +91,7 @@ const StepEducation = ({ nextStep, prevStep }: StepEducationProps) => {
               }
             />
 
-            <FormComboboxField
+            <ComboboxField
               label="Institution"
               placeholder="Type to search"
               collection={institutesCollection}
@@ -104,7 +104,7 @@ const StepEducation = ({ nextStep, prevStep }: StepEducationProps) => {
               }
             />
 
-            <FormComboboxField
+            <ComboboxField
               label="Graduation Year"
               placeholder="Type to search"
               collection={yearsCollection}

@@ -25,7 +25,7 @@ const experienceSchema = z
   );
 
 export const experienceFormSchema = z.object({
-  experiences: z
+  experience: z
     .array(experienceSchema)
     .min(1, "At least one experience is required"),
 });

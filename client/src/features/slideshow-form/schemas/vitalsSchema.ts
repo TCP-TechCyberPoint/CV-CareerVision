@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Gender } from "../types/vitals.type";
+import { Gender } from "../types/vitals.types";
 
 export const vitalsSchema = z.object({
   name: z

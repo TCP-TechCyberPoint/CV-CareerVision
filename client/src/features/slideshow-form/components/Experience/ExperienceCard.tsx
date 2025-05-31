@@ -5,20 +5,20 @@ import type {
   UseFormRegister,
   FieldErrors,
   UseFormSetValue,
+  FieldArrayWithId,
 } from "react-hook-form";
-import type { FieldArrayWithId } from "react-hook-form";
-import type { Experience } from "../../store/types";
+import type { Experience } from "@/features/slideshow-form/types";
 import ExperienceFormFields from "./ExperienceFormFields";
 
 const MotionBox = motion.create("div");
 
 interface ExperienceCardProps {
-  field: FieldArrayWithId<{ experiences: Experience[] }, "experiences", "id">;
+  field: FieldArrayWithId<{ experience: Experience[] }, "experience", "id">;
   index: number;
   totalFields: number;
-  register: UseFormRegister<{ experiences: Experience[] }>;
-  errors: FieldErrors<{ experiences: Experience[] }>;
-  setValue: UseFormSetValue<{ experiences: Experience[] }>;
+  register: UseFormRegister<{ experience: Experience[] }>;
+  errors: FieldErrors<{ experience: Experience[] }>;
+  setValue: UseFormSetValue<{ experience: Experience[] }>;
   watchedExperiences: Experience[];
   onRemove: (index: number) => void;
 }
@@ -75,7 +75,7 @@ const ExperienceCard = ({
         watchedExperiences={watchedExperiences}
       />
 
-      {/* Separator between experiences */}
+      {/* Separator between experience */}
       {index < totalFields - 1 && <Separator mt={6} borderColor="purple.200" />}
     </MotionBox>
   );

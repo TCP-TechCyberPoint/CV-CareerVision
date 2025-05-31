@@ -2,6 +2,7 @@ import { Wrap, WrapItem } from "@chakra-ui/react";
 import { ScaleFade } from "@chakra-ui/transition";
 import SkillTag from "./SkillTag";
 
+
 interface SkillCategoriesSectionProps {
   categories: string[];
   expandedSkills: string[];

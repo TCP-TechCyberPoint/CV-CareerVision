@@ -7,7 +7,7 @@ import {
   ExperienceLevel, 
   Industry, 
   SalaryRange 
-} from "../types/preferences.type";
+} from "../types/preferences.types";
 
 export const preferencesSchema = z.object({
   cvStyle: z.nativeEnum(CvStyle, {

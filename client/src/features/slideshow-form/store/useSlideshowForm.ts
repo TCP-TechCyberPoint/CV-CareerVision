@@ -12,8 +12,6 @@ interface SlideshowFormState {
   currentStep: number;
   formData: FormData;
   setFormData: (data: Partial<FormData>) => void;
-
-  resetForm: () => void;
 }
 
 export const useSlideshowForm = create<SlideshowFormState>((set) => ({
@@ -30,18 +28,6 @@ export const useSlideshowForm = create<SlideshowFormState>((set) => ({
       formData: {
         ...state.formData,
         ...data,
-      },
-    })),
-
-  resetForm: () =>
-    set(() => ({
-      currentStep: 0,
-      formData: {
-        name: "",
-        age: "",
-        gender: "",
-        email: "",
-        skills: [],
       },
     })),
 }));

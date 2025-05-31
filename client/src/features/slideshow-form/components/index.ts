@@ -1,27 +1,29 @@
 // Experience-related components
-export { default as ExperienceHeader } from "./Experience/ExperienceHeader";
-export { default as ExperienceCard } from "./Experience/ExperienceCard";
-export { default as ExperienceFormFields } from "./Experience/ExperienceFormFields";
-export { default as AddExperienceButton } from "./Experience/AddExperienceButton";
+export { default as ExperienceHeader } from "./experience/ExperienceHeader";
+export { default as ExperienceCard } from "./experience/ExperienceCard";
+export { default as ExperienceFormFields } from "./experience/ExperienceFormFields";
+export { default as AddExperienceButton } from "./experience/AddExperienceButton";
 
 // Projects-related components
-export { default as ProjectsHeader } from "./Projects/ProjectsHeader";
-export { default as ProjectCard } from "./Projects/ProjectCard";
-export { default as ProjectFormFields } from "./Projects/ProjectFormFields";
-export { default as AddProjectButton } from "./Projects/AddProjectButton";
+export { default as ProjectsHeader } from "./projects/ProjectsHeader";
+export { default as ProjectCard } from "./projects/ProjectCard";
+export { default as ProjectFormFields } from "./projects/ProjectFormFields";
+export { default as AddProjectButton } from "./projects/AddProjectButton";
 
 // Generic step components
 export { default as StepNavigationButtons } from "./StepNavigationButtons";
 
 // Skills-related components
-export * from "./Skills";
+export * from "./skills";
 
 // Preferences-related components
-export { default as CvStyleField } from "./Preferences/CvStyleField";
-export { default as PreferenceSelectField } from "./Preferences/PreferenceSelectField";
-export { default as PreferencesHeader } from "./Preferences/PreferencesHeader";
-export { default as PreferencesFormFields } from "./Preferences/PreferencesFormFields";
+export { default as CvStyleField } from "./preferences/CvStyleField";
+export { default as PreferenceSelectField } from "./preferences/PreferenceSelectField";
+export { default as PreferencesHeader } from "./preferences/PreferencesHeader";
+export { default as PreferencesFormFields } from "./preferences/PreferencesFormFields";
 
 // Form-related components (existing)
-export { default as FormComboboxField } from "./Education/FormComboboxField";
-export { default as FormSelectField } from "./Education/FormSelectField";
+export { default as ComboboxField } from "./shared/ComboboxField";
+export { default as SelectField } from "./shared/SelectField";
+
+//

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSlideshowFormStore } from "../store";
-import { Gender } from "../types/vitals.type";
+import { Gender } from "../types/index";
 import { vitalsSchema, type VitalsFormData } from "../schemas/vitalsSchema";
 
 export const useStepVitals = (nextStep: () => void) => {
@@ -34,4 +34,4 @@ export const useStepVitals = (nextStep: () => void) => {
     onSubmit,
     errors,
   };
-}; 
+};

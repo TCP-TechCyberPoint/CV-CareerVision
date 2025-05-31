@@ -2,8 +2,11 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useSlideshowFormStore } from "../store";
-import { experienceFormSchema, type ExperienceFormData } from "../schemas/experienceSchema";
-import type { Experience } from "../store/types";
+import {
+  experienceFormSchema,
+  type ExperienceFormData,
+} from "../schemas/experienceSchema";
+import type { Experience } from "../types/index";
 
 const createEmptyExperience = (): Experience => ({
   id: crypto.randomUUID(),
@@ -28,7 +31,7 @@ export const useStepExperience = (nextStep: () => void) => {
   } = useForm<ExperienceFormData>({
     resolver: zodResolver(experienceFormSchema),
     defaultValues: {
-      experiences: (formData.experiences as Experience[]) ?? [
+      experience: (formData.experience as Experience[]) ?? [
         createEmptyExperience(),
       ],
     },
@@ -36,7 +39,7 @@ export const useStepExperience = (nextStep: () => void) => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "experiences",
+    name: "experience",
   });
 
   const addNewExperience = () => append(createEmptyExperience());
@@ -46,16 +49,18 @@ export const useStepExperience = (nextStep: () => void) => {
   };
 
   const onSubmit = (data: ExperienceFormData) => {
-    const experiences: Experience[] = data.experiences.map((exp): Experience => ({
-      id: exp.id as string,
-      jobTitle: exp.jobTitle as string,
-      company: exp.company as string,
-      startDate: exp.startDate as string,
-      endDate: exp.isCurrentJob ? undefined : (exp.endDate as string),
-      isCurrentJob: exp.isCurrentJob === true || exp.isCurrentJob === "on",
-      description: exp.description as string | undefined,
-    }));
-    updateFormData({ experiences });
+    const experience: Experience[] = data.experience.map(
+      (exp): Experience => ({
+        id: exp.id as string,
+        jobTitle: exp.jobTitle as string,
+        company: exp.company as string,
+        startDate: exp.startDate as string,
+        endDate: exp.isCurrentJob ? undefined : (exp.endDate as string),
+        isCurrentJob: exp.isCurrentJob === true || exp.isCurrentJob === "on",
+        description: exp.description as string | undefined,
+      })
+    );
+    updateFormData({ experience });
     nextStep();
   };
 
@@ -69,6 +74,6 @@ export const useStepExperience = (nextStep: () => void) => {
     setValue,
     onSubmit,
     errors,
-    watchedExperiences: watch("experiences"),
+    watchedExperiences: watch("experience"),
   };
 };

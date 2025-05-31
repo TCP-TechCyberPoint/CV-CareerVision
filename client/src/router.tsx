@@ -28,6 +28,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/create-cv",
+        // TODO: change component to the <Dashboard/>
         element: <SlideshowForm />,
       } ,    
       {

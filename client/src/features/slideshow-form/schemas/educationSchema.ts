@@ -7,7 +7,7 @@ import {
     GRADUATION_YEARS,
   
 } from "@/features/slideshow-form/constants/education";
-import type { Degree, FieldOfStudy, Year } from "../types/education.type";
+import type { Degree, FieldOfStudy, Year } from "../types/education.types";
 
 export const degreesCollection = createListCollection({
   items: DEGREES.map((degree: Degree) => ({

@@ -1,6 +1,6 @@
 import { RadioGroup, VStack, Text } from "@chakra-ui/react";
 import { Field } from "@chakra-ui/react";
-import { CvStyle } from "../../types/preferences.type";
+import { CvStyle } from "@/features/slideshow-form/types";
 
 interface CvStyleFieldProps {
   error?: string;
@@ -8,10 +8,10 @@ interface CvStyleFieldProps {
   defaultValue?: CvStyle;
 }
 
-const CvStyleField = ({ 
-  error, 
-  onValueChange, 
-  defaultValue = CvStyle.Minimal 
+const CvStyleField = ({
+  error,
+  onValueChange,
+  defaultValue = CvStyle.Minimal,
 }: CvStyleFieldProps) => {
   return (
     <Field.Root invalid={!!error}>
@@ -44,4 +44,4 @@ const CvStyleField = ({
   );
 };
 
-export default CvStyleField; 
+export default CvStyleField;

@@ -1,7 +1,7 @@
 import { Box, Input, RadioGroup, VStack } from "@chakra-ui/react";
 import { HStack, Field } from "@chakra-ui/react";
 import { useStepVitals } from "../hooks/useStepVitals";
-import { Gender } from "../types/vitals.type";
+import { Gender } from "../types/vitals.types";
 import StepNavigationButtons from "../components/StepNavigationButtons";
 
 const StepVitals = ({

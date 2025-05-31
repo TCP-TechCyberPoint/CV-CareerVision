@@ -93,7 +93,7 @@ const Home = () => {
               <Feature
                 icon={FiUsers}
                 title="Community Support"
-                text="Connect with like-minded professionals and share experiences."
+                text="Connect with like-minded professionals and share experience."
               />
             </SimpleGrid>
           </Stack>

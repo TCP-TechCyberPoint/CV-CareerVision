@@ -7,8 +7,13 @@ import {
   industryCollection,
   salaryRangeCollection,
   type PreferencesFormData,
-} from "../../schemas/preferencesSchema";
-import { CvStyle, ExperienceLevel, Industry, SalaryRange } from "../../types/preferences.type";
+} from "@/features/slideshow-form/schemas/preferencesSchema";
+import {
+  CvStyle,
+  ExperienceLevel,
+  Industry,
+  SalaryRange,
+} from "@/features/slideshow-form/types/preferences.types";
 import CvStyleField from "./CvStyleField";
 import PreferenceSelectField from "./PreferenceSelectField";
 

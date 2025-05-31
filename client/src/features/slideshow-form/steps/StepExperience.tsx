@@ -69,9 +69,9 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
           <AddExperienceButton onAdd={addNewExperience} />
 
           {/* Form Error */}
-          {errors.experiences && (
+          {errors.experience && (
             <Text color="red.500" textAlign="center" fontSize="sm">
-              {errors.experiences.message}
+              {errors.experience.message}
             </Text>
           )}
 

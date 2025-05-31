@@ -1,10 +1,6 @@
-import {
-  Field,
-  Select,
-  Portal,
-} from "@chakra-ui/react";
+import { Field, Select, Portal } from "@chakra-ui/react";
 
-interface FormSelectFieldProps {
+interface SelectFieldProps {
   label: string;
   placeholder: string;
   collection: any;
@@ -14,7 +10,7 @@ interface FormSelectFieldProps {
   value?: string;
 }
 
-const FormSelectField = ({
+const SelectField = ({
   label,
   placeholder,
   collection,
@@ -22,7 +18,7 @@ const FormSelectField = ({
   onValueChange,
   invalid = false,
   value,
-}: FormSelectFieldProps) => {
+}: SelectFieldProps) => {
   return (
     <Field.Root invalid={invalid}>
       <Select.Root
@@ -61,4 +57,4 @@ const FormSelectField = ({
   );
 };
 
-export default FormSelectField; 
+export default SelectField;
