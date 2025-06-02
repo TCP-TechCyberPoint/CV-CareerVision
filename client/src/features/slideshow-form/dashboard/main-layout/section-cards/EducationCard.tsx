@@ -2,7 +2,7 @@ import { MdSchool, MdVerifiedUser, MdCalendarToday } from "react-icons/md";
 import { Icon, Box, Stack, Text, Badge, HStack, Flex } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { educationData, getCompletionColor } from "@/features/slideshow-form/utils/mockData";
-import { getSectionStepPath } from "@/features/slideshow-form/routes";
+import { getSectionStepPath } from "@/features/slideshow-form/routes/slideshowRoutes";
 
 const EducationCard = () => {
   const navigate = useNavigate();

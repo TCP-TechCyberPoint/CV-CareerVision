@@ -2,9 +2,12 @@
 
 export const vitalsData = {
   name: "John Doe",
+  dateOfBirth: new Date(1990, 4, 15), // May 15, 1990
   email: "john.doe@example.com",
   phone: "+1 (555) 123-4567",
-  location: "San Francisco, CA",
+  country: "United States",
+  city: "San Francisco",
+  street: "123 Tech Street, Apt 4B",
   completion: 75,
 };
 

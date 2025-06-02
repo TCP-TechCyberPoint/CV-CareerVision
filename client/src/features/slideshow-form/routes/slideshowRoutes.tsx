@@ -22,11 +22,9 @@ export const slideshowRoutes: RouteObject[] = [
 export const SLIDESHOW_PATHS = {
   DASHBOARD: "/dashboard",
   CREATE_CV: "/create-cv",
+  
   // Generate step paths dynamically
-  STEPS: Object.keys(slideMap).reduce((acc, stepKey) => {
-    acc[stepKey.toUpperCase() as keyof typeof acc] = `/create-cv/${stepKey}`;
-    return acc;
-  }, {} as Record<string, string>),
+
 } as const;
 
 // Helper function to get step path
@@ -36,6 +34,7 @@ export const getStepPath = (step: keyof typeof slideMap) => `/create-cv/${step}`
 export const getSectionStepPath = (section: string) => {
   // Map dashboard sections to their corresponding steps
   const sectionToStepMap: Record<string, keyof typeof slideMap> = {
+    intro: 'intro',
     vitals: 'vitals',
     hardSkills: 'hardSkills', 
     softSkills: 'softSkills',
@@ -43,6 +42,7 @@ export const getSectionStepPath = (section: string) => {
     experience: 'experience',
     projects: 'projects',
     preferences: 'preferences',
+    end: 'end',
   };
   
   const step = sectionToStepMap[section];

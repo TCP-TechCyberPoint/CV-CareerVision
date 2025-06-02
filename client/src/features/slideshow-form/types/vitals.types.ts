@@ -5,7 +5,10 @@ export enum Gender {
 }
 export interface Vitals {
   name: string;
-  age: number;
+  dateOfBirth: Date;
   gender: Gender;
   email: string;
+  country: string;
+  city: string;
+  street: string;
 }

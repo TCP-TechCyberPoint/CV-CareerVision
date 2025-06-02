@@ -1,6 +1,7 @@
 import BaseButton from "@/components/ui/BaseButton";
 import { Box, Heading, Text, Image, Flex, Stack } from "@chakra-ui/react";
 import introFormImage from "@/assets/images/intro-form.png";
+import ReturnDashboard from "../components/ReturnDashboard";
 
 const StepIntro = ({ nextStep }: { nextStep: () => void }) => {
   return (
@@ -16,8 +17,13 @@ const StepIntro = ({ nextStep }: { nextStep: () => void }) => {
       flexDirection="column"
       justifyContent="space-between"
       minH="600px"
+      position="relative"
     >
-      <Stack gap={8}>
+      <Box position="absolute" top={4} left={4}>
+        <ReturnDashboard />
+      </Box>
+
+      <Stack gap={8} mt={12}>
         <Stack gap={4}>
           <Heading size="2xl" color="blue.600">
             Create Your Professional CV

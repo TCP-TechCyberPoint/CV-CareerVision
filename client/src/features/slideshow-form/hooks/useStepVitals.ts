@@ -16,9 +16,12 @@ export const useStepVitals = (nextStep: () => void) => {
     resolver: zodResolver(vitalsSchema),
     defaultValues: {
       name: formData.vitals?.name ?? "",
-      age: formData.vitals?.age ?? 0,
+      dateOfBirth: formData.vitals?.dateOfBirth ?? new Date(2000, 0, 1),
       gender: formData.vitals?.gender ?? Gender.Male,
       email: formData.vitals?.email ?? "",
+      country: formData.vitals?.country ?? "",
+      city: formData.vitals?.city ?? "",
+      street: formData.vitals?.street ?? "",
     },
   });
 
@@ -27,11 +30,26 @@ export const useStepVitals = (nextStep: () => void) => {
     nextStep();
   };
 
+  // Helper function to calculate age from date of birth
+  const calculateAge = (dateOfBirth: Date): number => {
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    
+    return age;
+  };
+
   return {
     register,
     handleSubmit,
     setValue,
     onSubmit,
     errors,
+    calculateAge,
   };
 };

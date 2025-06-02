@@ -17,6 +17,7 @@ import {
 import { SelectField, ComboboxField } from "../components";
 import type { Degree, FieldOfStudy, Year } from "../types";
 import StepNavigationButtons from "../components/StepNavigationButtons";
+import ReturnDashboard from "../components/ReturnDashboard";
 
 const MotionBox = motion.create(Box);
 
@@ -57,8 +58,13 @@ const StepEducation = ({ nextStep, prevStep }: StepEducationProps) => {
         bg="white"
         maxW="800px"
         mx="auto"
+        position="relative"
       >
-        <Stack gap={6}>
+        <Box position="absolute" top={4} left={4}>
+          <ReturnDashboard />
+        </Box>
+
+        <Stack gap={6} mt={12}>
           <Text fontSize="2xl" fontWeight="bold" color="blue.600">
             Education Information
           </Text>

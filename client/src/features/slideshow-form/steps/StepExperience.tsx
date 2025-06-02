@@ -8,6 +8,8 @@ import {
   StepNavigationButtons,
 } from "@/features/slideshow-form/components";
 import { DevTool } from "@hookform/devtools";
+import ReturnDashboard from "../components/ReturnDashboard";
+
 const MotionBox = motion.create(Box);
 
 interface StepExperienceProps {
@@ -43,8 +45,13 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
         bg="white"
         maxW="900px"
         mx="auto"
+        position="relative"
       >
-        <VStack gap={8} align="stretch">
+        <Box position="absolute" top={4} left={4}>
+          <ReturnDashboard />
+        </Box>
+
+        <VStack gap={8} align="stretch" mt={12}>
           {/* Header */}
           <ExperienceHeader />
 
