@@ -2,7 +2,7 @@ import { Box, Stack, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useStepProjects } from "../hooks/useStepProjects";
 import ProjectsHeader from "../components/projects/ProjectsHeader";
-import ProjectCard from "../components/projects/ProjectCard";
+import ProjectFormCard from "../components/projects/ProjectFormCard";
 import AddProjectButton from "../components/projects/AddProjectButton";
 import StepNavigationButtons from "../components/StepNavigationButtons";
 import { DevTool } from "@hookform/devtools";
@@ -50,7 +50,7 @@ const StepProjects = ({ nextStep, prevStep }: StepProjectsProps) => {
           {/* Dynamic Project Fields */}
           <Stack gap={6}>
             {fields.map((field, index) => (
-              <ProjectCard
+              <ProjectFormCard
                 key={field.id}
                 field={field}
                 index={index}

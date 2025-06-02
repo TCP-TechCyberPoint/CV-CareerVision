@@ -9,10 +9,11 @@ import type {
 import type { FieldArrayWithId } from "react-hook-form";
 import type { Project } from "@/features/slideshow-form/types";
 import ProjectFormFields from "./ProjectFormFields";
+import BaseCard from "../cards/BaseCard";
 
-const MotionBox = motion.create("div");
+const MotionBaseCard = motion.create(BaseCard);
 
-interface ProjectCardProps {
+interface ProjectFormCardProps {
   field: FieldArrayWithId<{ projects: Project[] }, "projects", "id">;
   index: number;
   totalFields: number;
@@ -23,7 +24,7 @@ interface ProjectCardProps {
   onRemove: (index: number) => void;
 }
 
-const ProjectCard = ({
+const ProjectFormCard = ({
   field,
   index,
   totalFields,
@@ -32,21 +33,15 @@ const ProjectCard = ({
   setValue,
   watchedProjects,
   onRemove,
-}: ProjectCardProps) => {
+}: ProjectFormCardProps) => {
   return (
-    <MotionBox
+    <MotionBaseCard
       key={field.id}
+      variant="form"
+      themeColor="blue"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.2 }}
-      style={{
-        padding: "1.5rem",
-        borderRadius: "0.5rem",
-        borderWidth: "2px",
-        borderColor: "var(--chakra-colors-blue-100)",
-        backgroundColor: "var(--chakra-colors-blue-50)",
-        position: "relative",
-      }}
     >
       {/* Remove Button (only show if more than 1 project) */}
       {totalFields > 1 && (
@@ -77,8 +72,8 @@ const ProjectCard = ({
 
       {/* Separator between projects */}
       {index < totalFields - 1 && <Separator mt={6} borderColor="blue.200" />}
-    </MotionBox>
+    </MotionBaseCard>
   );
 };
 
-export default ProjectCard;
+export default ProjectFormCard; 

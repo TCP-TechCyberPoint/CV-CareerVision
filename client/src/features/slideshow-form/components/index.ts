@@ -6,7 +6,7 @@ export { default as AddExperienceButton } from "./experience/AddExperienceButton
 
 // Projects-related components
 export { default as ProjectsHeader } from "./projects/ProjectsHeader";
-export { default as ProjectCard } from "./projects/ProjectCard";
+export { default as ProjectFormCard } from "./projects/ProjectFormCard";
 export { default as ProjectFormFields } from "./projects/ProjectFormFields";
 export { default as AddProjectButton } from "./projects/AddProjectButton";
 

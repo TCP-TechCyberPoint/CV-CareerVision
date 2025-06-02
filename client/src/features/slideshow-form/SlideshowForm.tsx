@@ -29,6 +29,14 @@ const SlideshowForm = () => {
   const { step = "intro" } = useParams<{ step: keyof typeof slideMap }>();
   const navigate = useNavigate();
 
+  // Debug logging
+  console.log("🔍 SlideshowForm Debug:");
+  console.log("- step param:", step);
+  console.log("- slideMap:", slideMap);
+  console.log("- currentIndex:", slideMap[step]);
+  console.log("- Component found:", !!slideComponents[step]);
+  console.log("- URL pathname:", window.location.pathname);
+
   const currentIndex = slideMap[step];
   const entries = Object.entries(slideMap);
   const { formData } = useSlideshowFormStore();
