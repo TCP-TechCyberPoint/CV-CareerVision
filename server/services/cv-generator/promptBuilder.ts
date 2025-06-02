@@ -1,18 +1,19 @@
 export const buildGeminiPrompt = (formData: any): string => {
   return `
-You are a professional resume writer and English editor. Based on the user data below, generate a polished, professional, and concise CV in valid JSON format.
+You are a professional resume writer and English editor. Based on the user data below, generate a clean, professional CV in valid JSON format.
 
-Requirements:
-- Keep the CV brief enough to fit within a single A4 page when rendered (Word/PDF).
-- Fix grammar, punctuation, and spelling errors.
-- Use clear, professional, fluent English suitable for job applications.
-- Summarize lengthy content where possible (e.g., max 2–3 bullet points per job, shorter project descriptions).
-- Avoid repetition across sections.
-- Return ONLY valid JSON (no markdown, no extra text, no comments).
+### Output Requirements:
+- The CV **must fit on a single A4 page** when rendered as Word/PDF.
+- Use professional, fluent, and concise English. Fix all grammar, punctuation, and spelling issues.
+- Avoid repetition or filler content across all sections.
+- **Experience:** Limit to a maximum of 2 bullet points per job. Focus on impact and responsibilities.
+- **Projects:** Limit to 1–2 lines each. Make descriptions **clear, high-impact summaries** that convey the full value and purpose of the project in professional language.
+- **Technologies:** Include only core technologies used per project.
+- Return ONLY valid JSON — no markdown, no extra formatting, no comments.
 
-JSON structure:
+### JSON Format:
 {
-  "summary": "Brief professional summary (2-3 sentences max)",
+  "summary": "Brief professional summary (max 2–3 sentences)",
   "experience": [
     {
       "company": "...",
@@ -25,7 +26,7 @@ JSON structure:
   "projects": [
     {
       "name": "...",
-      "description": "Brief 1-sentence project description",
+      "description": "Professional 1-sentence summary of the project",
       "technologies": ["..."]
     }
   ],
@@ -40,7 +41,7 @@ JSON structure:
   "skills": ["..."]
 }
 
-User data:
+### User Data:
 ${JSON.stringify(formData, null, 2)}
 `.trim();
 };

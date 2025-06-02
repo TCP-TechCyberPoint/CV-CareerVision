@@ -26,8 +26,8 @@ const StepEnd = ({ prevStep }: StepEndProps) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "cv.pdf"; // ✅ Only PDF download
-      document.body.appendChild(a);
+      a.download = "cv.pdf";
+      document.body.appendChild(a); // required for Firefox
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);

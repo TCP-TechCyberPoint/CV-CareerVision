@@ -41,7 +41,6 @@ export const generateCvDocx = async (req: Request, res: Response) => {
     const experiences = formData.experiences || [];
     const prompt = buildGeminiPrompt(formData);
 
-    // 1. Get enhanced CV content from Gemini
     const geminiRes = await axios.post(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
       { contents: [{ parts: [{ text: prompt }] }] },
@@ -53,8 +52,8 @@ export const generateCvDocx = async (req: Request, res: Response) => {
     text = text.replace(/^```json/, "").replace(/```$/, "").trim();
     const content = JSON.parse(text);
 
-    // 2. Build the DOCX in memory
     const sectionChildren: Paragraph[] = [];
+
     const addHeading = (label: string) =>
       sectionChildren.push(new Paragraph({
         text: label.toUpperCase(),
@@ -101,10 +100,23 @@ export const generateCvDocx = async (req: Request, res: Response) => {
     addLine();
 
     addHeading("Experience");
+    let experienceCount = 0;
     for (const exp of content.experience || []) {
       sectionChildren.push(spacedParagraph(`${exp.company} | ${exp.title} (${exp.startYear} – ${exp.endYear})`));
+      experienceCount++;
+
       for (const bullet of exp.bullets || []) {
         sectionChildren.push(spacedParagraph(bullet, true));
+        experienceCount++;
+      }
+
+      if (experienceCount < 12) {
+        sectionChildren.push(
+          spacedParagraph("• Participated in Agile ceremonies", true),
+          spacedParagraph("• Wrote technical documentation and test cases", true),
+          spacedParagraph("• Collaborated with QA teams to ensure quality delivery", true)
+        );
+        experienceCount += 3;
       }
     }
     addLine();
@@ -116,17 +128,26 @@ export const generateCvDocx = async (req: Request, res: Response) => {
     addLine();
 
     addHeading("Projects");
+    let projectCount = 0;
     for (const proj of content.projects || []) {
       sectionChildren.push(
         spacedParagraph(proj.name),
         spacedParagraph(`• ${proj.description}`, true),
         spacedParagraph(`• Technologies: ${proj.technologies.join(", ")}`, true)
       );
+      projectCount += 3;
     }
-    addLine();
 
+    addLine();
     addHeading("Skills");
     sectionChildren.push(spacedParagraph((content.skills || []).join(" • ")));
+
+    sectionChildren.push(new Paragraph({ spacing: { before: 100 } }));
+
+    // 🧱 Cap total content to 1 page
+    if (sectionChildren.length > 35) {
+      sectionChildren.splice(35);
+    }
 
     const doc = new Document({ sections: [{ children: sectionChildren }] });
     const buffer = await Packer.toBuffer(doc);
@@ -136,7 +157,6 @@ export const generateCvDocx = async (req: Request, res: Response) => {
     const docxPath = path.join(tempDir, "cv.docx");
     fs.writeFileSync(docxPath, buffer);
 
-    // 3. Upload to CloudConvert & convert to PDF
     const job = await cloudConvert.jobs.create({
       tasks: {
         upload: { operation: "import/upload" },
@@ -165,12 +185,10 @@ export const generateCvDocx = async (req: Request, res: Response) => {
     const fileUrl = exportTask.result.files[0].url;
     const pdfBuffer = await axios.get(fileUrl, { responseType: "arraybuffer" });
 
-    // 4. Send PDF to client
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader("Content-Disposition", "attachment; filename=cv.pdf");
     res.send(pdfBuffer.data);
 
-    // 5. Cleanup
     fs.unlinkSync(docxPath);
   } catch (err: any) {
     console.error("🔥 Internal error:", err.message);
