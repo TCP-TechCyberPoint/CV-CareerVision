@@ -7,7 +7,7 @@ import type {
   UseFormSetValue,
   FieldArrayWithId,
 } from "react-hook-form";
-import type { Experience } from "@/features/slideshow-form/types";
+import type { Experience } from "@slideshow-form/types";
 import ExperienceFormFields from "./ExperienceFormFields";
 
 const MotionBox = motion.create("div");

@@ -4,7 +4,9 @@ import {
   Text,
   useListCollection,
   useFilter,
+  Input,
 } from "@chakra-ui/react";
+import { FormControl, FormErrorMessage } from "@chakra-ui/form-control";
 import { useStepEducation } from "../hooks/useStepEducation";
 import { motion } from "framer-motion";
 import {
@@ -13,7 +15,6 @@ import {
   initialInstitutesCollection,
   initialYearsCollection,
 } from "../schemas/educationSchema";
-
 import { SelectField, ComboboxField } from "../components";
 import type { Degree, FieldOfStudy, Year } from "../types";
 import StepNavigationButtons from "../components/StepNavigationButtons";

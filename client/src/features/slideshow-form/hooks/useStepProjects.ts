@@ -7,7 +7,7 @@ import {
 import { useSlideshowFormStore } from "../store";
 import type { Project } from "../types/index";
 
-const createEmptyProject = (): Project => ({
+const createEmptyProject = (): Project => ({  
   id: crypto.randomUUID(),
   projectName: "",
   description: "",

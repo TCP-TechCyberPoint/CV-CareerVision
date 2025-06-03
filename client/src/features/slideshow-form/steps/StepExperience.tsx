@@ -6,7 +6,7 @@ import {
   ExperienceCard,
   AddExperienceButton,
   StepNavigationButtons,
-} from "@/features/slideshow-form/components";
+} from "@slideshow-form/components";
 import { DevTool } from "@hookform/devtools";
 import ReturnDashboard from "../components/ReturnDashboard";
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SOFT_SKILLS_HIERARCHY } from "../constants/skills-hierarchy";
-import { useSlideshowFormStore } from "../store/store";
+import { useSlideshowFormStore } from "../store";
 import type { SoftSkill, SoftSkillCategory, SkillColor } from "../types/skills";
 
 export const useSoftSkills = () => {

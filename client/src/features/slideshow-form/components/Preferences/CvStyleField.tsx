@@ -1,6 +1,6 @@
 import { RadioGroup, VStack, Text } from "@chakra-ui/react";
 import { Field } from "@chakra-ui/react";
-import { CvStyle } from "@/features/slideshow-form/types";
+import { CvStyle } from "@slideshow-form/types";
 
 interface CvStyleFieldProps {
   error?: string;

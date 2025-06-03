@@ -1,9 +1,12 @@
-import SkillsContainer from "./SkillsContainer";
-import SkillsSelectionCard from "./SkillsSelectionCard";
-import SkillCategoriesSection from "./SkillCategoriesSection";
-import SkillSubcategoriesSection from "./SkillSubcategoriesSection";
-import SelectedSkillsSection from "./SelectedSkillsSection";
-import StepNavigationButtons from "../StepNavigationButtons";
+import {
+  SkillsContainer,
+  SkillsSelectionCard,
+  SkillCategoriesSection,
+  SkillSubcategoriesSection,
+  SelectedSkillsSection,
+} from "@slideshow-form/components/skills";
+
+import StepNavigationButtons from "@slideshow-form/components/StepNavigationButtons";
 
 interface SkillsStepProps {
   subtitle: string;
@@ -32,12 +35,10 @@ const SkillsStep = ({
   getColorScheme,
   nextStep,
   prevStep,
-  useHardSkillsAnimation = false
+  useHardSkillsAnimation = false,
 }: SkillsStepProps) => {
   return (
-    <SkillsContainer
-      subtitle={subtitle}
-    >
+    <SkillsContainer subtitle={subtitle}>
       <SkillsSelectionCard title={cardTitle}>
         <SkillCategoriesSection
           categories={categories}
@@ -63,12 +64,9 @@ const SkillsStep = ({
         />
       </SkillsSelectionCard>
 
-      <StepNavigationButtons
-        onPrevStep={prevStep}
-        onNextStep={nextStep}
-      />
+      <StepNavigationButtons onPrevStep={prevStep} onNextStep={nextStep} />
     </SkillsContainer>
   );
 };
 
-export default SkillsStep; 
+export default SkillsStep;

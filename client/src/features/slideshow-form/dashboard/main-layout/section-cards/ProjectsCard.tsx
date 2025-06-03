@@ -1,8 +1,8 @@
 import { MdFolder, MdCode, MdLink, MdStar } from "react-icons/md";
 import { Icon, Box, Stack, Text, Badge, HStack, Flex, Wrap } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { projectsData, getCompletionColor } from "@/features/slideshow-form/utils/mockData";
-import { getSectionStepPath } from "@/features/slideshow-form/routes";
+import { projectsData, getCompletionColor } from "@slideshow-form/utils/mockData";
+import { getSectionStepPath } from "@slideshow-form/routes";
 
 const ProjectsCard = () => {
   const navigate = useNavigate();

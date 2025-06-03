@@ -1,4 +1,4 @@
-import { SelectField } from "../index";
+import { SelectField } from "@slideshow-form/components";
 
 interface PreferenceSelectFieldProps {
   label: string;

@@ -5,14 +5,15 @@ import {
   HStack,
   VStack,
   Text,
+  Field,
 } from "@chakra-ui/react";
-import { Field } from "@chakra-ui/react";
+
 import type {
   UseFormRegister,
   FieldErrors,
   UseFormSetValue,
 } from "react-hook-form";
-import type { Experience } from "@/features/slideshow-form/types";
+import type { Experience } from "@slideshow-form/types";
 
 interface ExperienceFormFieldsProps {
   index: number;

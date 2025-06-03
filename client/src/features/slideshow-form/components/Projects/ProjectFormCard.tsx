@@ -7,9 +7,9 @@ import type {
   UseFormSetValue,
 } from "react-hook-form";
 import type { FieldArrayWithId } from "react-hook-form";
-import type { Project } from "@/features/slideshow-form/types";
+import type { Project } from "@slideshow-form/types";
 import ProjectFormFields from "./ProjectFormFields";
-import BaseCard from "../cards/BaseCard";
+import { BaseCard } from "@slideshow-form/components/cards";
 
 const MotionBaseCard = motion.create(BaseCard);
 
@@ -76,4 +76,4 @@ const ProjectFormCard = ({
   );
 };
 
-export default ProjectFormCard; 
+export default ProjectFormCard;

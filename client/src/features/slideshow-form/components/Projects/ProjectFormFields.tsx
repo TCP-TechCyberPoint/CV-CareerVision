@@ -16,7 +16,7 @@ import type {
   FieldErrors,
   UseFormSetValue,
 } from "react-hook-form";
-import type { Project } from "@/features/slideshow-form/types";
+import type { Project } from "@slideshow-form/types";
 import { Tag } from "@chakra-ui/react";
 import { MdOutlineCancel } from "react-icons/md";
 

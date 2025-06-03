@@ -2,7 +2,7 @@ import { Box, Text, VStack } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
-import ReturnDashboard from "../ReturnDashboard";
+import ReturnDashboard from "@slideshow-form/components/ReturnDashboard"; 
 
 const MotionBox = motion.create(Box);
 

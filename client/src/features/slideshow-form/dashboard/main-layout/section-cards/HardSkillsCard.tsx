@@ -1,9 +1,9 @@
 import { MdBuild } from "react-icons/md";
 import { Icon, Stack, Text, Badge, HStack, Box, Wrap } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { hardSkillsData } from "@/features/slideshow-form/utils/mockData";
-import { getSectionStepPath } from "@/features/slideshow-form/routes";
-import SectionCard from "@/features/slideshow-form/components/cards/SectionCard";
+import { hardSkillsData } from "@slideshow-form/utils/mockData";
+import { getSectionStepPath } from "@slideshow-form/routes";
+import SectionCard from "@slideshow-form/components/cards/SectionCard";
 
 const HardSkillsCard = () => {
   const navigate = useNavigate();

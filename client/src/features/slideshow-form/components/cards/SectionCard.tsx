@@ -1,8 +1,8 @@
 // src/components/cards/SectionCard.tsx
 
-import { Box, Flex, Text, Badge } from "@chakra-ui/react";
 import type { ReactNode } from "react";
-import { getCompletionColor } from "@/features/slideshow-form/utils/mockData";
+import { Box, Flex, Text, Badge } from "@chakra-ui/react";
+import { getCompletionColor } from "@slideshow-form/utils/mockData";
 import BaseCard from "./BaseCard";
 
 interface SectionCardProps {

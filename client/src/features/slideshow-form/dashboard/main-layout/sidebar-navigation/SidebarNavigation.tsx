@@ -21,7 +21,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import {
   SLIDESHOW_PATHS,
   getSectionStepPath,
-} from "@/features/slideshow-form/routes";
+} from "@slideshow-form/routes";
+
 
 interface NavigationItem {
   key: string;

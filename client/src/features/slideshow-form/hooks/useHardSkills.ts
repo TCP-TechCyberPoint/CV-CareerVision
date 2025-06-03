@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { HARD_SKILLS_HIERARCHY } from "../constants/skills-hierarchy";
-import { useSlideshowFormStore } from "../store/store";
+import { useSlideshowFormStore } from "../store";
 import type { HardSkill, HardSkillCategory, SkillColor } from "../types/skills";
 
 export const useHardSkills = () => {

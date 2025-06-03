@@ -1,6 +1,6 @@
 import BaseButton from "@/components/ui/BaseButton";
 import { Box, Text, Stack } from "@chakra-ui/react";
-import { useSlideshowFormStore } from "@/features/slideshow-form/store/store";
+import { useSlideshowFormStore } from "@slideshow-form/store/store";
 import ReturnDashboard from "../components/ReturnDashboard";
 
 interface StepEndProps {

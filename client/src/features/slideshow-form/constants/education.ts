@@ -1,5 +1,5 @@
 import { israelEducationInstitutes } from "@/data/israelEducationInstitutes";
-import type { Year } from "../types/education.types";
+import type { Year } from "@slideshow-form/types/education.types";
 
 export const DEGREES = [
   "Bachelor",

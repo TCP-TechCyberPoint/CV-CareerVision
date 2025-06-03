@@ -4,7 +4,7 @@ import {
   type EducationFormData,
   educationSchema,
 } from "../schemas/educationSchema";
-import { useSlideshowFormStore } from "../store";
+import { useSlideshowFormStore } from "../store/store";
 import type { Education, Degree, FieldOfStudy, Year } from "../types/index";
 
 export const useStepEducation = (nextStep: () => void) => {

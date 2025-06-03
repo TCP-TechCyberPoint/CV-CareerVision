@@ -9,9 +9,9 @@ import {
   Progress,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { softSkillsData } from "@/features/slideshow-form/utils/mockData";
-import { getSectionStepPath } from "@/features/slideshow-form/routes";
-import SectionCard from "@/features/slideshow-form/components/cards/SectionCard";
+import { softSkillsData } from "@slideshow-form/utils/mockData";
+import { getSectionStepPath } from "@slideshow-form/routes";
+import SectionCard from "@slideshow-form/components/cards/SectionCard";
 
 const SoftSkillsCard = () => {
   const navigate = useNavigate();

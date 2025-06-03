@@ -8,11 +8,11 @@ import {
   ExperienceLevel,
   Industry,
   SalaryRange,
-} from "../types";
+} from "@slideshow-form/types";
 import {
   preferencesSchema,
   type PreferencesFormData,
-} from "../schemas/preferencesSchema";
+} from "../schemas/preferencesSchema"; 
 
 export const useStepPreferences = (nextStep: () => void) => {
   const { formData, updateFormData } = useSlideshowFormStore();

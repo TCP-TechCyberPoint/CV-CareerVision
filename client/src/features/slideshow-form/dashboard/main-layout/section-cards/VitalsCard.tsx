@@ -1,9 +1,9 @@
 import { MdPerson, MdEmail, MdPhone, MdLocationOn, MdCake } from "react-icons/md";
 import { Icon, Stack, Text, HStack, Box } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { vitalsData } from "@/features/slideshow-form/utils/mockData";
-import { getSectionStepPath } from "@/features/slideshow-form/routes";
-import SectionCard from "@/features/slideshow-form/components/cards/SectionCard";
+import { vitalsData } from "@slideshow-form/utils/mockData";
+import { getSectionStepPath } from "@slideshow-form/routes";
+import SectionCard from "@slideshow-form/components/cards/SectionCard";
 
 const VitalsCard = () => {
   const navigate = useNavigate();

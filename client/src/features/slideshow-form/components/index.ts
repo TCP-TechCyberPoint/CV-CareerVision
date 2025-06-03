@@ -1,7 +1,6 @@
 // Experience-related components
 export { default as ExperienceHeader } from "./experience/ExperienceHeader";
 export { default as ExperienceCard } from "./experience/ExperienceCard";
-export { default as ExperienceFormFields } from "./experience/ExperienceFormFields";
 export { default as AddExperienceButton } from "./experience/AddExperienceButton";
 
 // Projects-related components
