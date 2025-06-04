@@ -93,7 +93,7 @@ const LoginPage: React.FC = () => {
                   variant="outline"
                   onClick={() => {
                     const quickLoginData = {
-                      email: "email@email.com",
+                      email: "careervision2026@gmail.com",
                       password: "Pa$$w0rd"
                     };
                     handleSubmit(quickLoginData);
