@@ -171,7 +171,7 @@ Career Vision is a digital platform designed to empower job seekers in the Israe
 ### Quality & Operations
 - Eilon Manela - Junior QA
 - Bar Berkovich - Junior DevOps
-- Yagel -  Security
+- Yagel - Information Security
 
 ## 📚 Documentation
 
