@@ -11,6 +11,7 @@ export const useStepVitals = (nextStep: () => void) => {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<VitalsFormData>({
     resolver: zodResolver(vitalsSchema),
@@ -56,5 +57,6 @@ export const useStepVitals = (nextStep: () => void) => {
     onSubmit,
     errors,
     calculateAge,
+    getValues,
   };
 };
