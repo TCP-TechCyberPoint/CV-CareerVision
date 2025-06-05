@@ -25,8 +25,8 @@ const SelectedSkillsSection = ({
   if (selectedSkills.length === 0) return null;
 
   const content = (
-    <Box mt={10} p={6} bg={bgColor} borderRadius="xl" boxShadow="md">
-      <Flex justify="space-between" align="center" mb={6}>
+    <Box mt={4} p={4} bg={bgColor} borderRadius="xl" boxShadow="md">
+      <Flex justify="space-between" align="center" mb={4}>
         <Heading size="sm" color="gray.600">
           Your Selected Skills
         </Heading>

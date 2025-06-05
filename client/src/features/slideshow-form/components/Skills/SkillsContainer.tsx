@@ -23,10 +23,10 @@ const SkillsContainer = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      mt={24}
+      mt={8}
       mx="auto"
       maxW="900px"
-      p={10}
+      p={6}
       borderRadius="3xl"
       boxShadow="2xl"
       bg={bgColor}
@@ -35,14 +35,14 @@ const SkillsContainer = ({
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
-      minH="600px"
+      minH="500px"
       position="relative"
     >
       <Box position="absolute" top={4} left={4}>
         <ReturnDashboard />
       </Box>
 
-      <VStack gap={8} align="flex" w="full" mt={12}>
+      <VStack gap={6} align="flex" w="full" mt={8}>
         <Box textAlign="center" w="full">
           <Text fontSize="lg" color="gray.500" mt={2}>
             {subtitle}

@@ -1,11 +1,11 @@
 // Experience-related components
 export { default as ExperienceHeader } from "./experience/ExperienceHeader";
-export { default as ExperienceCard } from "./experience/ExperienceCard";
-export { default as AddExperienceButton } from "./experience/AddExperienceButton";
+export { default as ExperienceStepForm } from "./experience/ExperienceStepForm";
+export { default as ExperienceFormFields } from "./experience/ExperienceFormFields";
 
 // Projects-related components
 export { default as ProjectsHeader } from "./projects/ProjectsHeader";
-export { default as ProjectFormCard } from "./projects/ProjectFormCard";
+export { default as ProjectStepForm } from "./projects/ProjectStepForm";
 export { default as ProjectFormFields } from "./projects/ProjectFormFields";
 export { default as AddProjectButton } from "./projects/AddProjectButton";
 

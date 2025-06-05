@@ -34,7 +34,6 @@ export interface Experience {
   endDate?: string;
   isCurrentJob: boolean;
   description?: string;
-  previousJobs?: PreviousJob[];
 }
 
 export interface PreviousJob {
@@ -48,7 +47,7 @@ export interface PreviousJob {
 export interface SlideshowFormData {
   vitals?: Vitals;
   education?: Education;
-  experience?: Experience;
+  experience?: Experience[];
   projects?: Project[];
   hardSkills?: HardSkills;
   softSkills?: SoftSkills;

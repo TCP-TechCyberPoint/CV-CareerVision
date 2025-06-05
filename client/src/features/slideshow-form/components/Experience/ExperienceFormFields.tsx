@@ -14,32 +14,36 @@ import type {
   UseFormSetValue,
 } from "react-hook-form";
 import type { Experience } from "@slideshow-form/types";
+import type { ExperienceFormData } from "../../schemas/experienceSchema";
 
 interface ExperienceFormFieldsProps {
-  register: UseFormRegister<{ experience: Experience }>;
-  errors: FieldErrors<{ experience: Experience }>;
-  setValue: UseFormSetValue<{ experience: Experience }>;
-  watchedExperience: Experience;
+  index: number;
+  register: UseFormRegister<ExperienceFormData>;
+  errors: FieldErrors<ExperienceFormData>;
+  setValue: UseFormSetValue<ExperienceFormData>;
+  watchedExperiences: Experience[];
 }
 
 const ExperienceFormFields = ({
+  index,
   register,
   errors,
   setValue,
-  watchedExperience,
+  watchedExperiences,
 }: ExperienceFormFieldsProps) => {
-  const isCurrentJob = watchedExperience?.isCurrentJob;
+  const currentExperience = watchedExperiences[index];
+  const isCurrentJob = currentExperience?.isCurrentJob;
 
   return (
     <VStack gap={4} align="stretch">
       {/* Job Title and Company */}
       <HStack gap={4}>
-        <Field.Root invalid={!!errors.experience?.jobTitle} flex={1}>
+        <Field.Root invalid={!!errors.experiences?.[index]?.jobTitle} flex={1}>
           <Field.Label fontWeight="medium" color="gray.700">
             Job Title
           </Field.Label>
           <Input
-            {...register(`experience.jobTitle`)}
+            {...register(`experiences.${index}.jobTitle`)}
             placeholder="Software Engineer"
             size="lg"
             borderRadius="md"
@@ -50,16 +54,16 @@ const ExperienceFormFields = ({
             }}
           />
           <Field.ErrorText>
-            {errors.experience?.jobTitle?.message}
+            {errors.experiences?.[index]?.jobTitle?.message}
           </Field.ErrorText>
         </Field.Root>
 
-        <Field.Root invalid={!!errors.experience?.company} flex={1}>
+        <Field.Root invalid={!!errors.experiences?.[index]?.company} flex={1}>
           <Field.Label fontWeight="medium" color="gray.700">
             Company
           </Field.Label>
           <Input
-            {...register(`experience.company`)}
+            {...register(`experiences.${index}.company`)}
             placeholder="Google Inc."
             size="lg"
             borderRadius="md"
@@ -70,19 +74,19 @@ const ExperienceFormFields = ({
             }}
           />
           <Field.ErrorText>
-            {errors.experience?.company?.message}
+            {errors.experiences?.[index]?.company?.message}
           </Field.ErrorText>
         </Field.Root>
       </HStack>
 
       {/* Date Pickers */}
       <HStack gap={4}>
-        <Field.Root invalid={!!errors.experience?.startDate} flex={1}>
+        <Field.Root invalid={!!errors.experiences?.[index]?.startDate} flex={1}>
           <Field.Label fontWeight="medium" color="gray.700">
             Start Date
           </Field.Label>
           <Input
-            {...register(`experience.startDate`)}
+            {...register(`experiences.${index}.startDate`)}
             type="date"
             size="lg"
             borderRadius="md"
@@ -93,16 +97,16 @@ const ExperienceFormFields = ({
             }}
           />
           <Field.ErrorText>
-            {errors.experience?.startDate?.message}
+            {errors.experiences?.[index]?.startDate?.message}
           </Field.ErrorText>
         </Field.Root>
 
-        <Field.Root invalid={!!errors.experience?.endDate} flex={1}>
+        <Field.Root invalid={!!errors.experiences?.[index]?.endDate} flex={1}>
           <Field.Label fontWeight="medium" color="gray.700">
             End Date
           </Field.Label>
           <Input
-            {...register(`experience.endDate`)}
+            {...register(`experiences.${index}.endDate`)}
             type="date"
             size="lg"
             borderRadius="md"
@@ -118,23 +122,27 @@ const ExperienceFormFields = ({
             }}
           />
           <Field.ErrorText>
-            {errors.experience?.endDate?.message}
+            {errors.experiences?.[index]?.endDate?.message}
           </Field.ErrorText>
         </Field.Root>
       </HStack>
 
       {/* Current Job Checkbox */}
       <Checkbox.Root
-        {...register(`experience.isCurrentJob`, {
-          setValueAs: (v) => v === "on" || v === true,
-        })}
+        checked={Boolean(isCurrentJob)}
         colorPalette="purple"
         size="lg"
         onCheckedChange={(e) => {
           const isChecked = Boolean(e.checked);
-          setValue(`experience.isCurrentJob`, isChecked);
+          setValue(`experiences.${index}.isCurrentJob`, isChecked);
           if (isChecked) {
-            setValue(`experience.endDate`, undefined);
+            setValue(`experiences.${index}.endDate`, undefined);
+            // Uncheck other current job checkboxes (only one current job allowed)
+            watchedExperiences.forEach((_, idx) => {
+              if (idx !== index) {
+                setValue(`experiences.${idx}.isCurrentJob`, false);
+              }
+            });
           }
         }}
       >
@@ -148,12 +156,12 @@ const ExperienceFormFields = ({
       </Checkbox.Root>
 
       {/* Description */}
-      <Field.Root invalid={!!errors.experience?.description}>
+      <Field.Root invalid={!!errors.experiences?.[index]?.description}>
         <Field.Label fontWeight="medium" color="gray.700">
           Description (Optional)
         </Field.Label>
         <Textarea
-          {...register(`experience.description`)}
+          {...register(`experiences.${index}.description`)}
           placeholder="Describe your role and achievements..."
           size="lg"
           borderRadius="md"
@@ -165,7 +173,7 @@ const ExperienceFormFields = ({
           }}
         />
         <Field.ErrorText>
-          {errors.experience?.description?.message}
+          {errors.experiences?.[index]?.description?.message}
         </Field.ErrorText>
       </Field.Root>
     </VStack>

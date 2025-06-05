@@ -78,7 +78,7 @@ Contains shared styling utilities:
 - Used in forms for input grouping
 - Subtle background colors
 - Less prominent hover effects
-- Examples: ProjectFormCard, form field groups
+- Examples: ProjectStepForm, form field groups
 
 ## Creating New Card Types
 

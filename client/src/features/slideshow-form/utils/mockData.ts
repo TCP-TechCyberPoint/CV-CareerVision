@@ -48,24 +48,26 @@ export const educationData: Education = {
   certifications: ["AWS Certified Developer", "React Developer Certification"],
 };
 
-export const experienceData: Experience = {
-  jobTitle: "Senior Software Engineer",
-  company: "Microsoft",
-  startDate: "2022-01-01",
-  isCurrentJob: true,
-  description:
-    "Leading development of cloud-based applications using React and Azure services",
-  previousJobs: [
-    {
-      jobTitle: "Software Engineer",
-      company: "Google",
-      startDate: "2019-01-01",
-      endDate: "2022-01-01",
-      description:
-        "Developed and maintained scalable web applications using React and Node.js",
-    },
-  ],
-};
+export const experienceData: Experience[] = [
+  {
+    jobTitle: "Senior Software Engineer",
+    company: "Microsoft",
+    startDate: "2022-01-01",
+    endDate: null,
+    isCurrentJob: true,
+    description:
+      "Leading development of cloud-based applications using React and Azure services",
+  },
+  {
+    jobTitle: "Software Engineer",
+    company: "Google",
+    startDate: "2019-01-01",
+    endDate: "2022-01-01",
+    isCurrentJob: false,
+    description:
+      "Developed and maintained scalable web applications using React and Node.js",
+  },
+];
 
 export const projectsData: Project[] = [
   {

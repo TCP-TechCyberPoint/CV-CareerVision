@@ -2,10 +2,18 @@ import { useNavigate } from "react-router-dom";
 import { useSlideshowFormStore } from "@slideshow-form/store";
 import { getSectionStepPath } from "@slideshow-form/routes";
 
-export const useExperienceCard = () => {
+export const useExperienceStepForm = () => {
   const navigate = useNavigate();
   const { formData } = useSlideshowFormStore();
-  const experienceData = formData.experience;
+  
+  // Handle both old format (single object) and new format (array)
+  const experienceData = (() => {
+    const experience = formData.experience;
+    if (!experience) return [];
+    if (Array.isArray(experience)) return experience;
+    // Convert old single object format to array
+    return [experience];
+  })();
 
   const handleClick = () => {
     navigate(getSectionStepPath("experience"));
@@ -13,33 +21,24 @@ export const useExperienceCard = () => {
 
   // Calculate completion based on experience data
   const calculateCompletion = () => {
-    if (!experienceData) return 0;
+    if (!experienceData.length) return 0;
     
-    // Check current job completion
-    let totalFields = 4; // jobTitle, company, startDate, description
+    let totalFields = 0;
     let filledFields = 0;
 
-    const currentJobFields = [
-      experienceData.jobTitle, 
-      experienceData.company, 
-      experienceData.startDate, 
-      experienceData.description
-    ];
-    
-    filledFields += currentJobFields.filter(field => 
-      field !== undefined && field !== null && field !== ""
-    ).length;
-
-    // Check previous jobs completion
-    if (experienceData.previousJobs) {
-      experienceData.previousJobs.forEach(job => {
-        const requiredFields = [job.jobTitle, job.company, job.startDate, job.description];
-        totalFields += requiredFields.length;
-        filledFields += requiredFields.filter(field => 
-          field !== undefined && field !== null && field !== ""
-        ).length;
-      });
-    }
+    experienceData.forEach(experience => {
+      const requiredFields = [
+        experience.jobTitle, 
+        experience.company, 
+        experience.startDate, 
+        experience.description
+      ];
+      
+      totalFields += requiredFields.length;
+      filledFields += requiredFields.filter(field => 
+        field !== undefined && field !== null && field !== ""
+      ).length;
+    });
 
     return totalFields > 0 ? Math.round((filledFields / totalFields) * 100) : 0;
   };
@@ -54,27 +53,17 @@ export const useExperienceCard = () => {
 
   // Calculate total experience in years
   const calculateTotalExperience = () => {
-    if (!experienceData) return "0 years";
+    if (!experienceData.length) return "0 years";
     
     let totalMonths = 0;
     
-    // Calculate current job experience
-    const currentStartDate = new Date(experienceData.startDate);
-    const currentEndDate = experienceData.isCurrentJob ? new Date() : new Date(experienceData.endDate || experienceData.startDate);
-    const currentDiffTime = Math.abs(currentEndDate.getTime() - currentStartDate.getTime());
-    const currentDiffMonths = Math.ceil(currentDiffTime / (1000 * 60 * 60 * 24 * 30));
-    totalMonths += currentDiffMonths;
-
-    // Calculate previous jobs experience
-    if (experienceData.previousJobs) {
-      experienceData.previousJobs.forEach(job => {
-        const startDate = new Date(job.startDate);
-        const endDate = new Date(job.endDate || job.startDate);
-        const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
-        const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30));
-        totalMonths += diffMonths;
-      });
-    }
+    experienceData.forEach(experience => {
+      const startDate = new Date(experience.startDate);
+      const endDate = experience.isCurrentJob ? new Date() : new Date(experience.endDate || experience.startDate);
+      const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+      const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30));
+      totalMonths += diffMonths;
+    });
 
     const years = Math.floor(totalMonths / 12);
     const months = totalMonths % 12;
@@ -84,16 +73,19 @@ export const useExperienceCard = () => {
     return `${years} years ${months} months`;
   };
 
+  // Find current job
+  const currentJob = experienceData.find(exp => exp.isCurrentJob);
+  
   // Process experience data for display
   const processedData = {
-    currentRole: experienceData?.jobTitle || "Not provided",
-    currentCompany: experienceData?.company || "Not provided",
+    currentRole: currentJob?.jobTitle || experienceData[0]?.jobTitle || "Not provided",
+    currentCompany: currentJob?.company || experienceData[0]?.company || "Not provided",
     totalExperience: calculateTotalExperience(),
-    totalJobs: 1 + (experienceData?.previousJobs?.length || 0),
-    recentCompanies: [
-      experienceData?.company,
-      ...(experienceData?.previousJobs?.map(job => job.company) || [])
-    ].filter(Boolean).slice(0, 3),
+    totalJobs: experienceData.length,
+    recentCompanies: experienceData
+      .map(exp => exp.company)
+      .filter(Boolean)
+      .slice(0, 3),
   };
 
   const completionPercentage = calculateCompletion();

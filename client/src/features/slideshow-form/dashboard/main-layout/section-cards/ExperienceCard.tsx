@@ -2,11 +2,11 @@ import { MdWork, MdBusiness, MdDateRange } from "react-icons/md";
 import { Icon, Stack, Text, HStack, Box } from "@chakra-ui/react";
 
 import SectionCard from "@slideshow-form/components/cards/SectionCard";
-import { useExperienceCard } from "./hooks";
+import { useExperienceStepForm } from "./hooks";
 
-const ExperienceCard = () => {
+const ExperienceStepForm = () => {
   const { processedData, handleClick, completionPercentage } =
-    useExperienceCard();
+    useExperienceStepForm();
 
   const customContent = (
     <Stack gap={3}>
@@ -100,4 +100,4 @@ const ExperienceCard = () => {
   );
 };
 
-export default ExperienceCard;
+export default ExperienceStepForm;

@@ -6,7 +6,7 @@ import {
   HardSkillsCard,
   SoftSkillsCard,
   EducationCard,
-  ExperienceCard,
+  ExperienceStepForm,
   ProjectsCard,
   PreferencesCard,
 } from './dashboard/main-layout/section-cards';
@@ -43,7 +43,7 @@ const Dashboard = () => {
                 <HardSkillsCard />
                 <SoftSkillsCard />
                 <EducationCard />
-                <ExperienceCard />
+                <ExperienceStepForm />
                 <ProjectsCard />
                 <PreferencesCard />
               </Grid>

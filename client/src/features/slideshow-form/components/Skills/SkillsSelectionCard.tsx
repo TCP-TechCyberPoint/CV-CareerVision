@@ -11,8 +11,8 @@ const SkillsSelectionCard = ({ title, children }: SkillsSelectionCardProps) => {
   const cardBg = useColorModeValue("gray.50", "gray.700");
 
   return (
-    <Box p={8} w="full" bg={cardBg} borderRadius="2xl">
-      <Heading size="md" mb={8} color="gray.600">
+    <Box p={6} w="full" bg={cardBg} borderRadius="2xl">
+      <Heading size="md" mb={6} color="gray.600">
         {title}
       </Heading>
       {children}
