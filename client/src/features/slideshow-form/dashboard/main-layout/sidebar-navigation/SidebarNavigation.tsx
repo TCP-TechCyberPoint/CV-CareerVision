@@ -30,7 +30,7 @@ interface NavigationItem {
   icon: React.ElementType;
   path: string;
   description: string;
-  completionPercentage?: number;
+  completion?: number;
 }
 
 interface SidebarNavigationProps {
@@ -59,7 +59,7 @@ const SidebarNavigation = ({
       icon: MdPerson,
       path: getSectionStepPath("vitals"),
       description: "Basic contact and profile information",
-      completionPercentage: 0,
+      completion: 0,
     },
     {
       key: "hardSkills",
@@ -67,7 +67,7 @@ const SidebarNavigation = ({
       icon: MdBuild,
       path: getSectionStepPath("hardSkills"),
       description: "Technical and programming skills",
-      completionPercentage: 0,
+      completion: 0,
     },
     {
       key: "softSkills",
@@ -75,7 +75,7 @@ const SidebarNavigation = ({
       icon: MdPsychology,
       path: getSectionStepPath("softSkills"),
       description: "Interpersonal and communication skills",
-      completionPercentage: 0,
+      completion: 0,
     },
     {
       key: "education",
@@ -83,7 +83,7 @@ const SidebarNavigation = ({
       icon: MdSchool,
       path: getSectionStepPath("education"),
       description: "Academic background and certifications",
-      completionPercentage: 0,
+      completion: 0,
     },
     {
       key: "experience",
@@ -91,7 +91,7 @@ const SidebarNavigation = ({
       icon: MdWork,
       path: getSectionStepPath("experience"),
       description: "Jobs and professional roles",
-      completionPercentage: 0,
+      completion: 0,
     },
     {
       key: "projects",
@@ -99,7 +99,7 @@ const SidebarNavigation = ({
       icon: MdFolder,
       path: getSectionStepPath("projects"),
       description: "Portfolio and side projects",
-      completionPercentage: 0,
+      completion: 0,
     },
     {
       key: "preferences",
@@ -107,7 +107,7 @@ const SidebarNavigation = ({
       icon: MdSettings,
       path: getSectionStepPath("preferences"),
       description: "Job and work preferences",
-      completionPercentage: 0,
+      completion: 0,
     },
   ];
 
@@ -232,7 +232,7 @@ const SidebarNavigation = ({
                   </Flex>
 
                   {!isCollapsed &&
-                    getCompletionBadge(item.completionPercentage)}
+                    getCompletionBadge(item.completion)}
                 </Flex>
 
                 {/* Active indicator */}

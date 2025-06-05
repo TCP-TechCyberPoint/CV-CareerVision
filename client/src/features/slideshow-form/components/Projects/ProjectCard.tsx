@@ -7,7 +7,7 @@ import type {
   UseFormSetValue,
 } from "react-hook-form";
 import type { FieldArrayWithId } from "react-hook-form";
-import type { Project } from "../../types/projects.type";
+import type { Project } from "../../types/projects.types";
 import ProjectFormFields from "./ProjectFormFields";
 
 const MotionBox = motion.create("div");

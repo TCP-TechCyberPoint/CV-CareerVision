@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSlideshowFormStore } from "../store";
-import { Gender } from "../types/index";
+import { Gender, type Vitals } from "../types/index";
 import { vitalsSchema, type VitalsFormData } from "../schemas/vitalsSchema";
 
 export const useStepVitals = (nextStep: () => void) => {
@@ -22,11 +22,13 @@ export const useStepVitals = (nextStep: () => void) => {
       country: formData.vitals?.country ?? "",
       city: formData.vitals?.city ?? "",
       street: formData.vitals?.street ?? "",
+      phone: formData.vitals?.phone ?? "",
+      linkedin: formData.vitals?.linkedin ?? "",
     },
   });
 
   const onSubmit = (data: VitalsFormData) => {
-    updateFormData({ vitals: data });
+    updateFormData({ vitals: data as Vitals });
     nextStep();
   };
 
@@ -36,11 +38,14 @@ export const useStepVitals = (nextStep: () => void) => {
     const birthDate = new Date(dateOfBirth);
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
       age--;
     }
-    
+
     return age;
   };
 

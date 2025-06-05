@@ -26,13 +26,17 @@ export const useHardSkills = () => {
       if (!selectedSkills.includes(individualSkill)) {
         const newSelectedSkills = [...selectedSkills, individualSkill];
         setSelectedSkills(newSelectedSkills);
-        updateFormData({ hardSkills: newSelectedSkills });
+        updateFormData({
+          hardSkills: newSelectedSkills,
+        });
       } else {
         const newSelectedSkills = selectedSkills.filter(
           (s) => s !== individualSkill
         );
         setSelectedSkills(newSelectedSkills);
-        updateFormData({ hardSkills: newSelectedSkills });
+        updateFormData({
+          hardSkills: newSelectedSkills,
+        });
       }
     }
   };
@@ -42,7 +46,9 @@ export const useHardSkills = () => {
       (skill) => skill !== skillToRemove
     );
     setSelectedSkills(newSelectedSkills);
-    updateFormData({ hardSkills: newSelectedSkills });
+    updateFormData({
+      hardSkills: newSelectedSkills,
+    });
   };
 
   const getNextSkills = (): HardSkill[] => {

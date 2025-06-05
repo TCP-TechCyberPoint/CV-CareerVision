@@ -11,4 +11,7 @@ export interface Vitals {
   country: string;
   city: string;
   street: string;
+  phone: string;
+  linkedin: string;
+
 }

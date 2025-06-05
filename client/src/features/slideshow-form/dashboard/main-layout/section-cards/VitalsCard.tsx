@@ -1,127 +1,90 @@
 import { MdPerson, MdEmail, MdPhone, MdLocationOn, MdCake } from "react-icons/md";
-import { Icon, Stack, Text, HStack, Box } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import { vitalsData } from "@slideshow-form/utils/mockData";
-import { getSectionStepPath } from "@slideshow-form/routes";
+import { Icon, SimpleGrid, Text, HStack, Box } from "@chakra-ui/react";
+
 import SectionCard from "@slideshow-form/components/cards/SectionCard";
+import { useVitalsCard } from "./hooks";
 
 const VitalsCard = () => {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate(getSectionStepPath("vitals"));
-  };
-
-  // Function to calculate age from date of birth
-  const calculateAge = (dateOfBirth: Date): number => {
-    const today = new Date();
-    const birthDate = new Date(dateOfBirth);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    
-    return age;
-  };
-
-  // Format date for display
-  const formatDate = (date: Date): string => {
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
-  // Format full address
-  const formatAddress = () => {
-    const parts = [
-      vitalsData.street,
-      vitalsData.city,
-      vitalsData.country
-    ].filter(Boolean);
-    return parts.length > 0 ? parts.join(", ") : "Not provided";
-  };
+  const {
+    vitalsData,
+    handleClick,
+    calculateAge,
+    formatDate,
+    formatAddress,
+    completionPercentage,
+  } = useVitalsCard();
 
   const customContent = (
-    <Stack gap={3}>
+    <SimpleGrid columns={2} gap={4}>
       <Box>
-        <Text fontSize="sm" color={{ base: "gray.600", _dark: "gray.400" }} mb={1}>
+        <Text fontSize="sm" fontWeight="semibold" color={{ base: "blue.600", _dark: "blue.400" }} mb={1}>
           Full Name
         </Text>
-        <Text fontSize="md" fontWeight="medium">
-          {vitalsData.name || "Not provided"}
+        <Text fontSize="md" fontWeight="medium" color={{ base: "blue.500", _dark: "blue.300" }}>
+          {vitalsData?.name || "Not provided"}
         </Text>
       </Box>
-
-      <HStack gap={4}>
-        <Box flex="1">
-          <HStack gap={2} mb={1}>
-            <Icon as={MdCake} fontSize="sm" color="gray.500" />
-            <Text fontSize="xs" color={{ base: "gray.600", _dark: "gray.400" }}>
-              Date of Birth
-            </Text>
-          </HStack>
-          <Text fontSize="sm" fontWeight="medium">
-            {vitalsData.dateOfBirth ? formatDate(vitalsData.dateOfBirth) : "Not provided"}
-          </Text>
-          {vitalsData.dateOfBirth && (
-            <Text fontSize="xs" color="gray.500">
-              Age: {calculateAge(vitalsData.dateOfBirth)} years old
-            </Text>
-          )}
-        </Box>
-      </HStack>
-
-      <HStack gap={4}>
-        <Box flex="1">
-          <HStack gap={2} mb={1}>
-            <Icon as={MdEmail} fontSize="sm" color="gray.500" />
-            <Text fontSize="xs" color={{ base: "gray.600", _dark: "gray.400" }}>
-              Email
-            </Text>
-          </HStack>
-          <Text fontSize="sm" fontWeight="medium" lineClamp={1}>
-            {vitalsData.email || "Not provided"}
-          </Text>
-        </Box>
-      </HStack>
-
-      <HStack gap={4}>
-        <Box flex="1">
-          <HStack gap={2} mb={1}>
-            <Icon as={MdPhone} fontSize="sm" color="gray.500" />
-            <Text fontSize="xs" color={{ base: "gray.600", _dark: "gray.400" }}>
-              Phone
-            </Text>
-          </HStack>
-          <Text fontSize="sm" fontWeight="medium">
-            {vitalsData.phone || "Not provided"}
-          </Text>
-        </Box>
-      </HStack>
 
       <Box>
         <HStack gap={2} mb={1}>
-          <Icon as={MdLocationOn} fontSize="sm" color="gray.500" />
-          <Text fontSize="xs" color={{ base: "gray.600", _dark: "gray.400" }}>
+          <Icon as={MdCake} fontSize="sm" color="blue.500" />
+          <Text fontSize="xs" fontWeight="semibold" color={{ base: "blue.600", _dark: "blue.400" }}>
+            Date of Birth
+          </Text>
+        </HStack>
+        <Text fontSize="sm" fontWeight="medium" color={{ base: "blue.500", _dark: "blue.300" }}>
+          {vitalsData?.dateOfBirth ? formatDate(vitalsData.dateOfBirth) : "Not provided"}
+          {vitalsData?.dateOfBirth && (
+            <Text as="span" fontSize="xs" color={{ base: "blue.400", _dark: "blue.400" }} ml={2}>
+              (Age: {calculateAge(vitalsData.dateOfBirth)})
+            </Text>
+          )}
+        </Text>
+      </Box>
+
+      <Box>
+        <HStack gap={2} mb={1}>
+          <Icon as={MdEmail} fontSize="sm" color="blue.500" />
+          <Text fontSize="xs" fontWeight="semibold" color={{ base: "blue.600", _dark: "blue.400" }}>
+            Email
+          </Text>
+        </HStack>
+        <Text fontSize="sm" fontWeight="medium" lineClamp={1} color={{ base: "blue.500", _dark: "blue.300" }}>
+          {vitalsData?.email || "Not provided"}
+        </Text>
+      </Box>
+
+      <Box>
+        <HStack gap={2} mb={1}>
+          <Icon as={MdPhone} fontSize="sm" color="blue.500" />
+          <Text fontSize="xs" fontWeight="semibold" color={{ base: "blue.600", _dark: "blue.400" }}>
+            Phone
+          </Text>
+        </HStack>
+        <Text fontSize="sm" fontWeight="medium" color={{ base: "blue.500", _dark: "blue.300" }}>
+          {vitalsData?.phone || "Not provided"}
+        </Text>
+      </Box>
+
+      <Box gridColumn="1 / -1">
+        <HStack gap={2} mb={1}>
+          <Icon as={MdLocationOn} fontSize="sm" color="blue.500" />
+          <Text fontSize="xs" fontWeight="semibold" color={{ base: "blue.600", _dark: "blue.400" }}>
             Address
           </Text>
         </HStack>
-        <Text fontSize="sm" fontWeight="medium">
+        <Text fontSize="sm" fontWeight="medium" color={{ base: "blue.500", _dark: "blue.300" }}>
           {formatAddress()}
         </Text>
       </Box>
-    </Stack>
+    </SimpleGrid>
   );
 
   return (
     <SectionCard
       title="Vitals"
       icon={<Icon as={MdPerson} />}
-      completion={vitalsData.completion}
+      completion={completionPercentage}
       themeColor="blue"
       customContent={customContent}
       footer="Click to edit your personal information"

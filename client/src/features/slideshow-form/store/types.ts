@@ -1,9 +1,9 @@
-import type { HardSkill } from "../types/hard-skills.type";
-import type { SoftSkill } from "../types/soft-skills.type";
-import type { Gender } from "../types/vitals.type";
-import type { Degree, FieldOfStudy, Year } from "../types/education.type";
-import type { Project } from "../types/projects.type";
-import type { Preferences } from "../types/preferences.type";
+import type { HardSkill } from "../types/skills/hard-skills.types";
+import type { SoftSkill } from "../types/skills/soft-skills.types";
+import type { Gender } from "../types/vitals.types";
+import type { Degree, FieldOfStudy, Year } from "../types/education.types";
+import type { Project } from "../types/projects.types";
+import type { Preferences } from "../types/preferences.types";
 
 export interface Vitals {
   name: string;
@@ -28,19 +28,27 @@ export interface Education {
 }
 
 export interface Experience {
-  id: string;
   jobTitle: string;
   company: string;
   startDate: string;
   endDate?: string;
-  isCurrentJob: boolean | string;
+  isCurrentJob: boolean;
+  description?: string;
+  previousJobs?: PreviousJob[];
+}
+
+export interface PreviousJob {
+  jobTitle: string;
+  company: string;
+  startDate: string;
+  endDate?: string;
   description?: string;
 }
 
 export interface SlideshowFormData {
   vitals?: Vitals;
   education?: Education;
-  experiences?: Experience[];
+  experience?: Experience;
   projects?: Project[];
   hardSkills?: HardSkills;
   softSkills?: SoftSkills;

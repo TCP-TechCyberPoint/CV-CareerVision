@@ -6,82 +6,67 @@ import {
   HStack,
   Box,
   Flex,
-  Progress,
+  Badge,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import { softSkillsData } from "@slideshow-form/utils/mockData";
-import { getSectionStepPath } from "@slideshow-form/routes";
+
 import SectionCard from "@slideshow-form/components/cards/SectionCard";
+import { useSoftSkillsCard } from "./hooks";
 
 const SoftSkillsCard = () => {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate(getSectionStepPath("softSkills"));
-  };
-
-  const getSkillColor = (level: number) => {
-    if (level >= 80) return "green";
-    if (level >= 60) return "blue";
-    if (level >= 40) return "orange";
-    return "red";
-  };
+  const { processedData, handleClick, completionPercentage } =
+    useSoftSkillsCard();
 
   const customContent = (
     <Stack gap={3}>
       <HStack justify="space-between">
-        <Box>
+        <HStack gap={2} align="baseline">
           <Text fontSize="2xl" fontWeight="bold" color="pink.500">
-            {softSkillsData.totalSkills}
+            {processedData.totalSkills}
           </Text>
-          <Text fontSize="xs" color={{ base: "gray.600", _dark: "gray.400" }}>
+          <Text fontSize="xs" color={{ base: "pink.600", _dark: "pink.400" }}>
             Skills Added
           </Text>
-        </Box>
-        <Box textAlign="right">
-          <Text fontSize="lg" fontWeight="semibold">
-            {softSkillsData.categories.length}
+        </HStack>
+        <HStack gap={2} align="baseline">
+          <Text fontSize="lg" fontWeight="bold" color="pink.500">
+            {processedData.categories.length}
           </Text>
-          <Text fontSize="xs" color={{ base: "gray.600", _dark: "gray.400" }}>
+          <Text fontSize="xs" color={{ base: "pink.600", _dark: "pink.400" }}>
             Categories
           </Text>
-        </Box>
+        </HStack>
       </HStack>
 
       <Box>
         <Text
           fontSize="sm"
-          color={{ base: "gray.600", _dark: "gray.400" }}
+          fontWeight="semibold"
+          color={{ base: "pink.600", _dark: "pink.400" }}
           mb={3}
         >
-          Top Skills
+          Your Skills
         </Text>
-        <Stack gap={2}>
-          {softSkillsData.topSkills.map((skill, index) => (
-            <Box key={index}>
-              <Flex justify="space-between" mb={1}>
-                <Text fontSize="sm" fontWeight="medium">
-                  {skill.name}
-                </Text>
-                <Text
-                  fontSize="xs"
-                  color={{ base: "gray.600", _dark: "gray.400" }}
-                >
-                  {skill.level}%
-                </Text>
-              </Flex>
-              <Progress.Root 
-                value={skill.level} 
-                size="sm"
-                colorPalette={getSkillColor(skill.level)}
+        {processedData.skills.length > 0 ? (
+          <Flex wrap="wrap" gap={2}>
+            {processedData.skills.map((skill, index) => (
+              <Badge
+                key={index}
+                colorPalette="pink"
+                variant="subtle"
+                px={2}
+                py={1}
+                borderRadius="md"
+                fontSize="xs"
               >
-                <Progress.Track>
-                  <Progress.Range />
-                </Progress.Track>
-              </Progress.Root>
-            </Box>
-          ))}
-        </Stack>
+                {skill}
+              </Badge>
+            ))}
+          </Flex>
+        ) : (
+          <Text fontSize="sm" color={{ base: "pink.400", _dark: "pink.400" }}>
+            No soft skills added yet
+          </Text>
+        )}
       </Box>
     </Stack>
   );
@@ -90,7 +75,7 @@ const SoftSkillsCard = () => {
     <SectionCard
       title="Soft Skills"
       icon={<Icon as={MdPsychology} />}
-      completion={softSkillsData.completion}
+      completion={completionPercentage}
       themeColor="pink"
       customContent={customContent}
       footer="Click to manage your interpersonal skills"

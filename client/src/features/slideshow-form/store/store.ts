@@ -4,11 +4,11 @@ import type {
   SectionKey,
   SectionStatus,
 } from "./store.types";
-
-
+import { mockData } from "../utils/mockData";
 
 export const useSlideshowFormStore = create<SlideshowFormState>()((set) => ({
-  formData: {},
+  formData: mockData,
+
   sectionStatus: {},
   updateFormData: (fields) => {
     set((state) => ({ formData: { ...state.formData, ...fields } }));

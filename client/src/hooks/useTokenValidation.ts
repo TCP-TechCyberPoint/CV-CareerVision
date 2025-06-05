@@ -3,28 +3,46 @@ import { useAuth } from "@/context/AuthContext";
 import { cookieUtils } from "@/utils/cookie-utils";
 
 export const useTokenValidation = () => {
-  const { isAuthenticated, validateToken } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const [isTokenValid, setIsTokenValid] = useState<boolean | null>(null);
+  const [hasChecked, setHasChecked] = useState(false);
 
   useEffect(() => {
-    const checkToken = async () => {
-      try {
-        const token = cookieUtils.getToken();
-        if (!token) {
-          setIsTokenValid(false);
-          return;
-        }
+    // If AuthContext is still loading, wait
+    if (isLoading) {
+      setIsTokenValid(null);
+      return;
+    }
 
-        const valid = await validateToken();
-        setIsTokenValid(valid);
-      } catch (error) {
-        console.error("Token validation error:", error);
-        setIsTokenValid(false);
-      }
-    };
+    // If we already checked, don't check again unless auth state changed
+    if (hasChecked && isTokenValid !== null) {
+      return;
+    }
 
-    checkToken();
-  }, [validateToken]);
+    const token = cookieUtils.getToken();
+    if (!token) {
+      setIsTokenValid(false);
+      setHasChecked(true);
+      return;
+    }
+
+    // If AuthContext says we're authenticated and we have a token, assume it's valid
+    if (isAuthenticated && token) {
+      setIsTokenValid(true);
+      setHasChecked(true);
+      return;
+    }
+
+    // If not authenticated but we have a token, it might be invalid
+    if (!isAuthenticated && token) {
+      setIsTokenValid(false);
+      setHasChecked(true);
+      return;
+    }
+
+    setIsTokenValid(false);
+    setHasChecked(true);
+  }, [isAuthenticated, isLoading, hasChecked, isTokenValid]);
 
   return { isTokenValid, isAuthenticated };
 };

@@ -5,7 +5,8 @@ export const vitalsSchema = z.object({
   name: z
     .string()
     .min(2, "I bet you have more than 2 characters in your name, right? 🤔")
-    .max(20, "Love your name, but it's too long for me to remember it"),
+    .max(20, "Love your name, but it's too long for me to remember it")
+    .regex(/^[a-zA-Z\s\-'\.]+$/, "Cool name, but our system doesn't support special characters or numbers 🔢"),
   dateOfBirth: z
     .date({
       required_error: "Cool, you're a time traveler! 🤖",
@@ -36,6 +37,17 @@ export const vitalsSchema = z.object({
     .string()
     .min(3, "Need more than just '123' for a street address! 🏠")
     .max(100, "Are you listing your entire neighborhood? 📍"),
+  phone: z
+    .string()
+    .min(10, "That's not a phone number, that's a secret code! 📱")
+    .max(20, "Are you trying to call the International Space Station? 🚀")
+    .regex(/^(0\d{9}|\+\d{1,4}\d{6,12})$/, "Please enter a valid phone number (10 digits starting with 0, or +country code + number)"),
+  linkedin: z
+    .string()
+    .url("That doesn't look like a LinkedIn URL! 🔗")
+    .refine((url) => url.includes("linkedin.com"), "This should be a LinkedIn URL")
+    .optional()
+    .or(z.literal("")),
 });
 
 export type VitalsFormData = z.infer<typeof vitalsSchema>; 

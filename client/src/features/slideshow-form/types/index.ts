@@ -41,3 +41,6 @@ export type {
   SkillCategory,
   Skill,
 } from "./skills";
+
+// Export completion types
+export type { CompletionPercentage } from "./completion.types";

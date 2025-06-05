@@ -12,6 +12,7 @@ import {
 } from "./steps";
 import { useSlideshowFormStore } from "./store";
 import StepExperience from "./steps/StepExperience";
+import { CriticalErrorBoundary } from "@/components/shared/ErrorBoundary";
 
 const slideComponents = {
   intro: StepIntro,
@@ -46,7 +47,11 @@ const SlideshowForm = () => {
   const Component = slideComponents[step] || (() => <div>Step not found</div>);
   console.log("formData", formData);
 
-  return <Component nextStep={nextStep} prevStep={prevStep} />;
+  return (
+    <CriticalErrorBoundary>
+      <Component nextStep={nextStep} prevStep={prevStep} />
+    </CriticalErrorBoundary>
+  );
 };
 
 export default SlideshowForm;
