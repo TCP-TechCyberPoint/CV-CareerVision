@@ -12,7 +12,7 @@ export type SectionStatus = SectionStatusMap[SectionKey];
 
 // Zustand store interface
 export interface SlideshowFormState {
-  formData: Partial<SlideshowFormData>;
+  formData: SlideshowFormData;
   sectionStatus: SectionStatusMap;
   updateFormData: (fields: Partial<SlideshowFormData>) => void;
   updateSectionStatus: (section: SectionKey, status: SectionStatus) => void;

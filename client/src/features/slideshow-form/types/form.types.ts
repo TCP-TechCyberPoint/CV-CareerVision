@@ -9,11 +9,11 @@ import type {
 } from "../types/index";
 
 export interface SlideshowFormData {
-  vitals?: Vitals;
-  hardSkills?: HardSkill[];
-  softSkills?: SoftSkill[];
-  education?: Education;
-  experience?: Experience[];
-  projects?: Project[];
-  preferences?: Preferences;
+  vitals: Vitals;
+  hardSkills: HardSkill[];
+  softSkills: SoftSkill[];
+  education: Education;
+  experiences: Experience[];
+  projects: Project[];
+  preferences: Preferences;
 }

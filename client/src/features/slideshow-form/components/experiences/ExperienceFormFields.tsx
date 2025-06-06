@@ -1,27 +1,26 @@
 import {
   Input,
-  Checkbox,
   Textarea,
   HStack,
   VStack,
   Text,
-  Field,
+  Box,
 } from "@chakra-ui/react";
-
+import { Field, Checkbox } from "@chakra-ui/react";
 import type {
   UseFormRegister,
   FieldErrors,
   UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
 import type { Experience } from "@slideshow-form/types";
-import type { ExperienceFormData } from "../../schemas/experienceSchema";
 
 interface ExperienceFormFieldsProps {
   index: number;
-  register: UseFormRegister<ExperienceFormData>;
-  errors: FieldErrors<ExperienceFormData>;
-  setValue: UseFormSetValue<ExperienceFormData>;
-  watchedExperiences: Experience[];
+  register: UseFormRegister<{ experiences: Experience[] }>;
+  errors: FieldErrors<{ experiences: Experience[] }>;
+  setValue: UseFormSetValue<{ experiences: Experience[] }>;
+  watch: UseFormWatch<{ experiences: Experience[] }>;
 }
 
 const ExperienceFormFields = ({
@@ -29,10 +28,16 @@ const ExperienceFormFields = ({
   register,
   errors,
   setValue,
-  watchedExperiences,
+  watch,
 }: ExperienceFormFieldsProps) => {
-  const currentExperience = watchedExperiences[index];
-  const isCurrentJob = currentExperience?.isCurrentJob;
+  const isCurrentJob = watch(`experiences.${index}.isCurrentJob`);
+
+  const handleCurrentJobChange = (checked: boolean) => {
+    setValue(`experiences.${index}.isCurrentJob`, checked);
+    if (checked) {
+      setValue(`experiences.${index}.endDate`, null);
+    }
+  };
 
   return (
     <VStack gap={4} align="stretch">
@@ -49,8 +54,8 @@ const ExperienceFormFields = ({
             borderRadius="md"
             bg="white"
             _focus={{
-              borderColor: "purple.400",
-              boxShadow: "0 0 0 1px purple.400",
+              borderColor: "green.400",
+              boxShadow: "0 0 0 1px green.400",
             }}
           />
           <Field.ErrorText>
@@ -64,13 +69,13 @@ const ExperienceFormFields = ({
           </Field.Label>
           <Input
             {...register(`experiences.${index}.company`)}
-            placeholder="Google Inc."
+            placeholder="Acme Corporation"
             size="lg"
             borderRadius="md"
             bg="white"
             _focus={{
-              borderColor: "purple.400",
-              boxShadow: "0 0 0 1px purple.400",
+              borderColor: "green.400",
+              boxShadow: "0 0 0 1px green.400",
             }}
           />
           <Field.ErrorText>
@@ -79,21 +84,23 @@ const ExperienceFormFields = ({
         </Field.Root>
       </HStack>
 
-      {/* Date Pickers */}
+      {/* Start Date and End Date */}
       <HStack gap={4}>
         <Field.Root invalid={!!errors.experiences?.[index]?.startDate} flex={1}>
           <Field.Label fontWeight="medium" color="gray.700">
             Start Date
           </Field.Label>
           <Input
-            {...register(`experiences.${index}.startDate`)}
+            {...register(`experiences.${index}.startDate`, {
+              valueAsDate: true,
+            })}
             type="date"
             size="lg"
             borderRadius="md"
             bg="white"
             _focus={{
-              borderColor: "purple.400",
-              boxShadow: "0 0 0 1px purple.400",
+              borderColor: "green.400",
+              boxShadow: "0 0 0 1px green.400",
             }}
           />
           <Field.ErrorText>
@@ -106,18 +113,20 @@ const ExperienceFormFields = ({
             End Date
           </Field.Label>
           <Input
-            {...register(`experiences.${index}.endDate`)}
+            {...register(`experiences.${index}.endDate`, {
+              valueAsDate: true,
+            })}
             type="date"
             size="lg"
             borderRadius="md"
             bg="white"
-            disabled={Boolean(isCurrentJob)}
+            disabled={isCurrentJob}
             _focus={{
-              borderColor: "purple.400",
-              boxShadow: "0 0 0 1px purple.400",
+              borderColor: "green.400",
+              boxShadow: "0 0 0 1px green.400",
             }}
             _disabled={{
-              opacity: 0.6,
+              bg: "gray.100",
               cursor: "not-allowed",
             }}
           />
@@ -128,48 +137,38 @@ const ExperienceFormFields = ({
       </HStack>
 
       {/* Current Job Checkbox */}
-      <Checkbox.Root
-        checked={Boolean(isCurrentJob)}
-        colorPalette="purple"
-        size="lg"
-        onCheckedChange={(e) => {
-          const isChecked = Boolean(e.checked);
-          setValue(`experiences.${index}.isCurrentJob`, isChecked);
-          if (isChecked) {
-            setValue(`experiences.${index}.endDate`, undefined);
-            // Uncheck other current job checkboxes (only one current job allowed)
-            watchedExperiences.forEach((_, idx) => {
-              if (idx !== index) {
-                setValue(`experiences.${idx}.isCurrentJob`, false);
-              }
-            });
-          }
-        }}
-      >
-        <Checkbox.HiddenInput />
-        <Checkbox.Control />
-        <Checkbox.Label>
-          <Text color="gray.700" fontWeight="medium">
-            I currently work here
-          </Text>
-        </Checkbox.Label>
-      </Checkbox.Root>
+      <Box>
+        <Checkbox.Root
+          {...register(`experiences.${index}.isCurrentJob`)}
+          checked={isCurrentJob}
+          onCheckedChange={(details) => handleCurrentJobChange(!!details.checked)}
+          colorPalette="green"
+        >
+          <Checkbox.Indicator />
+          <Checkbox.Label fontWeight="medium" color="gray.700">
+            This is my current position
+          </Checkbox.Label>
+        </Checkbox.Root>
+      </Box>
 
       {/* Description */}
       <Field.Root invalid={!!errors.experiences?.[index]?.description}>
         <Field.Label fontWeight="medium" color="gray.700">
-          Description (Optional)
+          Description
+          <Text as="span" color="gray.500" fontSize="sm" ml={1}>
+            (Optional)
+          </Text>
         </Field.Label>
         <Textarea
           {...register(`experiences.${index}.description`)}
-          placeholder="Describe your role and achievements..."
+          placeholder="Describe your role, responsibilities, and key achievements..."
           size="lg"
           borderRadius="md"
           bg="white"
-          rows={3}
+          rows={4}
           _focus={{
-            borderColor: "purple.400",
-            boxShadow: "0 0 0 1px purple.400",
+            borderColor: "green.400",
+            boxShadow: "0 0 0 1px green.400",
           }}
         />
         <Field.ErrorText>
@@ -180,4 +179,4 @@ const ExperienceFormFields = ({
   );
 };
 
-export default ExperienceFormFields;
+export default ExperienceFormFields; 

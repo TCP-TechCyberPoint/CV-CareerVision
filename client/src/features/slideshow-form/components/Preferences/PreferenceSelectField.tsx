@@ -1,3 +1,4 @@
+import { Text } from "@chakra-ui/react";
 import { SelectField } from "@slideshow-form/components";
 
 interface PreferenceSelectFieldProps {
@@ -22,15 +23,9 @@ const PreferenceSelectField = ({
   return (
     <div>
       {description && (
-        <p
-          style={{
-            fontSize: "0.875rem",
-            color: "#718096",
-            marginBottom: "0.5rem",
-          }}
-        >
+        <Text fontSize="sm" color="gray.500" mb={2} fontWeight="medium" as="p">
           {description}
-        </p>
+        </Text>
       )}
       <SelectField
         label={label}

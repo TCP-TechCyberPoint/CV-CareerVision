@@ -15,7 +15,8 @@ import {
 } from "../schemas/preferencesSchema"; 
 
 export const useStepPreferences = (nextStep: () => void) => {
-  const { formData, updateFormData } = useSlideshowFormStore();
+  const preferences = useSlideshowFormStore((state) => state.formData.preferences);
+  const updateFormData = useSlideshowFormStore((state) => state.updateFormData);
 
   const {
     register,
@@ -26,17 +27,17 @@ export const useStepPreferences = (nextStep: () => void) => {
   } = useForm<PreferencesFormData>({
     resolver: zodResolver(preferencesSchema),
     defaultValues: {
-      cvStyle: formData.preferences?.cvStyle ?? CvStyle.Minimal,
-      cvPurpose: formData.preferences?.cvPurpose ?? CvPurpose.JobHunt,
+      cvStyle: preferences?.cvStyle ?? CvStyle.Minimal,
+      cvPurpose: preferences?.cvPurpose ?? CvPurpose.JobHunt,
       professionalPreference:
-        formData.preferences?.professionalPreference ??
+        preferences?.professionalPreference ??
         ProfessionalPreference.FullstackDeveloper,
       experienceLevel:
-        formData.preferences?.experienceLevel ?? ExperienceLevel.Entry,
+        preferences?.experienceLevel ?? ExperienceLevel.Entry,
       industryPreference:
-        formData.preferences?.industryPreference ?? Industry.Technology,
+        preferences?.industryPreference ?? Industry.Technology,
       targetSalaryRange:
-        formData.preferences?.targetSalaryRange ?? SalaryRange.NotSpecified,
+        preferences?.targetSalaryRange ?? SalaryRange.NotSpecified,
     },
   });
 

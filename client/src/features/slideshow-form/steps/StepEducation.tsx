@@ -4,9 +4,7 @@ import {
   Text,
   useListCollection,
   useFilter,
-  Input,
 } from "@chakra-ui/react";
-import { FormControl, FormErrorMessage } from "@chakra-ui/form-control";
 import { useStepEducation } from "../hooks/useStepEducation";
 import { motion } from "framer-motion";
 import {
@@ -47,6 +45,7 @@ const StepEducation = ({ nextStep, prevStep }: StepEducationProps) => {
 
   return (
     <MotionBox
+      mt={8}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}

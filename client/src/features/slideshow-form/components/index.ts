@@ -1,7 +1,8 @@
 // Experience-related components
-export { default as ExperienceHeader } from "./experience/ExperienceHeader";
-export { default as ExperienceStepForm } from "./experience/ExperienceStepForm";
-export { default as ExperienceFormFields } from "./experience/ExperienceFormFields";
+export { default as ExperienceHeader } from "./experiences/ExperiencesHeader";
+export { default as ExperienceStepForm } from "./experiences/ExperienceStepForm";
+export { default as ExperienceFormFields } from "./experiences/ExperienceFormFields";
+export { default as AddExperienceButton } from "./experiences/AddExperienceButton";
 
 // Projects-related components
 export { default as ProjectsHeader } from "./projects/ProjectsHeader";

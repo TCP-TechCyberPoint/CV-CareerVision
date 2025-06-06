@@ -7,6 +7,7 @@ import AddProjectButton from "../components/projects/AddProjectButton";
 import StepNavigationButtons from "../components/StepNavigationButtons";
 import { DevTool } from "@hookform/devtools";
 import ReturnDashboard from "../components/ReturnDashboard";
+import type { Project } from "../types";
 
 const MotionBox = motion.create(Box);
 
@@ -64,7 +65,7 @@ const StepProjects = ({ nextStep, prevStep }: StepProjectsProps) => {
                 register={register}
                 errors={errors}
                 setValue={setValue}
-                watchedProjects={watchedProjects}
+                watchedProjects={watchedProjects as Project[]}
                 onRemove={removeProject}
               />
             ))}

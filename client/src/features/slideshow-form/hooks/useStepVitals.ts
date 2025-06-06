@@ -5,7 +5,8 @@ import { Gender, type Vitals } from "../types/index";
 import { vitalsSchema, type VitalsFormData } from "../schemas/vitalsSchema";
 
 export const useStepVitals = (nextStep: () => void) => {
-  const { formData, updateFormData } = useSlideshowFormStore();
+  const vitals = useSlideshowFormStore((state) => state.formData.vitals);
+  const updateFormData = useSlideshowFormStore((state) => state.updateFormData);
 
   const {
     register,
@@ -16,15 +17,15 @@ export const useStepVitals = (nextStep: () => void) => {
   } = useForm<VitalsFormData>({
     resolver: zodResolver(vitalsSchema),
     defaultValues: {
-      name: formData.vitals?.name ?? "",
-      dateOfBirth: formData.vitals?.dateOfBirth ?? new Date(2000, 0, 1),
-      gender: formData.vitals?.gender ?? Gender.Male,
-      email: formData.vitals?.email ?? "",
-      country: formData.vitals?.country ?? "",
-      city: formData.vitals?.city ?? "",
-      street: formData.vitals?.street ?? "",
-      phone: formData.vitals?.phone ?? "",
-      linkedin: formData.vitals?.linkedin ?? "",
+      name: vitals?.name ?? "",
+      dateOfBirth: vitals?.dateOfBirth ?? new Date(2000, 0, 1),
+      gender: vitals?.gender ?? Gender.Male,
+      email: vitals?.email ?? "",
+      country: vitals?.country ?? "",
+      city: vitals?.city ?? "",
+      street: vitals?.street ?? "",
+      phone: vitals?.phone ?? "",
+      linkedin: vitals?.linkedin ?? "",
     },
   });
 

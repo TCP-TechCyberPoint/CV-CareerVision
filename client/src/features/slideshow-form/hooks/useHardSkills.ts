@@ -4,9 +4,12 @@ import { useSlideshowFormStore } from "../store";
 import type { HardSkill, HardSkillCategory, SkillColor } from "../types/skills";
 
 export const useHardSkills = () => {
-  const { formData, updateFormData } = useSlideshowFormStore();
+  const hardSkills = useSlideshowFormStore(
+    (state) => state.formData.hardSkills
+  );
+  const updateFormData = useSlideshowFormStore((state) => state.updateFormData);
   const [selectedSkills, setSelectedSkills] = useState<HardSkill[]>(
-    formData.hardSkills || []
+    hardSkills || []
   );
   const [expandedSkills, setExpandedSkills] = useState<HardSkillCategory[]>([]);
 

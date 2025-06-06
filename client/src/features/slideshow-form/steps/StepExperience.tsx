@@ -1,14 +1,13 @@
-import { Box, Stack, Text, VStack, Button } from "@chakra-ui/react";
-import { motion, AnimatePresence } from "framer-motion";
-import { FiPlus } from "react-icons/fi";
+import { Box, Stack, Text, VStack } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { useStepExperience } from "../hooks/useStepExperience";
-import {
-  ExperienceHeader,
-  StepNavigationButtons,
-  ExperienceStepForm,
-} from "@slideshow-form/components";
+import ExperiencesHeader from "../components/experiences/ExperiencesHeader";
+import ExperienceStepForm from "../components/experiences/ExperienceStepForm";
+import AddExperienceButton from "../components/experiences/AddExperienceButton";
+import StepNavigationButtons from "../components/StepNavigationButtons";
 import { DevTool } from "@hookform/devtools";
 import ReturnDashboard from "../components/ReturnDashboard";
+import type { Experience } from "../types";
 
 const MotionBox = motion.create(Box);
 
@@ -21,13 +20,13 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
   const {
     register,
     handleSubmit,
+    fields,
+    addNewExperience,
+    removeExperience,
     setValue,
+    watch,
     onSubmit,
     errors,
-    fields,
-    watchedExperiences,
-    addExperience,
-    removeExperience,
     control,
   } = useStepExperience(nextStep);
 
@@ -53,46 +52,32 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
 
         <VStack gap={8} align="stretch" mt={12}>
           {/* Header */}
-          <ExperienceHeader />
+          <ExperiencesHeader />
 
-          {/* Experience Cards */}
-          <Stack gap={4}>
-            <AnimatePresence mode="popLayout">
-              {fields.map((field, index) => (
-                <ExperienceStepForm
-                  key={field.id}
-                  field={field}
-                  index={index}
-                  totalFields={fields.length}
-                  register={register}
-                  errors={errors}
-                  setValue={setValue}
-                  watchedExperiences={watchedExperiences}
-                  onRemove={removeExperience}
-                />
-              ))}
-            </AnimatePresence>
-
-            {/* Add Experience Button */}
-            <Box textAlign="center" mt={4}>
-              <Button
-                onClick={addExperience}
-                variant="outline"
-                colorScheme="purple"
-                size="lg"
-                _hover={{ bg: "purple.50" }}
-              >
-                <FiPlus style={{ marginRight: "0.5rem" }} />
-                Add Experience
-              </Button>
-            </Box>
+          {/* Dynamic Experience Fields */}
+          <Stack gap={6}>
+            {fields.map((field, index) => (
+              <ExperienceStepForm
+                key={field.id}
+                field={field}
+                index={index}
+                totalFields={fields.length}
+                register={register}
+                errors={errors}
+                setValue={setValue}
+                watch={watch}
+                onRemove={removeExperience}
+              />
+            ))}
           </Stack>
+
+          {/* Add New Experience Button */}
+          <AddExperienceButton onAdd={addNewExperience} />
 
           {/* Form Error */}
           {errors.experiences && (
             <Text color="red.500" textAlign="center" fontSize="sm">
-              {errors.experiences.message ||
-                "Please check your experience entries"}
+              {errors.experiences.message}
             </Text>
           )}
 

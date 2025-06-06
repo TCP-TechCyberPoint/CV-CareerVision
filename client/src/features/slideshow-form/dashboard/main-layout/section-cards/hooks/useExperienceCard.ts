@@ -8,11 +8,11 @@ export const useExperienceStepForm = () => {
   
   // Handle both old format (single object) and new format (array)
   const experienceData = (() => {
-    const experience = formData.experience;
-    if (!experience) return [];
-    if (Array.isArray(experience)) return experience;
+    const experiences = formData.experiences;
+    if (!experiences) return [];
+    if (Array.isArray(experiences)) return experiences;
     // Convert old single object format to array
-    return [experience];
+    return [experiences];
   })();
 
   const handleClick = () => {
