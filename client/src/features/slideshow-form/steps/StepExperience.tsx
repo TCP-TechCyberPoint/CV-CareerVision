@@ -67,6 +67,7 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
                 errors={errors}
                 setValue={setValue}
                 onRemove={removeExperience}
+                watchedExperiences={watchedExperiences}
               />
             ))}
           </Stack>

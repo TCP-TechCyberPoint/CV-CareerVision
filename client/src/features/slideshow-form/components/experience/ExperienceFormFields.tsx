@@ -63,7 +63,9 @@ const ExperienceFormFields = ({
             Company
           </Field.Label>
           <Input
+          
             {...register(`experience.${index}.company`)}
+            
             placeholder="Google Inc."
             size="lg"
             borderRadius="md"

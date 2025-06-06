@@ -20,8 +20,8 @@ interface ExperienceStepFormProps {
   register: UseFormRegister<ExperienceFormData>;
   errors: FieldErrors<ExperienceFormData>;
   setValue: UseFormSetValue<ExperienceFormData>;
-  watchedExperiences: Experience[];
   onRemove: (index: number) => void;
+  watchedExperiences: Experience[];
 }
 
 const ExperienceStepForm = ({
@@ -31,8 +31,8 @@ const ExperienceStepForm = ({
   register,
   errors,
   setValue,
-  watchedExperiences,
   onRemove,
+  watchedExperiences,
 }: ExperienceStepFormProps) => {
   return (
     <MotionBox

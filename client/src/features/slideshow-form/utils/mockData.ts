@@ -50,21 +50,21 @@ export const educationData: Education = {
 
 export const experienceData: Experience[] = [
   {
-    id: "1",
+    id: crypto.randomUUID(),
     jobTitle: "Senior Software Engineer",
     company: "Microsoft",
     startDate: "2022-01-01",
-    endDate: "2022-01-01",
+    endDate: undefined, // Current job shouldn't have end date
     isCurrentJob: true,
     description:
       "Leading development of cloud-based applications using React and Azure services",
   },
   {
-    id: "2",
+    id: crypto.randomUUID(),
     jobTitle: "Software Engineer",
     company: "Google",
     startDate: "2019-01-01",
-    endDate: "2022-01-01",
+    endDate: "2021-12-31", // Fixed: end date must be after start date
     isCurrentJob: false,
     description:
       "Developed and maintained scalable web applications using React and Node.js",

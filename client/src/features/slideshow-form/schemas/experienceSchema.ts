@@ -32,7 +32,7 @@ const experienceSchema = z
 export const experienceFormSchema = z.object({
   experience: z
     .array(experienceSchema)
-    
+    .min(1, "At least one experience is required")
 });
 
 export type ExperienceFormData = z.infer<typeof experienceFormSchema>;
