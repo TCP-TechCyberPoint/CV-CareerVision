@@ -53,8 +53,8 @@ export const experienceData: Experience[] = [
     id: "1",
     jobTitle: "Senior Software Engineer",
     company: "Microsoft",
-    startDate: new Date("2022-01-01"),
-    endDate: null as Date | null,
+    startDate: "2022-01-01",
+    endDate: "2022-01-01",
     isCurrentJob: true,
     description:
       "Leading development of cloud-based applications using React and Azure services",
@@ -63,8 +63,8 @@ export const experienceData: Experience[] = [
     id: "2",
     jobTitle: "Software Engineer",
     company: "Google",
-    startDate: new Date("2019-01-01"),
-    endDate: new Date("2022-01-01"),
+    startDate: "2019-01-01",
+    endDate: "2022-01-01",
     isCurrentJob: false,
     description:
       "Developed and maintained scalable web applications using React and Node.js",
@@ -122,7 +122,7 @@ export const mockData: SlideshowFormData = {
   hardSkills: hardSkillsData,
   softSkills: softSkillsData,
   education: educationData,
-  experiences: experienceData,
+  experience: experienceData,
   projects: projectsData,
   preferences: preferencesData,
 };

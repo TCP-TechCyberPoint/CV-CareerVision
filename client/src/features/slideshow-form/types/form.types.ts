@@ -13,7 +13,7 @@ export interface SlideshowFormData {
   hardSkills: HardSkill[];
   softSkills: SoftSkill[];
   education: Education;
-  experiences: Experience[];
+  experience: Experience[];
   projects: Project[];
   preferences: Preferences;
 }

@@ -2,8 +2,8 @@ export interface Experience {
   id: string;
   jobTitle: string;
   company: string;
-  startDate: Date;
-  endDate?: Date | null;
+  startDate: string;
+  endDate?: string ;
   isCurrentJob: boolean;
-  description?: string;
+  description?: string ;
 }
