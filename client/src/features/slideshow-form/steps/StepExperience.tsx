@@ -89,9 +89,9 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
           </Stack>
 
           {/* Form Error */}
-          {errors.experiences && (
+          {errors.experience && (
             <Text color="red.500" textAlign="center" fontSize="sm">
-              {errors.experiences.message ||
+              {errors.experience.message ||
                 "Please check your experience entries"}
             </Text>
           )}
