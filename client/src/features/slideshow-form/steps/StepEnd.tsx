@@ -39,11 +39,11 @@ const StepEnd = ({ prevStep }: StepEndProps) => {
   };
 
   return (
-    <Box position="relative" p={8}>
+   <Box position="relative" p={8}>
       <Box position="absolute" top={4} left={4}>
         <ReturnDashboard />
       </Box>
-      
+
       <Box mt={12}>
         <Text>End</Text>
         <Stack direction="row" gap={4} mt={4}>

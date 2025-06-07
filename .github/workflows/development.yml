@@ -3,10 +3,10 @@ name: CI/CD - Development
 on:
   push:
     branches:
-      - dev
+      - dev-clean
   pull_request:
     branches:
-      - dev
+      - dev-clean
 
 jobs:
   dev-pipeline:
@@ -34,5 +34,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh auth setup-git
-          gh pr create --title "Sync dev to staging" --body "Automated PR from dev to staging branch" --base staging --head dev || echo "PR might already exist"
+          gh pr create --title "Sync dev to staging" --body "Automated PR from dev to staging branch" --base staging --head dev-clean || echo "PR might already exist"
 
