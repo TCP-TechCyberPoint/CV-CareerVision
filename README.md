@@ -165,10 +165,13 @@ Career Vision is a digital platform designed to empower job seekers in the Israe
 - Yosi Kariv - Junior Front-End
 - Guy First - Junior Back-End
 - Lior Shavit - Junior Front-End
+- Itay - 
+- Laith Khater - 
 
 ### Quality & Operations
 - Eilon Manela - Junior QA
 - Bar Berkovich - Junior DevOps
+- Yagel - Information Security
 
 ## 📚 Documentation
 

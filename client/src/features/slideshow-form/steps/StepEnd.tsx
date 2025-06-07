@@ -1,6 +1,7 @@
 import BaseButton from "@/components/ui/BaseButton";
 import { Box, Text, Stack } from "@chakra-ui/react";
-import { useSlideshowFormStore } from "@/features/slideshow-form/store/store";
+import { useSlideshowFormStore } from "@slideshow-form/store/store";
+import ReturnDashboard from "../components/ReturnDashboard";
 
 interface StepEndProps {
   nextStep: () => void;
@@ -38,12 +39,18 @@ const StepEnd = ({ prevStep }: StepEndProps) => {
   };
 
   return (
-    <Box>
-      <Text>End</Text>
-      <Stack direction="row" gap={4} mt={4}>
-        <BaseButton onClick={prevStep}>Back</BaseButton>
-        <BaseButton onClick={handleGenerateCv}>Generate CV</BaseButton>
-      </Stack>
+   <Box position="relative" p={8}>
+      <Box position="absolute" top={4} left={4}>
+        <ReturnDashboard />
+      </Box>
+
+      <Box mt={12}>
+        <Text>End</Text>
+        <Stack direction="row" gap={4} mt={4}>
+          <BaseButton onClick={prevStep}>Back</BaseButton>
+          <BaseButton onClick={handleGenerateCv}>Generate CV</BaseButton>
+        </Stack>
+      </Box>
     </Box>
   );
 };

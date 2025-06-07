@@ -6,6 +6,7 @@ import {
   PreferencesFormFields,
   StepNavigationButtons 
 } from "../components";
+import ReturnDashboard from "../components/ReturnDashboard";
 
 const MotionBox = motion.create(Box);
 
@@ -31,8 +32,13 @@ const StepPreferences = ({
       borderRadius="lg"
       boxShadow="lg"
       bg="white"
+      position="relative"
     >
-      <VStack gap={8} align="stretch">
+      <Box position="absolute" top={4} left={4}>
+        <ReturnDashboard />
+      </Box>
+
+      <VStack gap={8} align="stretch" mt={12}>
         <PreferencesHeader />
         
         <PreferencesFormFields

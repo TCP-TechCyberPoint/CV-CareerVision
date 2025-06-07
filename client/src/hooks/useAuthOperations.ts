@@ -103,9 +103,15 @@ export const useAuthOperations = ({ setAuthState, logout }: UseAuthOperationsPro
         logout();
         return false;
       }
-    } catch {
-      logout();
-      return false;
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError?.response?.status === 401) {
+        logout();
+        return false;
+      } else {
+        console.warn("Token validation failed due to network error:", error);
+        return false;
+      }
     }
   }, [setAuthState, logout]);
 

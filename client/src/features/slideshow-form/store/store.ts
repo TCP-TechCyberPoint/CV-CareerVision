@@ -1,16 +1,22 @@
 import { create } from "zustand";
-import type { SlideshowFormData } from "./types";
-
-interface SlideshowFormState {
-  formData: Partial<SlideshowFormData>;
-  updateFormData: (fields: Partial<SlideshowFormData>) => void;
-  resetForm: () => void;
-}
+import type {
+  SlideshowFormState,
+  SectionKey,
+  SectionStatus,
+} from "./store.types";
+import { mockData } from "../utils/mockData";
 
 export const useSlideshowFormStore = create<SlideshowFormState>()((set) => ({
-  formData: {},
+  formData: mockData,
+
+  sectionStatus: {},
   updateFormData: (fields) => {
     set((state) => ({ formData: { ...state.formData, ...fields } }));
   },
-  resetForm: () => set({ formData: {} }),
+
+  updateSectionStatus: (section: SectionKey, status: SectionStatus) => {
+    set((state) => ({
+      sectionStatus: { ...state.sectionStatus, [section]: status },
+    }));
+  },
 }));

@@ -1,18 +1,22 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSlideshowFormStore } from "../store";
-import { 
-  CvStyle, 
-  CvPurpose, 
-  ProfessionalPreference, 
-  ExperienceLevel, 
-  Industry, 
-  SalaryRange 
-} from "../types/preferences.type";
-import { preferencesSchema, type PreferencesFormData } from "../schemas/preferencesSchema";
+import {
+  CvStyle,
+  CvPurpose,
+  ProfessionalPreference,
+  ExperienceLevel,
+  Industry,
+  SalaryRange,
+} from "@slideshow-form/types";
+import {
+  preferencesSchema,
+  type PreferencesFormData,
+} from "../schemas/preferencesSchema"; 
 
 export const useStepPreferences = (nextStep: () => void) => {
-  const { formData, updateFormData } = useSlideshowFormStore();
+  const preferences = useSlideshowFormStore((state) => state.formData.preferences);
+  const updateFormData = useSlideshowFormStore((state) => state.updateFormData);
 
   const {
     register,
@@ -23,12 +27,17 @@ export const useStepPreferences = (nextStep: () => void) => {
   } = useForm<PreferencesFormData>({
     resolver: zodResolver(preferencesSchema),
     defaultValues: {
-      cvStyle: formData.preferences?.cvStyle ?? CvStyle.Minimal,
-      cvPurpose: formData.preferences?.cvPurpose ?? CvPurpose.JobHunt,
-      professionalPreference: formData.preferences?.professionalPreference ?? ProfessionalPreference.FullstackDeveloper,
-      experienceLevel: formData.preferences?.experienceLevel ?? ExperienceLevel.Entry,
-      industryPreference: formData.preferences?.industryPreference ?? Industry.Technology,
-      targetSalaryRange: formData.preferences?.targetSalaryRange ?? SalaryRange.NotSpecified,
+      cvStyle: preferences?.cvStyle ?? CvStyle.Minimal,
+      cvPurpose: preferences?.cvPurpose ?? CvPurpose.JobHunt,
+      professionalPreference:
+        preferences?.professionalPreference ??
+        ProfessionalPreference.FullstackDeveloper,
+      experienceLevel:
+        preferences?.experienceLevel ?? ExperienceLevel.Entry,
+      industryPreference:
+        preferences?.industryPreference ?? Industry.Technology,
+      targetSalaryRange:
+        preferences?.targetSalaryRange ?? SalaryRange.NotSpecified,
     },
   });
 
@@ -47,4 +56,4 @@ export const useStepPreferences = (nextStep: () => void) => {
     errors,
     currentValues,
   };
-}; 
+};

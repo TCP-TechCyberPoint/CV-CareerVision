@@ -12,7 +12,15 @@ import { useColorModeValue } from "@chakra-ui/system";
 import { FiBriefcase, FiTrendingUp, FiUsers } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
-const Feature = ({ title, text, icon }: { title: string; text: string; icon: any }) => {
+const Feature = ({
+  title,
+  text,
+  icon,
+}: {
+  title: string;
+  text: string;
+  icon: any;
+}) => {
   return (
     <Stack
       align="center"
@@ -49,9 +57,14 @@ const Home = () => {
                 Starts Here
               </Text>
             </Heading>
-            <Text fontSize={{ base: "md", lg: "lg" }} color="gray.600" maxW="2xl">
-              Track your professional growth, set career goals, and visualize your path to success.
-              Start your journey towards a fulfilling career today.
+            <Text
+              fontSize={{ base: "md", lg: "lg" }}
+              color="gray.600"
+              maxW="2xl"
+            >
+              Track your professional growth, set career goals, and visualize
+              your path to success. Start your journey towards a fulfilling
+              career today.
             </Text>
             <Button
               size="lg"
@@ -62,6 +75,16 @@ const Home = () => {
               onClick={() => navigate("/create-cv")}
             >
               Get Started
+            </Button>
+            <Button
+              size="lg"
+              colorScheme="blue"
+              px={8}
+              fontSize="md"
+              rounded="full"
+              onClick={() => navigate("/dashboard")}
+            >
+              Dashboard
             </Button>
           </Stack>
         </Container>
@@ -74,8 +97,8 @@ const Home = () => {
             <Stack align="center" textAlign="center" gap={4}>
               <Heading>Why Choose Us</Heading>
               <Text color="gray.600" maxW="2xl">
-                We provide the tools and insights you need to navigate your career path
-                effectively and achieve your professional goals.
+                We provide the tools and insights you need to navigate your
+                career path effectively and achieve your professional goals.
               </Text>
             </Stack>
 
@@ -93,7 +116,7 @@ const Home = () => {
               <Feature
                 icon={FiUsers}
                 title="Community Support"
-                text="Connect with like-minded professionals and share experiences."
+                text="Connect with like-minded professionals and share experience."
               />
             </SimpleGrid>
           </Stack>
@@ -106,8 +129,8 @@ const Home = () => {
           <Stack align="center" textAlign="center" gap={8}>
             <Heading>Ready to Start Your Journey?</Heading>
             <Text fontSize="lg" color="gray.600" maxW="2xl">
-              Join thousands of professionals who are already tracking their career growth
-              and achieving their goals.
+              Join thousands of professionals who are already tracking their
+              career growth and achieving their goals.
             </Text>
             <Button
               size="lg"

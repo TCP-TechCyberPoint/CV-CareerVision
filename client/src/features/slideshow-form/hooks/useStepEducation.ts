@@ -4,14 +4,12 @@ import {
   type EducationFormData,
   educationSchema,
 } from "../schemas/educationSchema";
-import { useSlideshowFormStore } from "../store";
-import type { Degree, FieldOfStudy, Year } from "../types/education.type";
-import type { Education } from "../store/types";
+import { useSlideshowFormStore } from "../store/store";
+import type { Education, Degree, FieldOfStudy, Year } from "../types/index";
 
 export const useStepEducation = (nextStep: () => void) => {
-  const { formData, updateFormData } = useSlideshowFormStore();
-  
-
+  const education = useSlideshowFormStore((state) => state.formData.education);
+  const updateFormData = useSlideshowFormStore((state) => state.updateFormData);
 
   const {
     register,
@@ -20,12 +18,12 @@ export const useStepEducation = (nextStep: () => void) => {
     watch,
     formState: { errors },
   } = useForm<EducationFormData>({
-    resolver: zodResolver(educationSchema),
+    resolver: zodResolver(educationSchema), 
     defaultValues: {
-      degree: formData.education?.degree as Degree,
-      fieldOfStudy: formData.education?.fieldOfStudy as FieldOfStudy,
-      institution: formData.education?.institution as string,
-      graduationYear: formData.education?.graduationYear as Year,
+      degree: education?.degree as Degree,
+      fieldOfStudy: education?.fieldOfStudy as FieldOfStudy,
+      institution: education?.institution as string,
+      graduationYear: education?.graduationYear as Year,
     },
   });
 

@@ -3,11 +3,13 @@ import { motion } from "framer-motion";
 import { useStepExperience } from "../hooks/useStepExperience";
 import {
   ExperienceHeader,
-  ExperienceCard,
-  AddExperienceButton,
   StepNavigationButtons,
-} from "@/features/slideshow-form/components";
+  ExperienceStepForm,
+} from "@slideshow-form/components";
+import AddExperienceButton from "../components/experience/AddExperienceButton";
 import { DevTool } from "@hookform/devtools";
+import ReturnDashboard from "../components/ReturnDashboard";
+
 const MotionBox = motion.create(Box);
 
 interface StepExperienceProps {
@@ -19,13 +21,13 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
   const {
     register,
     handleSubmit,
-    fields,
-    addNewExperience,
-    removeExperience,
     setValue,
     onSubmit,
     errors,
+    fields,
     watchedExperiences,
+    addExperience,
+    removeExperience,
     control,
   } = useStepExperience(nextStep);
 
@@ -43,15 +45,20 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
         bg="white"
         maxW="900px"
         mx="auto"
+        position="relative"
       >
-        <VStack gap={8} align="stretch">
+        <Box position="absolute" top={4} left={4}>
+          <ReturnDashboard />
+        </Box>
+
+        <VStack gap={8} align="stretch" mt={12}>
           {/* Header */}
           <ExperienceHeader />
 
-          {/* Dynamic Experience Fields */}
+          {/* Experience Cards */}
           <Stack gap={6}>
             {fields.map((field, index) => (
-              <ExperienceCard
+              <ExperienceStepForm
                 key={field.id}
                 field={field}
                 index={index}
@@ -59,19 +66,20 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
                 register={register}
                 errors={errors}
                 setValue={setValue}
-                watchedExperiences={watchedExperiences}
                 onRemove={removeExperience}
+                watchedExperiences={watchedExperiences}
               />
             ))}
           </Stack>
 
-          {/* Add New Experience Button */}
-          <AddExperienceButton onAdd={addNewExperience} />
+          {/* Add Experience Button */}
+          <AddExperienceButton onAdd={addExperience} />
 
           {/* Form Error */}
-          {errors.experiences && (
+          {errors.experience && (
             <Text color="red.500" textAlign="center" fontSize="sm">
-              {errors.experiences.message}
+              {errors.experience.message ||
+                "Please check your experience entries"}
             </Text>
           )}
 
@@ -82,7 +90,7 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
           />
         </VStack>
       </Box>
-      {import.meta.env.DEV && <DevTool control={control}   />}
+      {import.meta.env.DEV && <DevTool control={control} />}
     </MotionBox>
   );
 };

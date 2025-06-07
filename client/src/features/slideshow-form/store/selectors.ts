@@ -1,34 +1,34 @@
 import { useSlideshowFormStore } from "./store";
-import { Gender } from "../types/vitals.type";
+import { Gender } from "../types/vitals.types";
 
 // Individual field selectors
 export const useName = () =>
   useSlideshowFormStore((state) => state.formData.vitals?.name ?? "");
 
-export const useAge = () =>
-  useSlideshowFormStore((state) => state.formData.vitals?.age ?? 0);
+export const useDateOfBirth = () =>
+  useSlideshowFormStore((state) => state.formData.vitals?.dateOfBirth ?? new Date(2000, 0, 1));
 
 export const useSkills = () =>
-  useSlideshowFormStore((state) => state.formData.hardSkills?.skills ?? []);
+  useSlideshowFormStore((state) => state.formData.hardSkills ?? []);
 
-export const useSlides = () =>
-  useSlideshowFormStore((state) => state.formData.softSkills?.slides ?? []);
-
-export const useDescription = () =>
-  useSlideshowFormStore((state) => state.formData.softSkills?.description ?? "");
+export const useSoftSkills = () =>
+  useSlideshowFormStore((state) => state.formData.softSkills ?? []);
 
 // Step selectors (optional groups)
 export const useStepVitalsFields = () =>
   useSlideshowFormStore((state) => ({
     name: state.formData.vitals?.name ?? "",
-    age: state.formData.vitals?.age ?? 0,
+    dateOfBirth: state.formData.vitals?.dateOfBirth ?? new Date(2000, 0, 1),
     gender: state.formData.vitals?.gender ?? Gender.Male,
     email: state.formData.vitals?.email ?? "",
+    country: state.formData.vitals?.country ?? "",
+    city: state.formData.vitals?.city ?? "",
+    street: state.formData.vitals?.street ?? "",
   }));
 
 export const useStepSkillsFields = () =>
   useSlideshowFormStore((state) => ({
-    skills: state.formData.hardSkills?.skills ?? [],
+    skills: state.formData.hardSkills ?? [],
   }));
 
 export const useStepEducationFields = () =>

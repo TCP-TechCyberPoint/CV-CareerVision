@@ -1,14 +1,19 @@
 import { Box } from "@chakra-ui/react";
 import type { UseFormSetValue, FieldErrors } from "react-hook-form";
-import { 
+import {
   cvPurposeCollection,
   professionalPreferenceCollection,
   experienceLevelCollection,
   industryCollection,
   salaryRangeCollection,
   type PreferencesFormData,
-} from "../../schemas/preferencesSchema";
-import { CvStyle, ExperienceLevel, Industry, SalaryRange } from "../../types/preferences.type";
+} from "@slideshow-form/schemas/preferencesSchema";
+import {
+  CvStyle,
+  ExperienceLevel,
+  Industry,
+  SalaryRange,
+} from "@slideshow-form/types/preferences.types";
 import CvStyleField from "./CvStyleField";
 import PreferenceSelectField from "./PreferenceSelectField";
 
@@ -24,7 +29,12 @@ const PreferencesFormFields = ({
   setValue,
 }: PreferencesFormFieldsProps) => {
   return (
-    <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={6} width="100%">
+    <Box
+      display="grid"
+      gridTemplateColumns="repeat(2, 1fr)"
+      gap={6}
+      width="100%"
+    >
       {/* CV Style field - Radio buttons */}
       <CvStyleField
         error={errors.cvStyle?.message}
@@ -61,7 +71,9 @@ const PreferencesFormFields = ({
         collection={experienceLevelCollection}
         error={errors.experienceLevel?.message}
         value={currentValues.experienceLevel}
-        onValueChange={(value) => setValue("experienceLevel", value as ExperienceLevel)}
+        onValueChange={(value) =>
+          setValue("experienceLevel", value as ExperienceLevel)
+        }
         description="How many years of experience do you have?"
       />
 
@@ -72,7 +84,9 @@ const PreferencesFormFields = ({
         collection={industryCollection}
         error={errors.industryPreference?.message}
         value={currentValues.industryPreference}
-        onValueChange={(value) => setValue("industryPreference", value as Industry)}
+        onValueChange={(value) =>
+          setValue("industryPreference", value as Industry)
+        }
         description="Which industry interests you most?"
       />
 
@@ -83,11 +97,13 @@ const PreferencesFormFields = ({
         collection={salaryRangeCollection}
         error={errors.targetSalaryRange?.message}
         value={currentValues.targetSalaryRange}
-        onValueChange={(value) => setValue("targetSalaryRange", value as SalaryRange)}
+        onValueChange={(value) =>
+          setValue("targetSalaryRange", value as SalaryRange)
+        }
         description="What's your expected salary range?"
       />
     </Box>
   );
 };
 
-export default PreferencesFormFields; 
+export default PreferencesFormFields;

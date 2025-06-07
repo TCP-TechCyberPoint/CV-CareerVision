@@ -6,15 +6,22 @@ export type FieldOfStudy =
   | "Data Science"
   | "Artificial Intelligence"
   | "Computer Engineering"
-  | "Information Systems"
+  | "Information Systems";
 
-
-  export type Degree =
+export type Degree =
   | "Bachelor"
   | "Master"
   | "PhD"
   | "Associate"
   | "Diploma"
-  | "Other"
+  | "Other";
 
-  export type Year = `${number}`;
+export type Year = `${number}`;
+
+export interface Education {
+  degree: Degree;
+  fieldOfStudy: FieldOfStudy;
+  institution: string;
+  graduationYear: Year;
+  certifications: string[];
+}

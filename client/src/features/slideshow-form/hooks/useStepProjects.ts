@@ -5,9 +5,9 @@ import {
   projectsFormSchema,
 } from "../schemas/projectsSchema";
 import { useSlideshowFormStore } from "../store";
-import type { Project } from "../types/projects.type";
+import type { Project } from "../types/index";
 
-const createEmptyProject = (): Project => ({
+const createEmptyProject = (): Project => ({  
   id: crypto.randomUUID(),
   projectName: "",
   description: "",
@@ -16,7 +16,8 @@ const createEmptyProject = (): Project => ({
 });
 
 export const useStepProjects = (nextStep: () => void) => {
-  const { formData, updateFormData } = useSlideshowFormStore();
+  const projects = useSlideshowFormStore((state) => state.formData.projects);
+  const updateFormData = useSlideshowFormStore((state) => state.updateFormData);
 
   const {
     register,
@@ -28,7 +29,7 @@ export const useStepProjects = (nextStep: () => void) => {
   } = useForm<ProjectsFormData>({
     resolver: zodResolver(projectsFormSchema),
     defaultValues: {
-      projects: (formData.projects as Project[]) ?? [createEmptyProject()],
+      projects: projects ?? [createEmptyProject()],
     },
   });
 

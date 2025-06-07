@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { SOFT_SKILLS_HIERARCHY } from "../constants/skills-hierarchy";
-import { useSlideshowFormStore } from "../store/store";
-import type { SoftSkill, SoftSkillCategory } from "../types/soft-skills.type";
-import type { SkillColor } from "../types/skills.type";
+import { useSlideshowFormStore } from "../store";
+import type { SoftSkill, SoftSkillCategory, SkillColor } from "../types/skills";
 
 export const useSoftSkills = () => {
-  const { formData, updateFormData } = useSlideshowFormStore();
-  const [selectedSkills, setSelectedSkills] = useState<SoftSkill[]>(formData.softSkills?.slides || []);
+  const softSkills = useSlideshowFormStore(
+    (state) => state.formData.softSkills
+  );
+  const updateFormData = useSlideshowFormStore((state) => state.updateFormData);
+  const [selectedSkills, setSelectedSkills] = useState<SoftSkill[]>(
+    softSkills || []
+  );
   const [expandedSkills, setExpandedSkills] = useState<SoftSkillCategory[]>([]);
 
   const handleSkillClick = (skill: SoftSkill | SoftSkillCategory) => {
-    const isMainCategory = SOFT_SKILLS_HIERARCHY[skill as SoftSkillCategory] !== undefined;
-    
+    const isMainCategory =
+      SOFT_SKILLS_HIERARCHY[skill as SoftSkillCategory] !== undefined;
+
     if (isMainCategory) {
       const category = skill as SoftSkillCategory;
       if (!expandedSkills.includes(category)) {
@@ -24,19 +29,23 @@ export const useSoftSkills = () => {
       if (!selectedSkills.includes(individualSkill)) {
         const newSelectedSkills = [...selectedSkills, individualSkill];
         setSelectedSkills(newSelectedSkills);
-        updateFormData({ softSkills: { skills: newSelectedSkills } });
+        updateFormData({ softSkills: newSelectedSkills });
       } else {
-        const newSelectedSkills = selectedSkills.filter((s) => s !== individualSkill);
+        const newSelectedSkills = selectedSkills.filter(
+          (s) => s !== individualSkill
+        );
         setSelectedSkills(newSelectedSkills);
-        updateFormData({ softSkills: { skills: newSelectedSkills } });
+        updateFormData({ softSkills: newSelectedSkills });
       }
     }
   };
 
   const handleRemoveSkill = (skillToRemove: SoftSkill) => {
-    const newSelectedSkills = selectedSkills.filter((skill) => skill !== skillToRemove);
+    const newSelectedSkills = selectedSkills.filter(
+      (skill) => skill !== skillToRemove
+    );
     setSelectedSkills(newSelectedSkills);
-    updateFormData({ softSkills: { skills: newSelectedSkills } });
+    updateFormData({ softSkills: newSelectedSkills });
   };
 
   const getNextSkills = (): SoftSkill[] => {
@@ -44,7 +53,11 @@ export const useSoftSkills = () => {
     expandedSkills.forEach((skill) => {
       const category = SOFT_SKILLS_HIERARCHY[skill];
       if (category) {
-        next.push(...(category.skills.filter((child) => !selectedSkills.includes(child as SoftSkill)) as SoftSkill[]));
+        next.push(
+          ...(category.skills.filter(
+            (child) => !selectedSkills.includes(child as SoftSkill)
+          ) as SoftSkill[])
+        );
       }
     });
     return next;
@@ -55,13 +68,13 @@ export const useSoftSkills = () => {
     if (category) {
       return category.color;
     }
-    
+
     for (const [_, categoryData] of Object.entries(SOFT_SKILLS_HIERARCHY)) {
       if (categoryData.skills.some((s) => s === skill)) {
         return categoryData.color;
       }
     }
-    
+
     return "gray";
   };
 
@@ -73,4 +86,4 @@ export const useSoftSkills = () => {
     getNextSkills,
     getColorScheme,
   };
-}; 
+};

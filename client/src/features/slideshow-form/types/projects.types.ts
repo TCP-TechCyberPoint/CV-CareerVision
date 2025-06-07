@@ -5,7 +5,3 @@ export interface Project {
   projectTech: string[];
   projectLink: string;
 }
-
-export interface Projects {
-  projects: Project[];
-} 

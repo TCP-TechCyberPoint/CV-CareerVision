@@ -3,6 +3,7 @@ import { Fade } from "@chakra-ui/transition";
 import { motion } from "framer-motion";
 import SkillTag from "./SkillTag";
 
+
 const MotionBox = motion.create(Box);
 
 interface SkillSubcategoriesSectionProps {

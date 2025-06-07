@@ -1,22 +1,31 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { useSlideshowFormStore } from "../store";
-import { experienceFormSchema, type ExperienceFormData } from "../schemas/experienceSchema";
-import type { Experience } from "../store/types";
+import { experienceFormSchema } from "../schemas/experienceSchema";
+import type { ExperienceFormData } from "../schemas/experienceSchema";
+import type { Experience } from "../types/index";
 
 const createEmptyExperience = (): Experience => ({
   id: crypto.randomUUID(),
   jobTitle: "",
   company: "",
   startDate: new Date().toISOString().split("T")[0],
-  endDate: new Date().toISOString().split("T")[0],
+  endDate: "",
   isCurrentJob: false,
   description: "",
 });
 
 export const useStepExperience = (nextStep: () => void) => {
-  const { formData, updateFormData } = useSlideshowFormStore();
+  const experience = useSlideshowFormStore(
+    (state) => state.formData.experience
+  );
+  const updateFormData = useSlideshowFormStore((state) => state.updateFormData);
+
+  // Handle both old format (single object) and new format (array)
+  const getDefaultExperiences = () => {
+    if (!experience) return [] as Experience[];
+    return experience;
+  };
 
   const {
     register,
@@ -28,34 +37,40 @@ export const useStepExperience = (nextStep: () => void) => {
   } = useForm<ExperienceFormData>({
     resolver: zodResolver(experienceFormSchema),
     defaultValues: {
-      experiences: (formData.experiences as Experience[]) ?? [
-        createEmptyExperience(),
-      ],
+      experience: getDefaultExperiences() as Experience[],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "experiences",
+    name: "experience",
   });
 
-  const addNewExperience = () => append(createEmptyExperience());
+  const watchedExperiences = watch("experience");
+
+  const addExperience = () => {
+    append(createEmptyExperience());
+  };
 
   const removeExperience = (index: number) => {
-    if (fields.length > 1) remove(index);
+    if (fields.length > 1) {
+      remove(index);
+    }
+  };
+
+  const getCurrentJobsCount = () => {
+    return (
+      watchedExperiences?.filter((exp) => exp?.isCurrentJob === true).length ||
+      0
+    );
+  };
+
+  const hasMultipleCurrentJobs = () => {
+    return getCurrentJobsCount() > 1;
   };
 
   const onSubmit = (data: ExperienceFormData) => {
-    const experiences: Experience[] = data.experiences.map((exp): Experience => ({
-      id: exp.id as string,
-      jobTitle: exp.jobTitle as string,
-      company: exp.company as string,
-      startDate: exp.startDate as string,
-      endDate: exp.isCurrentJob ? undefined : (exp.endDate as string),
-      isCurrentJob: exp.isCurrentJob === true || exp.isCurrentJob === "on",
-      description: exp.description as string | undefined,
-    }));
-    updateFormData({ experiences });
+    updateFormData({ experience: data.experience });
     nextStep();
   };
 
@@ -63,12 +78,14 @@ export const useStepExperience = (nextStep: () => void) => {
     register,
     handleSubmit,
     control,
-    fields,
-    addNewExperience,
-    removeExperience,
     setValue,
     onSubmit,
     errors,
-    watchedExperiences: watch("experiences"),
+    fields,
+    watchedExperiences,
+    addExperience,
+    removeExperience,
+    getCurrentJobsCount,
+    hasMultipleCurrentJobs,
   };
 };

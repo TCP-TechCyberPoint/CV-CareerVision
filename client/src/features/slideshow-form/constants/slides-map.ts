@@ -10,8 +10,3 @@ export const slideMap = {
   end: 8,
 } as const;
 
-export const slideKeys = Object.keys(slideMap) as Array<keyof typeof slideMap>;
-export const slideNames = Object.entries(slideMap).reduce(
-  (acc, [key, val]) => ({ ...acc, [val]: key }),
-  {} as Record<number, string>
-);
