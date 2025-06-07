@@ -97,9 +97,25 @@ export const preferencesData: Preferences = {
   targetSalaryRange: SalaryRange.Range100to150k,
 };
 
-// Overall profile completion calculation
-export const calculateOverallCompletion = () => {
-  const sections = [21, 22, 23, 24, 25, 26, 27];
+export const calculateOverallCompletion = (formData?: SlideshowFormData) => {
+  if (!formData) {
+    const sections = [21, 22, 23, 24, 25, 26, 27];
+    const totalCompletion = sections.reduce(
+      (sum, completion) => sum + completion,
+      0
+    );
+    return Math.round(totalCompletion / sections.length);
+  }
+
+  const sections = [
+    formData.vitals ? 100 : 0,
+    formData.hardSkills?.length ? 100 : 0,
+    formData.softSkills?.length ? 100 : 0,
+    formData.education ? 100 : 0,
+    formData.experience?.length ? 100 : 0,
+    formData.projects?.length ? 100 : 0,
+    formData.preferences ? 100 : 0,
+  ];
 
   const totalCompletion = sections.reduce(
     (sum, completion) => sum + completion,

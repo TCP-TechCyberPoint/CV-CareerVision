@@ -45,7 +45,6 @@ const SlideshowForm = () => {
   };
 
   const Component = slideComponents[step] || (() => <div>Step not found</div>);
-  console.log("formData", formData);
 
   return (
     <CriticalErrorBoundary>

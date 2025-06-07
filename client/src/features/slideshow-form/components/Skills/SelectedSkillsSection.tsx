@@ -20,7 +20,6 @@ const SelectedSkillsSection = ({
   useAnimation = false 
 }: SelectedSkillsSectionProps) => {
   const bgColor = useColorModeValue("white", "gray.800");
-  console.log("selectedSkills", selectedSkills);
 
   if (selectedSkills.length === 0) return null;
 

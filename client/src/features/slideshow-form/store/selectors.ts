@@ -11,10 +11,7 @@ export const useDateOfBirth = () =>
 export const useSkills = () =>
   useSlideshowFormStore((state) => state.formData.hardSkills ?? []);
 
-export const useSlides = () =>
-  useSlideshowFormStore((state) => state.formData.softSkills ?? []);
-
-export const useDescription = () =>
+export const useSoftSkills = () =>
   useSlideshowFormStore((state) => state.formData.softSkills ?? []);
 
 // Step selectors (optional groups)
