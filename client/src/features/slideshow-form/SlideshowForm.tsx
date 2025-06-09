@@ -13,6 +13,7 @@ import {
 import { useSlideshowFormStore } from "./store";
 import StepExperience from "./steps/StepExperience";
 import { CriticalErrorBoundary } from "@/components/shared/ErrorBoundary";
+import { useSaveCvData } from "./hooks/useSaveCvData";
 
 const slideComponents = {
   intro: StepIntro,
@@ -33,8 +34,17 @@ const SlideshowForm = () => {
   
   const entries = Object.entries(slideMap);
   const { formData } = useSlideshowFormStore();
+  const { saveSectionData } = useSaveCvData();
 
-  const nextStep = () => {
+  const nextStep = async () => {
+    // Save current step data before moving to next
+    if (step !== 'intro' && step !== 'end') {
+      const sectionData = formData[step as keyof typeof formData];
+      if (sectionData) {
+        await saveSectionData(step, sectionData);
+      }
+    }
+
     const nextEntry = entries.find(([, i]) => i === currentIndex + 1);
     if (nextEntry) navigate(`/create-cv/${nextEntry[0]}`);
   };
