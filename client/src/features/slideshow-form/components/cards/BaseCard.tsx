@@ -15,7 +15,7 @@ interface BaseCardProps {
   className?: string;
   role?: string;
   // Allow additional props to be passed through
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const BaseCard = ({

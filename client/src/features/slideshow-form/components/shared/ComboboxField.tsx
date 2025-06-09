@@ -1,9 +1,11 @@
 import { Field, Combobox, Portal } from "@chakra-ui/react";
+import type { CollectionItem } from "@ark-ui/react";
+import { createListCollection } from "@ark-ui/react";
 
 interface ComboboxFieldProps {  
   label: string;
   placeholder: string;
-  collection: any;
+  collection: CollectionItem[];
   error?: string;
   onInputValueChange: (inputValue: string) => void;
   onValueChange: (value: string) => void;
@@ -21,12 +23,16 @@ const ComboboxField = ({
   invalid = false,
   value,
 }: ComboboxFieldProps) => {
+  const listCollection = createListCollection({
+    items: collection,
+  });
+
   return (
     <Field.Root invalid={invalid}>
       <Combobox.Root
         width="100%"
         invalid={invalid}
-        collection={collection}
+        collection={listCollection}
         defaultValue={[value?.toString() || ""]}
         onInputValueChange={(e) => {
           onInputValueChange(e.inputValue);
@@ -47,7 +53,7 @@ const ComboboxField = ({
           <Combobox.Positioner>
             <Combobox.Content maxHeight="200px">
               <Combobox.Empty>No items found</Combobox.Empty>
-              {collection.items.map((item: any) => (
+              {listCollection.items.map((item: CollectionItem) => (
                 <Combobox.Item item={item} key={item.value}>
                   {item.label}
                   <Combobox.ItemIndicator />

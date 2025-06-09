@@ -31,7 +31,7 @@ const ProgressBar = ({
   label = "Profile Completion",
   showPercentage = true,
   size = "md",
-  colorPalette = "blue",
+  colorPalette = "green",
 }: ProgressBarProps) => {
   // Ensure percentage is between 0 and 100
   const clampedPercentage = Math.min(Math.max(completionPercentage, 0), 100);
@@ -42,7 +42,7 @@ const ProgressBar = ({
     if (percentage < 50) return "orange";
     if (percentage < 75) return "yellow";
     if (percentage < 100) return "blue";
-    return "green";
+    return colorPalette;
   };
 
   const statusColor = getStatusColor(clampedPercentage);

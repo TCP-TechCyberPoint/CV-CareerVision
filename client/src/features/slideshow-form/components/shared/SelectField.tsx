@@ -1,9 +1,11 @@
 import { Field, Select, Portal } from "@chakra-ui/react";
+import type { CollectionItem } from "@ark-ui/react";
+import { createListCollection } from "@ark-ui/react";
 
 interface SelectFieldProps {
   label: string;
   placeholder: string;
-  collection: any;
+  collection: CollectionItem[];
   error?: string;
   onValueChange: (value: string) => void;
   invalid?: boolean;
@@ -19,11 +21,15 @@ const SelectField = ({
   invalid = false,
   value,
 }: SelectFieldProps) => {
+  const listCollection = createListCollection({
+    items: collection,
+  });
+
   return (
     <Field.Root invalid={invalid}>
       <Select.Root
         invalid={invalid}
-        collection={collection}
+        collection={listCollection}
         width="100%"
         value={value ? [value] : []}
         onValueChange={(details) => {
@@ -43,7 +49,7 @@ const SelectField = ({
         <Portal>
           <Select.Positioner>
             <Select.Content>
-              {collection.items.map((item: any) => (
+              {listCollection.items.map((item: CollectionItem) => (
                 <Select.Item item={item.value} key={item.value}>
                   {item.label}
                 </Select.Item>

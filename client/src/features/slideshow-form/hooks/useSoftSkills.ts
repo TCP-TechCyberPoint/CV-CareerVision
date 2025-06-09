@@ -69,7 +69,7 @@ export const useSoftSkills = () => {
       return category.color;
     }
 
-    for (const [_, categoryData] of Object.entries(SOFT_SKILLS_HIERARCHY)) {
+    for (const [, categoryData] of Object.entries(SOFT_SKILLS_HIERARCHY)) {
       if (categoryData.skills.some((s) => s === skill)) {
         return categoryData.color;
       }

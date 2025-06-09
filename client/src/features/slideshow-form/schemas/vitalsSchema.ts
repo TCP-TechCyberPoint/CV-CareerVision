@@ -6,7 +6,7 @@ export const vitalsSchema = z.object({
     .string()
     .min(2, "I bet you have more than 2 characters in your name, right? 🤔")
     .max(20, "Love your name, but it's too long for me to remember it")
-    .regex(/^[a-zA-Z\s\-'\.]+$/, "Cool name, but our system doesn't support special characters or numbers 🔢"),
+    .regex(/^[a-zA-Z\s-']+$/, "Cool name, but our system doesn't support special characters or numbers 🔢"),
   dateOfBirth: z
     .date({
       required_error: "Cool, you're a time traveler! 🤖",
