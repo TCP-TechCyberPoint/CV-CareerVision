@@ -15,9 +15,9 @@ interface SkillsStepProps {
   selectedSkills: string[];
   expandedSkills: string[];
   nextSkills: string[];
-  onSkillClick: (skill: any) => void;
-  onRemoveSkill: (skill: any) => void;
-  getColorScheme: (skill: any) => string;
+  onSkillClick: (skill: string) => void;
+  onRemoveSkill: (skill: string) => void;
+  getColorScheme: (skill: string) => string;
   nextStep: () => void;
   prevStep: () => void;
   useHardSkillsAnimation?: boolean;

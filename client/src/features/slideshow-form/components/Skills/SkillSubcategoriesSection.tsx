@@ -9,8 +9,8 @@ const MotionBox = motion.create(Box);
 interface SkillSubcategoriesSectionProps {
   skills: string[];
   selectedSkills: string[];
-  onSkillClick: (skill: any) => void;
-  getColorScheme: (skill: any) => string;
+  onSkillClick: (skill: string) => void;
+  getColorScheme: (skill: string) => string;
   useAnimation?: boolean;
 }
 

@@ -8,8 +8,8 @@ const MotionBox = motion.create(Box);
 
 interface SelectedSkillsSectionProps {
   selectedSkills: string[];
-  onRemoveSkill: (skill: any) => void;
-  getColorScheme: (skill: any) => string;
+  onRemoveSkill: (skill: string) => void;
+  getColorScheme: (skill: string) => string;
   useAnimation?: boolean;
 }
 

@@ -9,7 +9,7 @@ export const useLoadCvData = () => {
       const response = await fetch(`http://localhost:5000/api/cv/load/${encodeURIComponent(email)}`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json',      
         },
       });
 
