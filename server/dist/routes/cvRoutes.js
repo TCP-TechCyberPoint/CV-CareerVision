@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const cvController_1 = require("../controllers/cvController");
+const cvController_2 = require("../controllers/cvController");
+const router = (0, express_1.Router)();
+router.post('/generate', cvController_1.generateCv);
+router.post('/save', cvController_2.saveCvData);
+router.get('/load/:email', cvController_2.loadCvData);
+exports.default = router;
