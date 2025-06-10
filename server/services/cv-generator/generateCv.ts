@@ -47,27 +47,35 @@ export const generateCvDocx = async (req: Request, res: Response) => {
       { headers: { "Content-Type": "application/json" } }
     );
 
-    let text = geminiRes.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    let text =
+      geminiRes.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
     if (!text) throw new Error("Gemini response is empty");
-    text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+    text = text
+      .replace(/^```json/, "")
+      .replace(/```$/, "")
+      .trim();
     const content = JSON.parse(text);
 
     const sectionChildren: Paragraph[] = [];
 
     const addHeading = (label: string) =>
-      sectionChildren.push(new Paragraph({
-        text: label.toUpperCase(),
-        heading: HeadingLevel.HEADING_2,
-        spacing: { after: 200 },
-      }));
+      sectionChildren.push(
+        new Paragraph({
+          text: label.toUpperCase(),
+          heading: HeadingLevel.HEADING_2,
+          spacing: { after: 200 },
+        })
+      );
 
     const addLine = () =>
-      sectionChildren.push(new Paragraph({
-        border: {
-          bottom: { style: BorderStyle.SINGLE, size: 6, color: "auto" },
-        },
-        spacing: { after: 100 },
-      }));
+      sectionChildren.push(
+        new Paragraph({
+          border: {
+            bottom: { style: BorderStyle.SINGLE, size: 6, color: "auto" },
+          },
+          spacing: { after: 100 },
+        })
+      );
 
     const spacedParagraph = (text: string, isBullet = false) =>
       new Paragraph({
@@ -83,7 +91,13 @@ export const generateCvDocx = async (req: Request, res: Response) => {
 
     sectionChildren.push(
       new Paragraph({
-        children: [new TextRun({ text: `${name} – ${role} – ${expYears} Years Experience`, bold: true, size: 36 })],
+        children: [
+          new TextRun({
+            text: `${name} – ${role} – ${expYears} Years Experience`,
+            bold: true,
+            size: 36,
+          }),
+        ],
         alignment: AlignmentType.CENTER,
         spacing: { after: 150 },
       }),
@@ -96,13 +110,19 @@ export const generateCvDocx = async (req: Request, res: Response) => {
     addLine();
 
     addHeading("Objective");
-    sectionChildren.push(spacedParagraph(content.summary || "Motivated professional."));
+    sectionChildren.push(
+      spacedParagraph(content.summary || "Motivated professional.")
+    );
     addLine();
 
     addHeading("Experience");
     let experienceCount = 0;
     for (const exp of content.experience || []) {
-      sectionChildren.push(spacedParagraph(`${exp.company} | ${exp.title} (${exp.startYear} – ${exp.endYear})`));
+      sectionChildren.push(
+        spacedParagraph(
+          `${exp.company} | ${exp.title} (${exp.startYear} – ${exp.endYear})`
+        )
+      );
       experienceCount++;
 
       for (const bullet of exp.bullets || []) {
@@ -113,8 +133,14 @@ export const generateCvDocx = async (req: Request, res: Response) => {
       if (experienceCount < 12) {
         sectionChildren.push(
           spacedParagraph("• Participated in Agile ceremonies", true),
-          spacedParagraph("• Wrote technical documentation and test cases", true),
-          spacedParagraph("• Collaborated with QA teams to ensure quality delivery", true)
+          spacedParagraph(
+            "• Wrote technical documentation and test cases",
+            true
+          ),
+          spacedParagraph(
+            "• Collaborated with QA teams to ensure quality delivery",
+            true
+          )
         );
         experienceCount += 3;
       }
@@ -123,7 +149,11 @@ export const generateCvDocx = async (req: Request, res: Response) => {
 
     addHeading("Education");
     for (const edu of content.education || []) {
-      sectionChildren.push(spacedParagraph(`${edu.institution} | ${edu.degree} in ${edu.field} (${edu.year})`));
+      sectionChildren.push(
+        spacedParagraph(
+          `${edu.institution} | ${edu.degree} in ${edu.field} (${edu.year})`
+        )
+      );
     }
     addLine();
 

@@ -47,7 +47,7 @@ export interface PreviousJob {
 export interface SlideshowFormData {
   vitals?: Vitals;
   education?: Education;
-  experiences?: Experience[];
+  experience?: Experience[];
   projects?: Project[];
   hardSkills?: HardSkills;
   softSkills?: SoftSkills;

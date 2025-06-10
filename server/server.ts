@@ -19,7 +19,7 @@ app.use(
 app.use(express.json());
 
 app.use("/auth", authRoutes);
-app.use("/api/cv", cvRoutes); // ✅ Mount your CV route here
+app.use("/api/cv", cvRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI || "", {})

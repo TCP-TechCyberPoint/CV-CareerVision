@@ -1,13 +1,13 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { IUser } from "../models/User";
-import * as userRepository from "../repositories/userRepository";
 import dotenv from "dotenv";
+import { createUser, findByEmail } from "../repositories/userRepository";
 
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret";
-const EXPIRES_IN = process.env.EXPIRES_IN || "7d";
+// const EXPIRES_IN = process.env.EXPIRES_IN || "7d";
 
 interface RegisterCredentials {
   name: IUser["name"];
@@ -20,88 +20,51 @@ interface LoginCredentials {
   password: IUser["password"];
 }
 
-const register = async (credentials: RegisterCredentials) => {
+const register = async ({ name, email, password }: RegisterCredentials) => {
   try {
-    const { name, email, password } = credentials;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const existingUser = await userRepository.findByEmail(email);
+    const existingUser = await findByEmail(email);
     if (existingUser) {
-      return {
-        status: 400,
-        message: "User already exists.",
-      };
+      return { status: 400, data: { message: "User already exists" } };
     }
-    await userRepository.createUser({ name, email, password: hashedPassword });
-    return {
-      status: 201,
-      message: "User created successfully",
-    };
-  } catch (error) {
-    return {
-      status: 500,
-      message: "Failed to register.",
-    };
+
+    const user = await createUser({ name, email, password });
+
+    return { status: 201, data: { user } };
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { status: 400, data: { message: error.message } };
+    }
+    return { status: 400, data: { message: "An unknown error occurred" } };
   }
 };
 
-const login = async (credentials: LoginCredentials) => {
+const login = async ({ email, password }: LoginCredentials) => {
   try {
-    const { email, password } = credentials;
-    const user = await userRepository.findByEmail(email);
-    if (!user) {
-      return {
-        status: 404,
-        message: "Email not found.",
-      };
+    const user: Partial<IUser> | null = await findByEmail(email);
+    if (!user || !(await bcrypt.compare(password, user.password!))) {
+      return { status: 401, data: { message: "Invalid email or password" } };
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return {
-        status: 401,
-        message: "Invalid email or password.",
-      };
-    }
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET);
 
-    return {
-      status: 200,
-      message: "Login successful",
-      token,
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    const userWithoutPassword = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      cv: user.cv,
     };
-  } catch (error) {
-    return {
-      status: 500,
-      message: "Login failed",
-    };
+
+    return { status: 200, data: { token, user: userWithoutPassword } };
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { status: 500, data: { message: error.message } };
+    }
+    return { status: 500, data: { message: "An unknown error occurred" } };
   }
 };
 
-const validateToken = async (token: string) => {
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
-    const user = await userRepository.findById(decoded.userId);
-    
-    if (!user) {
-      return {
-        valid: false,
-        message: "User not found",
-      };
-    }
-
-    return {
-      valid: true,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
-    };
-  } catch (error) {
-    return {
-      valid: false,
-      message: "Invalid token",
-    };
-  }
-};
-
-export { register, login, validateToken };
+export { register, login };

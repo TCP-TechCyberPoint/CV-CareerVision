@@ -1,8 +1,11 @@
+import type { SlideshowFormData } from "@/features/slideshow-form/store/types";
+
 // Authentication related types
 export interface User {
   id: string;
   name: string;
   email: string;
+  cv: SlideshowFormData;
 }
 
 export interface AuthResponse {
