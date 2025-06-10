@@ -1,5 +1,5 @@
 import axiosInstance from "@/api/axios-instance";
-import type { SlideshowFormData } from "../store/types";
+import type { SlideshowFormData } from "@slideshow-form/types";
 
 export type SectionName = keyof SlideshowFormData;
 export type SectionData = SlideshowFormData[SectionName];
@@ -10,6 +10,11 @@ const cvService = {
       [sectionName]: sectionData,
     });
     return response.data;
+  },
+
+  fetchCvData: async () => {
+    const response = await axiosInstance.get("/api/cv/get");
+    return response.data.cv;
   },
 };
 

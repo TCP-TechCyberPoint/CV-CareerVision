@@ -1,9 +1,27 @@
 import { Request, Response } from "express";
 import { generateCvDocx } from "../services/cv-generator/generateCv";
-import { updateUserCv } from "../repositories/userRepository";
+import { getUserCv, updateUserCv } from "../repositories/userRepository";
 import { ICv } from "../models/types";
 
 export const generateCv = generateCvDocx;
+
+export const getCvData = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    const cv = await getUserCv(email);
+    if (!cv) {
+      return res.status(404).json({
+        error: "CV data not found",
+      });
+    }
+    res.status(200).json({
+      message: "CV data fetched successfully",
+      cv,
+    });
+  } catch (error) {
+    console.error("Error fetching CV data:", error);
+  }
+};
 
 export const saveCvData = async (req: Request, res: Response) => {
   try {

@@ -1,5 +1,4 @@
 import { Flex, Box, Grid, Stack, Container } from "@chakra-ui/react";
-import { useEffect } from "react";
 import ProgressBar from './dashboard/progress-bar/ProgressBar';
 import SidebarNavigation from './dashboard/main-layout/sidebar-navigation/SidebarNavigation';
 import {
@@ -18,15 +17,6 @@ import { useSlideshowFormStore } from "./store";
 const Dashboard = () => {
   const formData = useSlideshowFormStore((state) => state.formData);
   console.log("formData", formData);
-  // const { loadCvData } = useLoadCvData();
-
-  // useEffect(() => {
-  //   // Load CV data when dashboard mounts
-  //   const email = formData.vitals?.email;
-  //   if (email) {
-  //     loadCvData(email);
-  //   }
-  // }, [formData.vitals?.email, loadCvData]);
 
   return (
     <Flex minH="100vh" bg={{ base: "gray.50", _dark: "gray.900" }}>

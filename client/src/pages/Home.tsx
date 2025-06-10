@@ -11,6 +11,8 @@ import {
 import { useColorModeValue } from "@chakra-ui/system";
 import { FiBriefcase, FiTrendingUp, FiUsers } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import type { IconType } from "react-icons/lib";
+import { useCvData } from "@/features/slideshow-form/hooks/useCvData";
 
 const Feature = ({
   title,
@@ -19,7 +21,7 @@ const Feature = ({
 }: {
   title: string;
   text: string;
-  icon: any;
+  icon: IconType;
 }) => {
   return (
     <Stack
@@ -40,9 +42,11 @@ const Feature = ({
 
 const Home = () => {
   const navigate = useNavigate();
+useCvData();
 
   return (
     <Box>
+      
       {/* Hero Section */}
       <Box bg={useColorModeValue("gray.50", "gray.900")} py={20}>
         <Container maxW="container.xl">
@@ -66,26 +70,29 @@ const Home = () => {
               your path to success. Start your journey towards a fulfilling
               career today.
             </Text>
-            <Button
-              size="lg"
-              colorScheme="blue"
-              px={8}
-              fontSize="md"
-              rounded="full"
-              onClick={() => navigate("/create-cv")}
-            >
-              Get Started
-            </Button>
-            <Button
-              size="lg"
-              colorScheme="blue"
-              px={8}
-              fontSize="md"
-              rounded="full"
-              onClick={() => navigate("/dashboard")}
-            >
-              Dashboard
-            </Button>
+            <Stack direction={{ base: "column", md: "row" }} gap={4}>
+              <Button
+                size="lg"
+                colorScheme="blue"
+                px={8}
+                fontSize="md"
+                rounded="full"
+                onClick={() => navigate("/create-cv")}
+              >
+                Get Started
+              </Button>
+              <Button
+                size="lg"
+                colorScheme="blue"
+                variant="outline"
+                px={8}
+                fontSize="md"
+                rounded="full"
+                onClick={() => navigate("/dashboard")}
+              >
+                Dashboard
+              </Button>
+            </Stack>
           </Stack>
         </Container>
       </Box>

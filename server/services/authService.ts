@@ -55,7 +55,6 @@ const login = async ({ email, password }: LoginCredentials) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      cv: user.cv,
     };
 
     return { status: 200, data: { token, user: userWithoutPassword } };

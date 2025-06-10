@@ -1,55 +1,19 @@
-import type { HardSkill } from "../types/skills/hard-skills.types";
-import type { SoftSkill } from "../types/skills/soft-skills.types";
-import type { Gender } from "../types/vitals.types";
-import type { Degree, FieldOfStudy, Year } from "../types/education.types";
-import type { Project } from "../types/projects.types";
-import type { Preferences } from "../types/preferences.types";
+import type { SlideshowFormData } from "../types";
+// shared.types.ts or constants.types.ts
+export type CompletionStatus = "complete" | "incomplete" | "in-progress";
 
-export interface Vitals {
-  name: string;
-  age: number;
-  gender: Gender;
-  email: string;
-}
+export type SectionStatusMap = {
+  [K in keyof SlideshowFormData]?: CompletionStatus;
+};
 
-export interface SoftSkills {
-  [key: string]: SoftSkill[];
-}
+// For typing section progress logic
+export type SectionKey = keyof SlideshowFormData;
+export type SectionStatus = SectionStatusMap[SectionKey];
 
-export interface HardSkills {
-  [key: string]: HardSkill[];
-}
-
-export interface Education {
-  degree: Degree;
-  fieldOfStudy: FieldOfStudy;
-  institution: string;
-  graduationYear: Year;
-}
-
-export interface Experience {
-  jobTitle: string;
-  company: string;
-  startDate: string;
-  endDate?: string;
-  isCurrentJob: boolean;
-  description?: string;
-}
-
-export interface PreviousJob {
-  jobTitle: string;
-  company: string;
-  startDate: string;
-  endDate?: string;
-  description?: string;
-}
-
-export interface SlideshowFormData {
-  vitals?: Vitals;
-  education?: Education;
-  experience?: Experience[];
-  projects?: Project[];
-  hardSkills?: HardSkills;
-  softSkills?: SoftSkills;
-  preferences?: Preferences;
+// Zustand store interface
+export interface SlideshowFormState {
+  formData: SlideshowFormData;
+  sectionStatus: SectionStatusMap;
+  updateFormData: (fields: Partial<SlideshowFormData>) => void;
+  updateSectionStatus: (section: SectionKey, status: SectionStatus) => void;
 }

@@ -14,6 +14,11 @@ export const createUser = async (userData: Partial<IUser>): Promise<IUser> => {
   return user.save();
 };
 
+export const getUserCv = async (email: string): Promise<ICv | null> => {
+  const user = await User.findOne({ email });
+  return user?.cv || null;
+};
+
 export const updateUserCv = async (
   email: string,
   cvData: Partial<ICv>
@@ -24,11 +29,5 @@ export const updateUserCv = async (
     return acc;
   }, {} as Record<string, any>);
 
-  return User.findOneAndUpdate(
-    { email },
-    { $set: updateQuery },
-    { new: true }
-  );
+  return User.findOneAndUpdate({ email }, { $set: updateQuery }, { new: true });
 };
-
-

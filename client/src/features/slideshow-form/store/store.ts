@@ -1,13 +1,9 @@
 import { create } from "zustand";
-import type {
-  SlideshowFormState,
-  SectionKey,
-  SectionStatus,
-} from "./store.types";
-import { mockData } from "../utils/mockData";
+import type { SlideshowFormState, SectionKey, SectionStatus } from "./types";
+import type { SlideshowFormData } from "../types";
 
 export const useSlideshowFormStore = create<SlideshowFormState>()((set) => ({
-  formData: mockData,
+  formData: {} as SlideshowFormData,
 
   sectionStatus: {},
   updateFormData: (fields) => {
