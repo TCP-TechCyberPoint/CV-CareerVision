@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSlideshowFormStore } from "../store";
-import { Gender, type Vitals } from "../types/index";
+import { type Vitals } from "../types/vitals.types";
 import { vitalsSchema, type VitalsFormData } from "../schemas/vitalsSchema";
 
 export const useStepVitals = (nextStep: () => void) => {
@@ -19,7 +19,7 @@ export const useStepVitals = (nextStep: () => void) => {
     defaultValues: {
       name: vitals?.name ?? "",
       dateOfBirth: vitals?.dateOfBirth ?? new Date(2000, 0, 1),
-      gender: vitals?.gender ?? Gender.Male,
+      gender: vitals?.gender ?? "Male",
       email: vitals?.email ?? "",
       country: vitals?.country ?? "",
       city: vitals?.city ?? "",

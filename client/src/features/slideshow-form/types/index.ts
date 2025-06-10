@@ -1,6 +1,5 @@
 // Export vitals types
-export type { Vitals } from "./vitals.types";
-export { Gender } from "./vitals.types";
+export type { Vitals, Gender } from "./vitals.types";
 
 // Export experience types
 export type { Experience } from "./experience.types";

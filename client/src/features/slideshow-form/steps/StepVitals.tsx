@@ -11,9 +11,9 @@ import {
   Field,
 } from "@chakra-ui/react";
 import { useStepVitals } from "../hooks/useStepVitals";
-import { Gender } from "../types/vitals.types";
 import StepNavigationButtons from "../components/StepNavigationButtons";
 import ReturnDashboard from "../components/ReturnDashboard";
+import type { Gender } from "../types";
 
 // Reusable styled input component
 const StyledInput = ({ 
@@ -153,11 +153,11 @@ const PersonalDetailsSection = ({
 
     <FormField label="Gender" error={errors.gender?.message}>
       <RadioGroup.Root
-        defaultValue={Gender.Male}
+        defaultValue={"Male"}
         onValueChange={(details) => setValue("gender", details.value as Gender)}
       >
         <VStack gap={2} py={2} align="flex-start">
-          {Object.values(Gender).map((gender) => (
+          {["Male", "Female", "Other"].map((gender) => (
             <RadioGroup.Item key={gender} value={gender}>
               <RadioGroup.ItemHiddenInput />
               <RadioGroup.ItemIndicator />

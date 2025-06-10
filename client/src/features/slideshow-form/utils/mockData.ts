@@ -16,7 +16,6 @@ import {
   CvPurpose,
   ProfessionalPreference,
   CvStyle,
-  Gender,
   SalaryRange,
 } from "../types";
 
@@ -27,7 +26,7 @@ export const vitalsData: Vitals = {
   country: "United States",
   city: "San Francisco",
   street: "123 Tech Street, Apt 4B",
-  gender: Gender.Male,
+  gender: "Male",
   phone: "0501234567",
   linkedin: "https://www.linkedin.com/in/john-doe",
 };

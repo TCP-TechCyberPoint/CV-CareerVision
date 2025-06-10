@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { Gender } from "../types/vitals.types";
 
 export const vitalsSchema = z.object({
   name: z
@@ -17,8 +16,8 @@ export const vitalsSchema = z.object({
       const minDate = new Date(today.getFullYear() - 120, today.getMonth(), today.getDate());
       const maxDate = new Date(today.getFullYear() - 13, today.getMonth(), today.getDate());
       return date >= minDate && date <= maxDate;
-    }, "Are you not too young to find a job? 🤔"),
-  gender: z.nativeEnum(Gender, {
+    }, "Are you not too yo  ung to find a job? 🤔"),
+  gender: z.string({
     required_error: "Please select a gender",
   }),
   email: z

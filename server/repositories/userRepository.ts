@@ -23,11 +23,26 @@ export const updateUserCv = async (
   email: string,
   cvData: Partial<ICv>
 ): Promise<IUser | null> => {
+  console.log("cvData", cvData);
   // Use $set with dot notation to update only the provided fields
   const updateQuery = Object.entries(cvData).reduce((acc, [key, value]) => {
     acc[`cv.${key}`] = value;
     return acc;
   }, {} as Record<string, any>);
 
-  return User.findOneAndUpdate({ email }, { $set: updateQuery }, { new: true });
+  const updatedUser = await User.findOneAndUpdate(
+    { email },
+    { $set: updateQuery },
+    { new: true }
+  );
+  await dropDateOfBirth(email);
+  return updatedUser;
+};
+
+const dropDateOfBirth = async (email: string): Promise<IUser | null> => {
+  return User.findOneAndUpdate(
+    { email },
+    { $unset: { "cv.vitals.dateOfBirth": 1 } },
+    { new: true }
+  );
 };
