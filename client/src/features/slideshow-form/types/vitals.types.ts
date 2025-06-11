@@ -9,5 +9,5 @@ export interface Vitals {
   street: string;
   phone: string;
   linkedin: string;
-
+  github: string;
 }

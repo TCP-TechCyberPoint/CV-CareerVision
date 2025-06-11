@@ -10,7 +10,7 @@ interface AddressInfoSectionProps {
 }
 
 const AddressInfoSection = ({ register, errors }: AddressInfoSectionProps) => (
-  <InfoCard title="Address Info" icon="📍" color="purple">
+  <InfoCard title="My Dot on the Map" icon="🏡" color="purple">
     <FormField label="Country" error={errors.country?.message}>
       <StyledInput
         {...register("country")}

@@ -47,6 +47,12 @@ export const vitalsSchema = z.object({
     .refine((url) => url.includes("linkedin.com"), "This should be a LinkedIn URL")
     .optional()
     .or(z.literal("")),
+  github: z
+    .string()
+    .url("That doesn't look like a GitHub URL! 🔗")
+    .refine((url) => url.includes("github.com"), "This should be a GitHub URL")
+    .optional()
+    .or(z.literal("")),
 });
 
 export type VitalsFormData = z.infer<typeof vitalsSchema>; 

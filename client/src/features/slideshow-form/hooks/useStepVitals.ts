@@ -26,6 +26,7 @@ export const useStepVitals = (nextStep: () => void) => {
       street: vitals?.street ?? "",
       phone: vitals?.phone ?? "",
       linkedin: vitals?.linkedin ?? "",
+      github: vitals?.github ?? "",
     },
   });
 

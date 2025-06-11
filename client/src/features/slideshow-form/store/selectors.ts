@@ -23,6 +23,9 @@ export const useStepVitalsFields = () =>
     country: state.formData.vitals?.country ?? "",
     city: state.formData.vitals?.city ?? "",
     street: state.formData.vitals?.street ?? "",
+    phone: state.formData.vitals?.phone ?? "",
+    linkedin: state.formData.vitals?.linkedin ?? "",
+    github: state.formData.vitals?.github ?? "",
   }));
 
 export const useStepSkillsFields = () =>

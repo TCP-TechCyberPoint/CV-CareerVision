@@ -10,7 +10,7 @@ interface ContactInfoSectionProps {
 }
 
 const ContactInfoSection = ({ register, errors }: ContactInfoSectionProps) => (
-  <InfoCard title="Contact Info" icon="📞" color="green">
+  <InfoCard title="Stalk Me (Professionally)" icon="🔗" color="green">
     <FormField label="Email Address" error={errors.email?.message}>
       <StyledInput
         {...register("email")}
@@ -36,6 +36,16 @@ const ContactInfoSection = ({ register, errors }: ContactInfoSectionProps) => (
         {...register("linkedin")}
         type="url"
         placeholder="linkedin.com/in/yourprofile"
+        hoverColor="green"
+        focusColor="green"
+      />
+    </FormField>
+
+    <FormField label="GitHub" error={errors.github?.message} optional>
+      <StyledInput
+        {...register("github")}
+        type="url"
+        placeholder="github.com/yourusername"
         hoverColor="green"
         focusColor="green"
       />

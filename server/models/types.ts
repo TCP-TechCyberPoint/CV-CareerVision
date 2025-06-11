@@ -1,4 +1,5 @@
 import { Schema } from "mongoose";
+import { isValidUUID, type UUIDv4 } from "../utils/uuid";
 
 export interface ICv {
   vitals?: {
@@ -10,8 +11,8 @@ export interface ICv {
     city: string;
     street: string;
     phone: string;
-    linkedin: string;
     dateOfBirth: string;
+    linkedin: string;
     github: string;
   };
   education?: {
@@ -21,31 +22,23 @@ export interface ICv {
     institution: string;
   };
   experience?: Array<{
+    id: UUIDv4;          // Enforced UUID v4
+    jobTitle: string;
     company: string;
-    position: string;
     startDate: string;
     endDate?: string;
+    isCurrentJob: boolean;
     description: string;
   }>;
   projects?: Array<{
-    id: string;
+    id: UUIDv4;          // Enforced UUID v4
     projectName: string;
     description: string;
     projectTech: string[];
     projectLink: string;
   }>;
-  hardSkills?: {
-    categories: Array<{
-      name: string;
-      skills: string[];
-    }>;
-  };
-  softSkills?: {
-    categories: Array<{
-      name: string;
-      skills: string[];
-    }>;
-  };
+  hardSkills?: string[];
+  softSkills?: string[];
   preferences?: {
     cvStyle: string;
     cvPurpose: string;
@@ -79,18 +72,32 @@ export const cvSchema = new Schema<ICv>(
     },
     experience: [
       {
-        id: { type: String, required: true },
+        id: { 
+          type: String, 
+          required: true,
+          validate: {
+            validator: isValidUUID,
+            message: 'Experience ID must be a valid UUID v4'
+          }
+        },
         jobTitle: { type: String, required: true },
         company: { type: String, required: true },
         startDate: { type: String, required: true },
         endDate: { type: String, required: false },
-        isCurrentJob: { type: Boolean, required: true },
+        isCurrentJob: { type: Boolean, required: true, default: false },
         description: { type: String, required: true },
       },
     ],
     projects: [
       {
-        id: { type: String, required: true },
+        id: { 
+          type: String, 
+          required: true,
+          validate: {
+            validator: isValidUUID,
+            message: 'Project ID must be a valid UUID v4'
+          }
+        },
         projectName: { type: String, required: true },
         description: { type: String, required: true },
         projectTech: [{ type: String, required: true }],
@@ -111,3 +118,37 @@ export const cvSchema = new Schema<ICv>(
   },
   { _id: false }
 );
+
+// Pre-save middleware to handle endDate/isCurrentJob dependency
+cvSchema.pre('save', function() {
+  if (this.experience && Array.isArray(this.experience)) {
+    this.experience.forEach((exp: any) => {
+      // If endDate is falsy (null, undefined, empty string), set isCurrentJob to true
+      if (!exp.endDate || exp.endDate.trim() === '') {
+        exp.isCurrentJob = true;
+        exp.endDate = null; // Ensure consistency
+      } else {
+        // If endDate has a value, set isCurrentJob to false
+        exp.isCurrentJob = false;
+      }
+    });
+  }
+});
+
+// Pre-update middleware to handle endDate/isCurrentJob dependency during updates
+cvSchema.pre(['updateOne', 'findOneAndUpdate', 'updateMany'], function() {
+  const update = this.getUpdate() as any;
+  
+  if (update && update.experience && Array.isArray(update.experience)) {
+    update.experience.forEach((exp: any) => {
+      // If endDate is falsy (null, undefined, empty string), set isCurrentJob to true
+      if (!exp.endDate || exp.endDate.trim() === '') {
+        exp.isCurrentJob = true;
+        exp.endDate = null; // Ensure consistency
+      } else {
+        // If endDate has a value, set isCurrentJob to false
+        exp.isCurrentJob = false;
+      }
+    });
+  }
+});

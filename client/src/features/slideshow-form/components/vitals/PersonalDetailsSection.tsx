@@ -23,7 +23,7 @@ const PersonalDetailsSection = ({
   calculatedAge, 
   handleDateChange 
 }: PersonalDetailsSectionProps) => (
-  <InfoCard title="Personal Details" icon="👤" color="blue">
+  <InfoCard title="From Birth to Resume" icon="🍼" color="blue">
     <FormField label="Full Name" error={errors.name?.message}>
       <StyledInput
         {...register("name")}
