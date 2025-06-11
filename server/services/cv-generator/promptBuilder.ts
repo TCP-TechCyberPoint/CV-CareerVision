@@ -35,7 +35,7 @@ You are a professional resume writer and English editor. Based on the user data 
       "institution": "...",
       "degree": "...",
       "field": "...",
-      "year": "..."
+      "graduationYear": "..."
     }
   ],
   "skills": ["..."]

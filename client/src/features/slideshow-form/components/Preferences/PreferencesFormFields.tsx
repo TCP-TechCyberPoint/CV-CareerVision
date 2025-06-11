@@ -8,12 +8,6 @@ import {
   salaryRangeCollection,
   type PreferencesFormData,
 } from "@slideshow-form/schemas/preferencesSchema";
-import {
-  CvStyle,
-  ExperienceLevel,
-  Industry,
-  SalaryRange,
-} from "@slideshow-form/types/preferences.types";
 import CvStyleField from "./CvStyleField";
 import PreferenceSelectField from "./PreferenceSelectField";
 
@@ -39,17 +33,17 @@ const PreferencesFormFields = ({
       <CvStyleField
         error={errors.cvStyle?.message}
         onValueChange={(value) => setValue("cvStyle", value)}
-        defaultValue={CvStyle.Minimal}
+        defaultValue="minimal"
       />
 
       {/* CV Purpose field */}
       <PreferenceSelectField
         label="CV Purpose"
         placeholder="Select your CV purpose"
-        collection={cvPurposeCollection}
+        collection={cvPurposeCollection.items}
         error={errors.cvPurpose?.message}
         value={currentValues.cvPurpose}
-        onValueChange={(value) => setValue("cvPurpose", value)}
+        onValueChange={(value) => setValue("cvPurpose", value as PreferencesFormData["cvPurpose"])}
         description="What's the main goal for your CV?"
       />
 
@@ -57,10 +51,10 @@ const PreferencesFormFields = ({
       <PreferenceSelectField
         label="Target Role"
         placeholder="Select your target role"
-        collection={professionalPreferenceCollection}
+        collection={professionalPreferenceCollection.items}
         error={errors.professionalPreference?.message}
         value={currentValues.professionalPreference}
-        onValueChange={(value) => setValue("professionalPreference", value)}
+        onValueChange={(value) => setValue("professionalPreference", value as PreferencesFormData["professionalPreference"])}
         description="What position are you aiming for?"
       />
 
@@ -68,12 +62,10 @@ const PreferencesFormFields = ({
       <PreferenceSelectField
         label="Experience Level"
         placeholder="Select your experience level"
-        collection={experienceLevelCollection}
+        collection={experienceLevelCollection.items}
         error={errors.experienceLevel?.message}
         value={currentValues.experienceLevel}
-        onValueChange={(value) =>
-          setValue("experienceLevel", value as ExperienceLevel)
-        }
+        onValueChange={(value) => setValue("experienceLevel", value as PreferencesFormData["experienceLevel"])}
         description="How many years of experience do you have?"
       />
 
@@ -81,12 +73,10 @@ const PreferencesFormFields = ({
       <PreferenceSelectField
         label="Preferred Industry"
         placeholder="Select your preferred industry"
-        collection={industryCollection}
+        collection={industryCollection.items}
         error={errors.industryPreference?.message}
         value={currentValues.industryPreference}
-        onValueChange={(value) =>
-          setValue("industryPreference", value as Industry)
-        }
+        onValueChange={(value) => setValue("industryPreference", value as PreferencesFormData["industryPreference"])}
         description="Which industry interests you most?"
       />
 
@@ -94,12 +84,10 @@ const PreferencesFormFields = ({
       <PreferenceSelectField
         label="Target Salary Range"
         placeholder="Select your target salary range"
-        collection={salaryRangeCollection}
+        collection={salaryRangeCollection.items}
         error={errors.targetSalaryRange?.message}
         value={currentValues.targetSalaryRange}
-        onValueChange={(value) =>
-          setValue("targetSalaryRange", value as SalaryRange)
-        }
+        onValueChange={(value) => setValue("targetSalaryRange", value as PreferencesFormData["targetSalaryRange"])}
         description="What's your expected salary range?"
       />
     </Box>

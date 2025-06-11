@@ -2,14 +2,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSlideshowFormStore } from "../store";
 import {
-  CvStyle,
-  CvPurpose,
-  ProfessionalPreference,
-  ExperienceLevel,
-  Industry,
-  SalaryRange,
-} from "@slideshow-form/types";
-import {
   preferencesSchema,
   type PreferencesFormData,
 } from "../schemas/preferencesSchema"; 
@@ -27,17 +19,16 @@ export const useStepPreferences = (nextStep: () => void) => {
   } = useForm<PreferencesFormData>({
     resolver: zodResolver(preferencesSchema),
     defaultValues: {
-      cvStyle: preferences?.cvStyle ?? CvStyle.Minimal,
-      cvPurpose: preferences?.cvPurpose ?? CvPurpose.JobHunt,
+      cvStyle: preferences?.cvStyle ?? "minimal",
+      cvPurpose: preferences?.cvPurpose ?? "job hunt",
       professionalPreference:
-        preferences?.professionalPreference ??
-        ProfessionalPreference.FullstackDeveloper,
+        preferences?.professionalPreference ?? "fullstack developer",
       experienceLevel:
-        preferences?.experienceLevel ?? ExperienceLevel.Entry,
+        preferences?.experienceLevel ?? "entry level (0-2 years)",
       industryPreference:
-        preferences?.industryPreference ?? Industry.Technology,
+        preferences?.industryPreference ?? "technology",
       targetSalaryRange:
-        preferences?.targetSalaryRange ?? SalaryRange.NotSpecified,
+        preferences?.targetSalaryRange ?? "prefer not to specify",
     },
   });
 

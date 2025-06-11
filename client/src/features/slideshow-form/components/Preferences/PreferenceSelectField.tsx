@@ -1,8 +1,8 @@
 import { Text } from "@chakra-ui/react";
 import { SelectField } from "@slideshow-form/components";
 
-import type { CollectionItem } from "@ark-ui/react";
-import { createListCollection } from "@ark-ui/react";
+  import type { CollectionItem } from "@ark-ui/react";
+  import { createListCollection } from "@ark-ui/react";
 
 interface PreferenceSelectFieldProps {
   label: string;

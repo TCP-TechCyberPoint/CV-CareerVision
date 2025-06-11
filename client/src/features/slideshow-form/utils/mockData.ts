@@ -10,14 +10,6 @@ import type {
   Preferences,
   Experience,
 } from "../types";
-import {
-  ExperienceLevel,
-  Industry,
-  CvPurpose,
-  ProfessionalPreference,
-  CvStyle,
-  SalaryRange,
-} from "../types";
 
 export const vitalsData: Vitals = {
   name: "John Doe",
@@ -88,12 +80,12 @@ export const projectsData: Project[] = [
 ];
 
 export const preferencesData: Preferences = {
-  cvStyle: CvStyle.Minimal,
-  cvPurpose: CvPurpose.JobHunt,
-  professionalPreference: ProfessionalPreference.FullstackDeveloper,
-  experienceLevel: ExperienceLevel.Senior,
-  industryPreference: Industry.Technology,
-  targetSalaryRange: SalaryRange.Range100to150k,
+  cvStyle: "minimal",
+  cvPurpose: "job hunt",
+  professionalPreference: "fullstack developer",
+  experienceLevel: "senior (7-10 years)",
+  industryPreference: "technology",
+  targetSalaryRange: "$100,000 - $150,000",
 };
 
 export const calculateOverallCompletion = (formData?: SlideshowFormData) => {

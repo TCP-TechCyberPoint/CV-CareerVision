@@ -23,7 +23,6 @@ export const updateUserCv = async (
   email: string,
   cvData: Partial<ICv>
 ): Promise<IUser | null> => {
-  console.log("cvData", cvData);
   // Use $set with dot notation to update only the provided fields
   const updateQuery = Object.entries(cvData).reduce((acc, [key, value]) => {
     acc[`cv.${key}`] = value;

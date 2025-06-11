@@ -21,7 +21,7 @@ interface ExperienceFormFieldsProps {
   register: UseFormRegister<ExperienceFormData>;
   errors: FieldErrors<ExperienceFormData>;
   setValue: UseFormSetValue<ExperienceFormData>;
-  watchedExperiences: Experience[];
+  watchedExperience: Experience[];
 }
 
 const ExperienceFormFields = ({
@@ -29,9 +29,9 @@ const ExperienceFormFields = ({
   register,
   errors,
   setValue,
-  watchedExperiences,
+  watchedExperience,
 }: ExperienceFormFieldsProps) => {
-  const currentExperience = watchedExperiences[index];
+  const currentExperience = watchedExperience[index];
   const isCurrentJob = currentExperience?.isCurrentJob;
 
   return (
@@ -140,7 +140,7 @@ const ExperienceFormFields = ({
           if (isChecked) {
             setValue(`experience.${index}.endDate`, undefined);
             // Uncheck other current job checkboxes (only one current job allowed)
-            watchedExperiences.forEach((_, idx) => {
+            watchedExperience.forEach((_, idx) => {
               if (idx !== index) {
                 setValue(`experience.${idx}.isCurrentJob`, false);
               }

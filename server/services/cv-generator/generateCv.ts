@@ -21,9 +21,9 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
 const CLOUDCONVERT_API_KEY = process.env.CLOUDCONVERT_API_KEY!;
 const cloudConvert = new CloudConvert(CLOUDCONVERT_API_KEY);
 
-function calculateYearsOfExperience(experiences: any[]): string {
+function calculateYearsOfExperience(experience: any[]): string {
   let totalMonths = 0;
-  for (const exp of experiences || []) {
+  for (const exp of experience || []) {
     const start = new Date(exp.startDate);
     const end = exp.isCurrentJob ? new Date() : new Date(exp.endDate);
     const months =
@@ -38,7 +38,7 @@ function calculateYearsOfExperience(experiences: any[]): string {
 export const generateCvDocx = async (req: Request, res: Response) => {
   try {
     const formData = req.body;
-    const experiences = formData.experiences || [];
+    const experience = formData.experience || [];
     const prompt = buildGeminiPrompt(formData);
 
     const geminiRes = await axios.post(
@@ -87,7 +87,7 @@ export const generateCvDocx = async (req: Request, res: Response) => {
     const name = formData.vitals?.name || "Full Name";
     const role = formData.preferences?.professionalPreference || "Job Title";
     const email = formData.vitals?.email || "";
-    const expYears = calculateYearsOfExperience(experiences);
+    const expYears = calculateYearsOfExperience(experience);
 
     sectionChildren.push(
       new Paragraph({
@@ -151,7 +151,7 @@ export const generateCvDocx = async (req: Request, res: Response) => {
     for (const edu of content.education || []) {
       sectionChildren.push(
         spacedParagraph(
-          `${edu.institution} | ${edu.degree} in ${edu.field} (${edu.year})`
+          `${edu.institution} | ${edu.degree} in ${edu.field} (${edu.graduationYear})`
         )
       );
     }

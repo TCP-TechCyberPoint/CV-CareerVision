@@ -8,6 +8,13 @@ export const generateCv = generateCvDocx;
 export const getCvData = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({
+        error: "Email is required",
+      });
+    }
+    
     const cv = await getUserCv(email);
     if (!cv) {
       return res.status(404).json({
@@ -20,6 +27,10 @@ export const getCvData = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("Error fetching CV data:", error);
+    res.status(500).json({
+      error: "Failed to fetch CV data",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
   }
 };
 

@@ -10,16 +10,16 @@ export type { Education, Degree, FieldOfStudy, Year } from "./education.types";
 // Export project types
 export type { Project } from "./projects.types";
 
-// Export preferences types
-export type { Preferences } from "./preferences.types";
-export {
+// Export preferences types from schema (centralized)
+export type {
   CvStyle,
   CvPurpose,
   ProfessionalPreference,
   ExperienceLevel,
   Industry,
   SalaryRange,
-} from "./preferences.types";
+  PreferencesFormData as Preferences,
+} from "../schemas/preferencesSchema";
 
 // Export form types
 export type { SlideshowFormData } from "./form.types";

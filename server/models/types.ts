@@ -17,10 +17,10 @@ export interface ICv {
   education?: {
     degree: string;
     fieldOfStudy: string;
-    year: string;
+    graduationYear: string;
     institution: string;
   };
-  experiences?: Array<{
+  experience?: Array<{
     company: string;
     position: string;
     startDate: string;
@@ -28,10 +28,11 @@ export interface ICv {
     description: string;
   }>;
   projects?: Array<{
-    name: string;
+    id: string;
+    projectName: string;
     description: string;
-    technologies: string[];
-    link?: string;
+    projectTech: string[];
+    projectLink: string;
   }>;
   hardSkills?: {
     categories: Array<{
@@ -73,10 +74,10 @@ export const cvSchema = new Schema<ICv>(
     education: {
       degree: { type: String, required: false },
       fieldOfStudy: { type: String, required: false },
-      year: { type: String, required: false },
+      graduationYear: { type: String, required: false },
       institution: { type: String, required: false },
     },
-    experiences: [
+    experience: [
       {
         id: { type: String, required: true },
         jobTitle: { type: String, required: true },

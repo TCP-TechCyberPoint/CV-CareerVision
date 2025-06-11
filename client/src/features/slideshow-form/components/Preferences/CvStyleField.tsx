@@ -1,6 +1,6 @@
 import { RadioGroup, VStack, Text } from "@chakra-ui/react";
 import { Field } from "@chakra-ui/react";
-import { CvStyle } from "@slideshow-form/types";
+import { type CvStyle, cvStyleCollection } from "@slideshow-form/schemas/preferencesSchema";
 
 interface CvStyleFieldProps {
   error?: string;
@@ -11,7 +11,7 @@ interface CvStyleFieldProps {
 const CvStyleField = ({
   error,
   onValueChange,
-  defaultValue = CvStyle.Minimal,
+  defaultValue = "minimal",
 }: CvStyleFieldProps) => {
   return (
     <Field.Root invalid={!!error}>
@@ -28,12 +28,12 @@ const CvStyleField = ({
         }}
       >
         <VStack gap={3} py={2} align="start">
-          {Object.values(CvStyle).map((style) => (
-            <RadioGroup.Item key={style} value={style}>
+          {cvStyleCollection.items.map((styleItem) => (
+            <RadioGroup.Item key={styleItem.value} value={styleItem.value}>
               <RadioGroup.ItemHiddenInput />
               <RadioGroup.ItemIndicator />
               <RadioGroup.ItemText textTransform="capitalize" fontSize="md">
-                {style}
+                {styleItem.label}
               </RadioGroup.ItemText>
             </RadioGroup.Item>
           ))}
