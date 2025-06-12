@@ -10,7 +10,6 @@ import type { Education } from "../types/index";
 export const useStepEducation = (nextStep: () => void) => {
   const education = useSlideshowFormStore((state) => state.formData.education);
   const updateFormData = useSlideshowFormStore((state) => state.updateFormData);
-  console.log("education", education);
   const {
     register,
     handleSubmit,
@@ -26,7 +25,6 @@ export const useStepEducation = (nextStep: () => void) => {
       graduationYear: education?.graduationYear ?? "",
     },
   });
-  console.log("graduationYear", education?.graduationYear);
 
   const currentValues = watch();
 

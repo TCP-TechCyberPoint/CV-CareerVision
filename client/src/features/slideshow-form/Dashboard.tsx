@@ -11,12 +11,8 @@ import {
   PreferencesCard,
 } from "./dashboard/main-layout/section-cards";
 import { calculateOverallCompletion } from "./utils/mockData";
-import { useSlideshowFormStore } from "./store";
 
 const Dashboard = () => {
-  const formData = useSlideshowFormStore((state) => state.formData);
-  console.log("formData", formData);
-
   return (
     <>
       <Flex minH="100vh" bg={{ base: "gray.50", _dark: "gray.900" }}>

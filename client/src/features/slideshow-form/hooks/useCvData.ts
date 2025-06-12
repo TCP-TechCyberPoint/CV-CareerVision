@@ -9,7 +9,6 @@ export const useCvData = () => {
     try {
       const cvData = await cvService.fetchCvData();
       if (cvData) {
-        console.log("cvData", cvData);
         updateFormData(cvData);
       }
     } catch (err) {

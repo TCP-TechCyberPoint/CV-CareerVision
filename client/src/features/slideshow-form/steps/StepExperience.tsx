@@ -90,7 +90,7 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
           />
         </VStack>
       </Box>
-      {import.meta.env.DEV && <DevTool control={control} />}
+      { <DevTool control={control} />}
     </MotionBox>
   );
 };

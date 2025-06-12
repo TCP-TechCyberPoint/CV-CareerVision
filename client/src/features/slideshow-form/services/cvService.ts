@@ -9,7 +9,6 @@ const cvService = {
     const response = await axiosInstance.post("/api/cv/save", {
       [sectionName]: sectionData,
     });
-    console.log("response", response);
     return response.data;
   },
 

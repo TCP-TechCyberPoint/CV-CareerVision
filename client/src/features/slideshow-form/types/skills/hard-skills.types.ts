@@ -98,3 +98,7 @@ export type HardSkill =
   | "Daily Standups"
   | "Backlog Grooming";
 
+
+
+
+  

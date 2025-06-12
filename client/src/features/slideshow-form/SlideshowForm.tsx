@@ -44,8 +44,6 @@ const SlideshowForm = () => {
     // Save current step data before moving to next
     if (step !== "intro" && step !== "end") {
       const sectionData = freshData[step as keyof typeof freshData];
-      console.log("step", step);
-      console.log("sectionData", sectionData);
       if (sectionData) {
         await cvService.saveSection(
           step as SectionName,
