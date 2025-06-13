@@ -2,6 +2,7 @@ import BaseButton from "@/components/ui/BaseButton";
 import { Box, Text, Stack } from "@chakra-ui/react";
 import { useSlideshowFormStore } from "@slideshow-form/store/store";
 import ReturnDashboard from "../components/ReturnDashboard";
+import axiosInstance from "@/api/axios-instance";
 
 interface StepEndProps {
   nextStep: () => void;
@@ -13,22 +14,21 @@ const StepEnd = ({ prevStep }: StepEndProps) => {
 
   const handleGenerateCv = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/cv/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+      const response = await axiosInstance.post(
+        "/api/cv/generate",
+        formData,
+        { responseType: "blob" }
+      );
+  
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       });
-
-      if (!response.ok) throw new Error("Failed to generate CV");
-
-      const blob = await response.blob();
+  
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "cv.pdf";
-      document.body.appendChild(a); // required for Firefox
+      a.download = "cv.docx";
+      document.body.appendChild(a);
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
