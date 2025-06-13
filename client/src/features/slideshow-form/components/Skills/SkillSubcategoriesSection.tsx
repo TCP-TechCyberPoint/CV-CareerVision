@@ -2,13 +2,13 @@ import { Box, Heading, Wrap, WrapItem } from "@chakra-ui/react";
 import { Fade } from "@chakra-ui/transition";
 import { motion } from "framer-motion";
 import SkillTag from "./SkillTag";
-
+import type { HardSkill } from "@slideshow-form/types/skills";
 
 const MotionBox = motion.create(Box);
 
 interface SkillSubcategoriesSectionProps {
   skills: string[];
-  selectedSkills: string[];
+  selectedSkills: string[] | { [key: string]: HardSkill[] };
   onSkillClick: (skill: string) => void;
   getColorScheme: (skill: string) => string;
   useAnimation?: boolean;
@@ -23,6 +23,11 @@ const SkillSubcategoriesSection = ({
 }: SkillSubcategoriesSectionProps) => {
   if (skills.length === 0) return null;
 
+  // Convert selectedSkills to array if it's an object
+  const selectedSkillsArray = Array.isArray(selectedSkills)
+    ? selectedSkills
+    : Object.values(selectedSkills).flat();
+
   const content = (
     <Box mt={10}>
       <Heading size="sm" mb={6} color="gray.600">
@@ -33,11 +38,11 @@ const SkillSubcategoriesSection = ({
           <WrapItem key={skill}>
             <SkillTag
               skill={skill}
-              isSelected={selectedSkills.includes(skill)}
+              isSelected={selectedSkillsArray.includes(skill)}
               colorScheme={getColorScheme(skill)}
               size="md"
               onClick={() => onSkillClick(skill)}
-              variant={selectedSkills.includes(skill) ? "solid" : "subtle"}
+              variant={selectedSkillsArray.includes(skill) ? "solid" : "subtle"}
             />
           </WrapItem>
         ))}

@@ -1,115 +1,199 @@
 export const SOFT_SKILLS_HIERARCHY = {
-  Communication: {
+  communication: {
     skills: ["Written", "Verbal", "Feedback"],
     color: "cyan",
   },
-  Collaboration: {
+  collaboration: {
     skills: ["Teamwork", "Pair Programming", "Knowledge Sharing"],
     color: "teal",
   },
-  Leadership: {
+  leadership: {
     skills: ["Decision Making", "Mentoring", "Vision Sharing"],
     color: "yellow",
   },
-  Adaptability: {
+  adaptability: {
     skills: ["Change Management", "Learning", "Resilience"],
     color: "pink",
   },
-  ProblemSolving: {
+  problemsolving: {
     skills: ["Root Cause Analysis", "Debugging", "Design Thinking"],
     color: "blue",
   },
 } as const;
 
 export const HARD_SKILLS_HIERARCHY = {
-  Fullstack: {
-    skills: ["React.js", "Node.js", "MongoDB", "Express", "TypeScript"],
-    color: "purple",
-  },
-  Frontend: {
-    skills: ["React", "Vue", "CSS", "HTML", "Tailwind", "Design Systems"],
+  // Main Development Categories
+  frontend: {
+    skills: [
+      // Core Frontend
+      "React",
+      "Vue",
+      "CSS",
+      "HTML",
+      "Tailwind",
+      "Design Systems",
+      "TypeScript",
+      // React specific
+      "Redux",
+      "Next.js",
+      // Vue specific
+      "Vuex",
+      "Pinia",
+      "Nuxt",
+      // Design Systems
+      "Storybook",
+      "Chakra UI",
+      "Material UI",
+    ],
     color: "cyan",
   },
-  Backend: {
-    skills: ["Node.js", "Express", "PostgreSQL", "MongoDB", "Redis", "Auth"],
+  backend: {
+    skills: [
+      // Core Backend
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "MongoDB",
+      "Redis",
+      "Auth",
+      "TypeScript",
+      // Node.js specific
+      "NestJS",
+      "Socket.io",
+      // Auth specific
+      "JWT",
+      "OAuth",
+    ],
     color: "green",
   },
-  QA: {
+  qa: {
     skills: [
       "Manual Testing",
       "Cypress",
       "Selenium",
       "Postman",
       "Test Planning",
+      "Test Automation",
+      "UI Testing",
+      "Component Testing",
+      "WebDriver",
+      "Cross-browser Testing",
+      "API Testing",
+      "Collections",
+      "Environments",
     ],
     color: "orange",
   },
-  DevOps: {
-    skills: ["Docker", "CI/CD", "Kubernetes", "Monitoring", "AWS"],
+  devops: {
+    skills: [
+      "Docker",
+      "CI/CD",
+      "Kubernetes",
+      "Monitoring",
+      "AWS",
+      "Docker Compose",
+      "Dockerfile",
+      "Image Optimization",
+      "GitHub Actions",
+      "GitLab CI",
+      "Bitbucket Pipelines",
+      "Helm",
+      "Services",
+      "Clusters",
+    ],
     color: "blue",
   },
-  "Product Manager": {
-    skills: ["Agile", "Scrum", "Roadmapping", "User Stories", "Prioritization"],
+  "product manager": {
+    skills: [
+      "Agile",
+      "Scrum",
+      "Roadmapping",
+      "User Stories",
+      "Prioritization",
+      "Sprints",
+      "Kanban",
+      "Retrospectives",
+      "Scrum Master",
+      "Daily Standups",
+      "Backlog Grooming",
+    ],
     color: "yellow",
   },
-  "React JS": {
-    skills: ["Hooks", "Redux", "Next.js", "Testing Library"],
-    color: "cyan",
+  // Cybersecurity and Cloud Categories
+  "blue team": {
+    skills: [
+      "Splunk",
+      "QRadar",
+      "LogRhythm",
+      "CrowdStrike",
+      "SentinelOne",
+      "Microsoft Defender",
+      "Cortex XSOAR",
+      "Splunk SOAR",
+      "Palo Alto",
+      "FortiGate",
+      "Cisco ASA",
+      "Snort",
+      "Suricata",
+      "Cloudflare",
+      "AWS WAF",
+      "Wireshark",
+      "tcpdump",
+      "Active Directory",
+      "Okta",
+      "Duo",
+      "McAfee",
+      "Symantec",
+      "Nessus",
+      "Qualys",
+      "OpenVAS",
+    ],
+    color: "blue",
   },
-  Vue: {
-    skills: ["Vuex", "Pinia", "Nuxt"],
-    color: "green",
-  },
-  CSS: {
-    skills: ["Flexbox", "Grid", "Animations"],
-    color: "pink",
-  },
-  "Design Systems": {
-    skills: ["Storybook", "Chakra UI", "Material UI"],
-    color: "purple",
-  },
-  Nodejs: {
-    skills: ["NestJS", "Socket.io", "TypeScript"],
-    color: "green",
-  },
-  Express: {
-    skills: ["Middlewares", "Validation", "Routing"],
-    color: "green",
-  },
-  Auth: {
-    skills: ["JWT", "OAuth", "Session Management"],
-    color: "orange",
-  },
-  Cypress: {
-    skills: ["Test Automation", "UI Testing", "Component Testing"],
-    color: "teal",
-  },
-  Selenium: {
-    skills: ["WebDriver", "Cross-browser Testing"],
-    color: "orange",
-  },
-  Postman: {
-    skills: ["API Testing", "Collections", "Environments"],
+  "red team": {
+    skills: [
+      "Burp Suite",
+      "OWASP ZAP",
+      "Metasploit",
+      "Nmap",
+      "Nikto",
+      "SQLmap",
+      "Kali Linux",
+      "Parrot OS",
+      "Hashcat",
+      "John the Ripper",
+      "Hack The Box",
+      "TryHackMe",
+    ],
     color: "red",
   },
-  Docker: {
-    skills: ["Docker Compose", "Dockerfile", "Image Optimization"],
-    color: "blue",
-  },
-  CI_CD: {
-    skills: ["GitHub Actions", "GitLab CI", "Bitbucket Pipelines"],
-    color: "orange",
-  },
-  Kubernetes: {
-    skills: ["Helm", "Services", "Clusters"],
-    color: "blue",
-  },
-  Agile: {
-    skills: ["Sprints", "Kanban", "Retrospectives"],
-    color: "yellow",
-  },
-  Scrum: {
-    skills: ["Scrum Master", "Daily Standups", "Backlog Grooming"],
+  "cloud security": {
+    skills: [
+      "AWS",
+      "Azure",
+      "GCP",
+      "GuardDuty",
+      "Azure Sentinel",
+      "Prisma Cloud",
+      "Docker",
+      "Kubernetes",
+      "Falco",
+      "Aqua Security",
+      "Terraform",
+      "Ansible",
+      "Jenkins",
+      "GitHub Actions",
+      "Vault",
+      "AWS Secrets Manager",
+    ],
     color: "purple",
+  },
+  "scripting & automation": {
+    skills: ["Python", "Bash", "PowerShell"],
+    color: "green",
+  },
+  "application security": {
+    skills: ["Snyk", "SonarQube", "Checkmarx", "Postman", "Git", "GitHub"],
+    color: "orange",
   },
 } as const;

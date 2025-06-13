@@ -5,7 +5,7 @@ import { getSectionStepPath } from "@slideshow-form/routes";
 export const useHardSkillsCard = () => {
   const navigate = useNavigate();
   const { formData } = useSlideshowFormStore();
-  const hardSkillsData = formData.hardSkills;
+  const hardSkillsData = formData.hardSkills || {};
 
   const handleClick = () => {
     navigate(getSectionStepPath("hardSkills"));
@@ -13,22 +13,24 @@ export const useHardSkillsCard = () => {
 
   // Calculate completion based on skills data
   const calculateCompletion = () => {
-    if (!hardSkillsData || hardSkillsData.length === 0) return 0;
-    
-    const skillsCount = hardSkillsData.length;
+    const totalSkills = Object.values(hardSkillsData).flat().length;
+    if (totalSkills === 0) return 0;
     
     // Consider complete if has at least 3 skills
-    if (skillsCount >= 5) return 100;
-    if (skillsCount >= 3) return 75;
-    if (skillsCount >= 1) return 50;
+    if (totalSkills >= 5) return 100;
+    if (totalSkills >= 3) return 75;
+    if (totalSkills >= 1) return 50;
     return 25;
   };
 
+  // Get all skills as a flat array
+  const allSkills = Object.values(hardSkillsData).flat();
+
   // Process skills data for display
   const processedData = {
-    totalSkills: hardSkillsData?.length || 0,
-    topSkills: hardSkillsData?.slice(0, 3) || [],
-    skills: hardSkillsData || [],
+    totalSkills: allSkills.length,
+    topSkills: allSkills.slice(0, 3),
+    skills: allSkills,
   };
 
   const completionPercentage = calculateCompletion();

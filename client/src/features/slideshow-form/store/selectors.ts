@@ -8,7 +8,7 @@ export const useDateOfBirth = () =>
   useSlideshowFormStore((state) => state.formData.vitals?.dateOfBirth ?? new Date(2000, 0, 1));
 
 export const useSkills = () =>
-  useSlideshowFormStore((state) => state.formData.hardSkills ?? []);
+  useSlideshowFormStore((state) => state.formData.hardSkills ?? {});
 
 export const useSoftSkills = () =>
   useSlideshowFormStore((state) => state.formData.softSkills ?? []);
@@ -30,7 +30,7 @@ export const useStepVitalsFields = () =>
 
 export const useStepSkillsFields = () =>
   useSlideshowFormStore((state) => ({
-    skills: state.formData.hardSkills ?? [],
+    skills: state.formData.hardSkills ?? {},
   }));
 
 export const useStepEducationFields = () =>

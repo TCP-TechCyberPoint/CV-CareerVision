@@ -37,7 +37,11 @@ export interface ICv {
     projectTech: string[];
     projectLink: string;
   }>;
-  hardSkills?: string[];
+  hardSkills?: {
+    type: Map<string, string[]>;
+    required: false;
+    default: () => Map<string, string[]>;
+  };
   softSkills?: string[];
   preferences?: {
     cvStyle: string;
@@ -104,20 +108,13 @@ export const cvSchema = new Schema<ICv>(
         projectLink: { type: String, required: false },
       },
     ],
-    hardSkills: [String],
+    hardSkills: {
+      type: Map,
+      of: [String],
+      required: false,
+      default: () => new Map()
+    },
     softSkills: [String],
-    /* new Hard Skills
-     * skills: {
-     * frontend: [{ type: String, required: false }],
-     * backend: [{ type: String, required: false }],
-     * mobile: [{ type: String, required: false }],
-     * devops: [{ type: String, required: false }],
-     * database: [{ type: String, required: false }],
-     * testing: [{ type: String, required: false }],
-     * other: [{ type: String, required: false }],
-     * },
-     */
-
     preferences: {
       cvStyle: { type: String, required: false },
       cvPurpose: { type: String, required: false },

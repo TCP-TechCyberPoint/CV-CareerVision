@@ -5,14 +5,14 @@ import {
   SkillSubcategoriesSection,
   SelectedSkillsSection,
 } from "@slideshow-form/components/skills";
-
+import type { HardSkill } from "@slideshow-form/types/skills";
 import StepNavigationButtons from "@slideshow-form/components/StepNavigationButtons";
 
 interface SkillsStepProps {
   subtitle: string;
   cardTitle: string;
   categories: string[];
-  selectedSkills: string[];
+  selectedSkills: string[] | { [key: string]: HardSkill[] };
   expandedSkills: string[];
   nextSkills: string[];
   onSkillClick: (skill: string) => void;

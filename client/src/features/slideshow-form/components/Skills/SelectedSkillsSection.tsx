@@ -3,11 +3,12 @@ import { useColorModeValue } from "@chakra-ui/system";
 import { ScaleFade } from "@chakra-ui/transition";
 import { motion } from "framer-motion";
 import SkillTag from "./SkillTag";
+import type { HardSkill } from "@slideshow-form/types/skills";
 
 const MotionBox = motion.create(Box);
 
 interface SelectedSkillsSectionProps {
-  selectedSkills: string[];
+  selectedSkills: string[] | { [key: string]: HardSkill[] };
   onRemoveSkill: (skill: string) => void;
   getColorScheme: (skill: string) => string;
   useAnimation?: boolean;
@@ -21,7 +22,12 @@ const SelectedSkillsSection = ({
 }: SelectedSkillsSectionProps) => {
   const bgColor = useColorModeValue("white", "gray.800");
 
-  if (selectedSkills.length === 0) return null;
+  // Convert selectedSkills to array if it's an object
+  const skillsArray = Array.isArray(selectedSkills) 
+    ? selectedSkills 
+    : Object.values(selectedSkills).flat();
+
+  if (skillsArray.length === 0) return null;
 
   const content = (
     <Box mt={4} p={4} bg={bgColor} borderRadius="xl" boxShadow="md">
@@ -36,11 +42,11 @@ const SelectedSkillsSection = ({
           py={1} 
           borderRadius="full"
         >
-          {selectedSkills.length} selected
+          {skillsArray.length} selected
         </Badge>
       </Flex>
       <Wrap gap={3}>
-        {selectedSkills.map((skill) => (
+        {skillsArray.map((skill) => (
           <WrapItem key={skill}>
             <SkillTag
               skill={skill}

@@ -23,9 +23,12 @@ export const updateUserCv = async (
   email: string,
   cvData: Partial<ICv>
 ): Promise<IUser | null> => {
-  // Use $set with dot notation to update only the provided fields
   const updateQuery = Object.entries(cvData).reduce((acc, [key, value]) => {
-    acc[`cv.${key}`] = value;
+    if (key === 'hardSkills' && typeof value === 'object') {
+      acc[`cv.${key}`] = new Map(Object.entries(value));
+    } else {
+      acc[`cv.${key}`] = value;
+    }
     return acc;
   }, {} as Record<string, any>);
 
@@ -34,6 +37,7 @@ export const updateUserCv = async (
     { $set: updateQuery },
     { new: true }
   );
+
   await dropDateOfBirth(email);
   return updatedUser;
 };
