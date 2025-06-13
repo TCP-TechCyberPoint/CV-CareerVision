@@ -1,17 +1,16 @@
 // ErrorBoundary.tsx
 import { Component } from "react";
 import type { ErrorInfo, ReactNode } from "react";
-import { 
-  Box, 
-  VStack, 
-  Heading, 
-  Text, 
-  Button, 
+import {
+  Box,
+  VStack,
+  Text,
+  Button,
   Alert,
   Code,
   CollapsibleContent,
   CollapsibleRoot,
-  CollapsibleTrigger
+  CollapsibleTrigger,
 } from "@chakra-ui/react";
 import { MdRefresh, MdBugReport } from "react-icons/md";
 
@@ -43,10 +42,10 @@ class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({ errorInfo });
-    
+
     // Custom error handler
     this.props.onError?.(error, errorInfo);
-    
+
     // Enhanced logging with more context
     console.group("🚨 React Error Boundary");
     console.error("Error:", error);
@@ -67,6 +66,7 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   private reportError = (error: Error, errorInfo: ErrorInfo) => {
+    console.log("🚨 Reporting error:", { error, errorInfo });
     // TODO: Integrate with error reporting service (Sentry, LogRocket, etc.)
     // Example: Sentry.captureException(error, { extra: errorInfo });
   };
@@ -87,13 +87,15 @@ class ErrorBoundary extends Component<Props, State> {
       }
 
       // Default enhanced error UI
-      return <ErrorFallback 
-        error={this.state.error} 
-        errorInfo={this.state.errorInfo}
-        onRetry={this.handleRetry}
-        onReload={this.handleReload}
-        showDetails={this.props.showDetails}
-      />;
+      return (
+        <ErrorFallback
+          error={this.state.error}
+          errorInfo={this.state.errorInfo}
+          onRetry={this.handleRetry}
+          onReload={this.handleReload}
+          showDetails={this.props.showDetails}
+        />
+      );
     }
 
     return this.props.children;
@@ -109,18 +111,18 @@ interface ErrorFallbackProps {
   showDetails?: boolean;
 }
 
-const ErrorFallback = ({ 
-  error, 
-  errorInfo, 
-  onRetry, 
-  onReload, 
-  showDetails = false 
+const ErrorFallback = ({
+  error,
+  errorInfo,
+  onRetry,
+  onReload,
+  showDetails = false,
 }: ErrorFallbackProps) => {
   return (
-    <Box 
-      minH="400px" 
-      display="flex" 
-      alignItems="center" 
+    <Box
+      minH="400px"
+      display="flex"
+      alignItems="center"
       justifyContent="center"
       p={6}
     >
@@ -128,68 +130,71 @@ const ErrorFallback = ({
         <Alert.Root status="error" borderRadius="lg">
           <Alert.Indicator />
           <Alert.Content>
-            <Alert.Title>
-              Oops! Something went wrong
-            </Alert.Title>
+            <Alert.Title>Oops! Something went wrong</Alert.Title>
             <Alert.Description>
-              We encountered an unexpected error. Please try refreshing the page.
+              We encountered an unexpected error. Please try refreshing the
+              page.
             </Alert.Description>
           </Alert.Content>
         </Alert.Root>
 
         <VStack gap={3}>
-          <Button
-            colorPalette="blue"
-            onClick={onRetry}
-            size="lg"
-          >
+          <Button colorPalette="blue" onClick={onRetry} size="lg">
             <MdRefresh />
             Try Again
           </Button>
-          
-          <Button
-            variant="outline"
-            onClick={onReload}
-            size="sm"
-          >
+
+          <Button variant="outline" onClick={onReload} size="sm">
             Reload Page
           </Button>
 
           {showDetails && (
             <CollapsibleRoot>
               <CollapsibleTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                >
+                <Button variant="ghost" size="sm">
                   <MdBugReport />
                   Show Error Details
                 </Button>
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <Box 
-                  bg="gray.50" 
+                <Box
+                  bg="gray.50"
                   _dark={{ bg: "gray.800" }}
-                  p={4} 
-                  borderRadius="md" 
-                  maxW="100%" 
+                  p={4}
+                  borderRadius="md"
+                  maxW="100%"
                   overflow="auto"
                   mt={4}
                 >
                   <VStack align="start" gap={3}>
                     {error && (
                       <Box>
-                        <Text fontWeight="semibold" mb={2}>Error Message:</Text>
-                        <Code colorPalette="red" p={2} borderRadius="md" display="block">
+                        <Text fontWeight="semibold" mb={2}>
+                          Error Message:
+                        </Text>
+                        <Code
+                          colorPalette="red"
+                          p={2}
+                          borderRadius="md"
+                          display="block"
+                        >
                           {error.message}
                         </Code>
                       </Box>
                     )}
-                    
+
                     {errorInfo?.componentStack && (
                       <Box>
-                        <Text fontWeight="semibold" mb={2}>Component Stack:</Text>
-                        <Code fontSize="xs" p={2} borderRadius="md" display="block" whiteSpace="pre-wrap">
+                        <Text fontWeight="semibold" mb={2}>
+                          Component Stack:
+                        </Text>
+                        <Code
+                          fontSize="xs"
+                          p={2}
+                          borderRadius="md"
+                          display="block"
+                          whiteSpace="pre-wrap"
+                        >
                           {errorInfo.componentStack}
                         </Code>
                       </Box>
@@ -207,23 +212,13 @@ const ErrorFallback = ({
 
 export default ErrorBoundary;
 
-// Higher-Order Component for easy wrapping
-export const withErrorBoundary = <P extends object>(
-  Component: React.ComponentType<P>,
-  errorBoundaryProps?: Partial<Props>
-) => {
-  return function WrappedComponent(props: P) {
-    return (
-      <ErrorBoundary {...errorBoundaryProps}>
-        <Component {...props} />
-      </ErrorBoundary>
-    );
-  };
-};
-
 // Quick Error Boundary for critical sections
-export const CriticalErrorBoundary = ({ children }: { children: ReactNode }) => (
-  <ErrorBoundary 
+export const CriticalErrorBoundary = ({
+  children,
+}: {
+  children: ReactNode;
+}) => (
+  <ErrorBoundary
     showDetails={import.meta.env.DEV}
     onError={(error, errorInfo) => {
       // Enhanced logging for critical errors

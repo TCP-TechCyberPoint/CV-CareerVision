@@ -1,18 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import { useSlideshowFormStore } from "@slideshow-form/store";
 import { getSectionStepPath } from "@slideshow-form/routes";
+import type { Experience } from "@/features/slideshow-form/types";
 
 export const useExperienceStepForm = () => {
   const navigate = useNavigate();
   const { formData } = useSlideshowFormStore();
 
   // Handle both old format (single object) and new format (array)
-  const experienceData = (() => {
-    const experiences = formData.experience;
-    if (!experiences) return [];
-    if (Array.isArray(experiences)) return experiences;
+  const experienceData: Experience[] = (() => {
+    const experience = formData.experience;
+    if (!experience) return [] as Experience[];
+    if (Array.isArray(experience)) return experience;
     // Convert old single object format to array
-    return [experiences];
+    return [experience];
   })();
 
   const handleClick = () => {

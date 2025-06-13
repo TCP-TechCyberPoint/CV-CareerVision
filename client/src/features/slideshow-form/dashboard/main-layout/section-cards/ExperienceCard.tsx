@@ -3,6 +3,7 @@ import { Icon, Stack, Text, HStack, Box } from "@chakra-ui/react";
 
 import SectionCard from "@slideshow-form/components/cards/SectionCard";
 import { useExperienceStepForm } from "./hooks";
+import type { Experience } from "@/features/slideshow-form/types";
 
 const ExperienceStepForm = () => {
   const { processedData, handleClick, completionPercentage } =
@@ -60,9 +61,9 @@ const ExperienceStepForm = () => {
           Recent Companies
         </Text>
         <Stack gap={1}>
-          {processedData.recentCompanies
+          {processedData.recentCompanies 
             .slice(0, 2)
-            .map((company: any, index: any) => (
+            .map((company:Experience["company"], index: number) => (
               <Text
                 key={index}
                 fontSize="sm"

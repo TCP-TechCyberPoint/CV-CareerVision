@@ -6,8 +6,8 @@ import SkillTag from "./SkillTag";
 interface SkillCategoriesSectionProps {
   categories: string[];
   expandedSkills: string[];
-  onSkillClick: (skill: any) => void;
-  getColorScheme: (skill: any) => string;
+  onSkillClick: (skill: string) => void;
+  getColorScheme: (skill: string) => string;
   useAnimation?: boolean;
 }
 

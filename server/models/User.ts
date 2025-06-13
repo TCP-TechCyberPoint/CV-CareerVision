@@ -1,10 +1,11 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { ICv, cvSchema } from "./types";
 
 export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  cv?: Array<Schema.Types.Mixed>;
+  cv: ICv;
 }
 
 const userSchema = new Schema<IUser>({
@@ -12,9 +13,9 @@ const userSchema = new Schema<IUser>({
   email: { type: String, required: true },
   password: { type: String, required: true },
   cv: {
-    type: [Schema.Types.Mixed],
+    type: cvSchema,
     required: false,
-    default: []
+    default: () => ({})
   }
 });
 

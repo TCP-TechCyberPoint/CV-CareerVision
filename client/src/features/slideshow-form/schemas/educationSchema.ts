@@ -4,20 +4,18 @@ import {
   DEGREES,
   FIELDS_OF_STUDY,
   INSTITUTIONS,
-    GRADUATION_YEARS,
-  
+  GRADUATION_YEARS,
 } from "@/features/slideshow-form/constants/education";
-import type { Degree, FieldOfStudy, Year } from "../types/education.types";
 
 export const degreesCollection = createListCollection({
-  items: DEGREES.map((degree: Degree) => ({
+  items: DEGREES.map((degree) => ({
     label: degree,
     value: degree,
   })),
 });
 
 export const fieldsOfStudyCollection = createListCollection({
-  items: FIELDS_OF_STUDY.map((field: FieldOfStudy) => ({
+  items: FIELDS_OF_STUDY.map((field) => ({
     label: field,
     value: field,
   })),
@@ -30,16 +28,32 @@ export const initialInstitutesCollection = INSTITUTIONS.map(
   })
 );
 
-export const initialYearsCollection = GRADUATION_YEARS.map((year: Year) => ({
+export const initialYearsCollection = GRADUATION_YEARS.map((year) => ({
   label: year,
   value: year,
 }));
 
 export const educationSchema = z.object({
-  degree: z.enum(DEGREES, {
+  degree: z.enum([
+    "Bachelor",
+    "Master",
+    "PhD",
+    "Associate",
+    "Diploma",
+    "Other"
+  ], {
     required_error: "Please select a degree",
   }),
-  fieldOfStudy: z.enum(FIELDS_OF_STUDY, {
+  fieldOfStudy: z.enum([
+    "Computer Science",
+    "Software Engineering",
+    "Information Technology",
+    "Data Science",
+    "Artificial Intelligence",
+    "Computer Engineering",
+    "Information Systems",
+    "Other"
+  ], {
     required_error: "Please select a field of study",
   }),
   institution: z.string().min(1, "Institution is required"),

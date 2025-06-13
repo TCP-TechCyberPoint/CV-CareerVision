@@ -1,4 +1,4 @@
-// Mock data for dashboard cards - replace with real data from your store/API
+// Mock data for dashboard cards - matching the actual output.json structure
 
 import type {
   HardSkill,
@@ -10,91 +10,120 @@ import type {
   Preferences,
   Experience,
 } from "../types";
-import {
-  ExperienceLevel,
-  Industry,
-  CvPurpose,
-  ProfessionalPreference,
-  CvStyle,
-  Gender,
-  SalaryRange,
-} from "../types";
 
 export const vitalsData: Vitals = {
-  name: "John Doe",
-  dateOfBirth: new Date(1990, 4, 15), // May 15, 1990
-  email: "john.doe@example.com",
+  name: "Miriam Cohen",
+  dateOfBirth: new Date(1990, 4, 15), // May 15, 1990 (for form compatibility)
+  email: "careervision2026@gmail.com",
   country: "United States",
-  city: "San Francisco",
-  street: "123 Tech Street, Apt 4B",
-  gender: Gender.Male,
-  phone: "0501234567",
+  city: "New York",
+  street: "123 Main St",
+  gender: "Male",
+  phone: "0502334528",
   linkedin: "https://www.linkedin.com/in/john-doe",
+  github: "https://github.com/TCP-TechCyberPoint/CV-CareerVision",
 };
 
-export const hardSkillsData: HardSkill[] = ["React.js", "Node.js"];
+// Updated to match output.json structure - simple string arrays
+export const hardSkillsData: HardSkill[] = [
+  "React",
+  "Node.js", 
+  "MongoDB",
+  "Express",
+  "TypeScript"
+];
 
 export const softSkillsData: SoftSkill[] = [
   "Teamwork",
+  "Decision Making",
   "Mentoring",
-  "Resilience",
+  "Resilience"
 ];
 
 export const educationData: Education = {
-  degree: "Bachelor",
-  fieldOfStudy: "Computer Science",
-  institution: "Stanford University",
-  graduationYear: "2019",
-  certifications: ["AWS Certified Developer", "React Developer Certification"],
+  degree: "Master",
+  fieldOfStudy: "Software Engineering",
+  institution: " Ariel University",
+  graduationYear: "2017",
+  certifications: [], // Optional field for form compatibility
 };
 
 export const experienceData: Experience[] = [
   {
-    id: crypto.randomUUID(),
+    id: "d3f15e3a-bd1f-4ad1-a0c3-92f99c6b162e",
     jobTitle: "Senior Software Engineer",
-    company: "Microsoft",
-    startDate: "2022-01-01",
-    endDate: undefined, // Current job shouldn't have end date
-    isCurrentJob: true,
-    description:
-      "Leading development of cloud-based applications using React and Azure services",
+    company: "Google",
+    startDate: "2021-06-01",
+    endDate: "2024-01-01",
+    isCurrentJob: false,
+    description: "Led development of scalable microservices architecture, mentored junior developers, and improved system performance by 40%. Worked with cross-functional teams to deliver high-impact features used by millions of users."
   },
   {
-    id: crypto.randomUUID(),
+    id: "54c1e7f5-25b4-4b0c-a86d-0b8ec2e1af36",
     jobTitle: "Software Engineer",
-    company: "Google",
-    startDate: "2019-01-01",
-    endDate: "2021-12-31", // Fixed: end date must be after start date
+    company: "Microsoft",
+    startDate: "2019-08-01",
+    endDate: "2021-05-31",
     isCurrentJob: false,
-    description:
-      "Developed and maintained scalable web applications using React and Node.js",
+    description: "Developed and maintained cloud-based applications using Azure services. Collaborated with product teams to implement new features and optimize existing systems. Reduced deployment time by 60% through automation."
   },
+  {
+    id: "9a63f5be-cc9f-4d83-9b8c-684ba4165df7",
+    jobTitle: "Junior Developer",
+    company: "Startup Inc",
+    startDate: "2018-06-01",
+    endDate: "2019-07-31",
+    isCurrentJob: false,
+    description: "Built responsive web applications using React and Node.js. Participated in agile development process and contributed to code reviews. Helped establish best practices for the development team."
+  }
 ];
 
 export const projectsData: Project[] = [
   {
-    id: "1",
-    projectName: "E-commerce Platform",
-    description: "An online store for selling products",
-    projectTech: ["React", "Node.js", "MongoDB", "TypeScript"],
-    projectLink: "https://github.com/john-doe/ecommerce-platform",
+    id: "e6e7c634-9b7c-43cc-9392-2f2649870871",
+    projectName: "SmartTask  Manager",
+    description: "A task mamangement web app with real-tim,e collaboration and progress tracking.",
+    projectTech: [
+      "React",
+      "Socket.io"
+    ],
+    projectLink: "https://smarttask.example.com"
   },
   {
-    id: "2",
-    projectName: "Task Manager App",
-    description: "A task manager app for managing tasks",
-    projectTech: ["React", "Node.js", "MongoDB", "TypeScript"],
-    projectLink: "https://github.com/john-doe/task-manager-app",
+    id: "51e35956-f5e7-42ea-8b1e-6f9efdc11db0",
+    projectName: "DevPortfolio AI",
+    description: "An AI-powered resume builder that generates tailored CVs based on user input.",
+    projectTech: [
+      "Next.js",
+      "Chakra UI",
+      "TypeScript",
+      "OpenAI API"
+    ],
+    projectLink: "https://devportfolio-ai.example.com"
   },
+  {
+    id: "f2406c29-4e8e-44ed-8948-47f3f16b0303",
+    projectName: "Whatapp alike",
+    description: "it's like an whats app message app",
+    projectTech: [
+      "Node.js",
+      "React",
+      "Sheker.io",
+      "Bullshit.ts",
+      "notexistpackage",
+      "aaa"
+    ],
+    projectLink: "https://whatsapp-alike.ai"
+  }
 ];
 
 export const preferencesData: Preferences = {
-  cvStyle: CvStyle.Minimal,
-  cvPurpose: CvPurpose.JobHunt,
-  professionalPreference: ProfessionalPreference.FullstackDeveloper,
-  experienceLevel: ExperienceLevel.Senior,
-  industryPreference: Industry.Technology,
-  targetSalaryRange: SalaryRange.Range100to150k,
+  cvStyle: "minimal",
+  cvPurpose: "freelance",
+  professionalPreference: "fullstack developer",
+  experienceLevel: "entry level (0-2 years)",
+  industryPreference: "technology",
+  targetSalaryRange: "$150,000 - $200,000",
 };
 
 export const calculateOverallCompletion = (formData?: SlideshowFormData) => {

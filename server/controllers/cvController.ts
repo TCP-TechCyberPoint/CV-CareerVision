@@ -1,90 +1,65 @@
-import { Request, Response } from 'express';
-import { generateCvDocx } from '../services/cv-generator/generateCv';
-import User from '../models/User';
+import { Request, Response } from "express";
+import { generateCvDocx } from "../services/cv-generator/generateCv";
+import { getUserCv, updateUserCv } from "../repositories/userRepository";
+import { ICv } from "../models/types";
 
 export const generateCv = generateCvDocx;
 
-export const saveCvData = async (req: Request, res: Response) => {
+export const getCvData = async (req: Request, res: Response) => {
   try {
-    const { email, sectionData, sectionName } = req.body;
-
-    if (!email || !sectionData || !sectionName) {
-      return res.status(400).json({ 
-        error: 'Missing required fields: email, sectionData, sectionName' 
-      });
-    }
-
-    // Find user by email
-    const user = await User.findOne({ email });
+    const { email } = req.body;
     
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    // Initialize cv array if it doesn't exist
-    if (!user.cv) {
-      user.cv = [];
-    }
-
-    // Find existing section or create new one
-    const existingSectionIndex = user.cv.findIndex(
-      (item: any) => item.sectionName === sectionName
-    );
-
-    if (existingSectionIndex !== -1) {
-      // Update existing section
-      user.cv[existingSectionIndex] = {
-        sectionName,
-        sectionData,
-        updatedAt: new Date()
-      };
-    } else {
-      // Add new section
-      user.cv.push({
-        sectionName,
-        sectionData,
-        createdAt: new Date(),
-        updatedAt: new Date()
+    if (!email) {
+      return res.status(400).json({
+        error: "Email is required",
       });
     }
-
-    await user.save();
-
-    res.status(200).json({ 
-      message: 'CV data saved successfully',
-      sectionName,
-      updatedAt: new Date()
+    
+    const cv = await getUserCv(email);
+    if (!cv) {
+      return res.status(404).json({
+        error: "CV data not found",
+      });
+    }
+    res.status(200).json({
+      message: "CV data fetched successfully",
+      cv,
     });
-
   } catch (error) {
-    console.error('Error saving CV data:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error fetching CV data:", error);
+    res.status(500).json({
+      error: "Failed to fetch CV data",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
   }
 };
 
-export const loadCvData = async (req: Request, res: Response) => {
+export const saveCvData = async (req: Request, res: Response) => {
   try {
-    const { email } = req.params;
+    const { email, ...cvData } = req.body;
 
     if (!email) {
-      return res.status(400).json({ error: 'Email is required' });
+      return res.status(400).json({
+        error: "Email is required",
+      });
+    }
+    const updatedUser = await updateUserCv(email, cvData as Partial<ICv>);
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        error: "User not found",
+      });
     }
 
-    // Find user by email
-    const user = await User.findOne({ email });
-    
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    // Return CV data
-    res.status(200).json({ 
-      cv: user.cv || [],
-      message: 'CV data loaded successfully'
+    res.status(200).json({
+      message: "CV data saved successfully",
+      cv: updatedUser.cv,
     });
-
   } catch (error) {
-    console.error('Error loading CV data:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error saving CV data:", error);
+    res.status(500).json({
+      error: "Failed to save CV data",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
   }
 };

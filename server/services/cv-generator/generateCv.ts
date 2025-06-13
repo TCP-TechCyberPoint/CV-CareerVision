@@ -5,193 +5,228 @@ import {
   Packer,
   Paragraph,
   TextRun,
-  HeadingLevel,
   AlignmentType,
   BorderStyle,
+  ExternalHyperlink,
 } from "docx";
 import { buildGeminiPrompt } from "./promptBuilder";
-import fs from "fs";
-import path from "path";
 import dotenv from "dotenv";
-import CloudConvert from "cloudconvert";
 
 dotenv.config();
 
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
-const CLOUDCONVERT_API_KEY = process.env.CLOUDCONVERT_API_KEY!;
-const cloudConvert = new CloudConvert(CLOUDCONVERT_API_KEY);
-
-function calculateYearsOfExperience(experiences: any[]): string {
-  let totalMonths = 0;
-  for (const exp of experiences || []) {
-    const start = new Date(exp.startDate);
-    const end = exp.isCurrentJob ? new Date() : new Date(exp.endDate);
-    const months =
-      (end.getFullYear() - start.getFullYear()) * 12 +
-      (end.getMonth() - start.getMonth());
-    totalMonths += months > 0 ? months : 0;
-  }
-  const years = totalMonths / 12;
-  return `${Math.ceil(years)}`;
-}
 
 export const generateCvDocx = async (req: Request, res: Response) => {
   try {
     const formData = req.body;
-    const experiences = formData.experiences || [];
     const prompt = buildGeminiPrompt(formData);
 
-    const geminiRes = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
-      { contents: [{ parts: [{ text: prompt }] }] },
-      { headers: { "Content-Type": "application/json" } }
-    );
+    let content: any;
 
-    let text = geminiRes.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-    if (!text) throw new Error("Gemini response is empty");
-    text = text.replace(/^```json/, "").replace(/```$/, "").trim();
-    const content = JSON.parse(text);
+    // === Try OpenRouter first ===
+    try {
+      const openrouterRes = await axios.post(
+        "https://openrouter.ai/api/v1/chat/completions",
+        {
+          model: "mistralai/mistral-7b-instruct:free",
+          messages: [{ role: "user", content: prompt }],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      let text = openrouterRes.data?.choices?.[0]?.message?.content?.trim();
+      if (!text) throw new Error("Empty OpenRouter response");
+
+      const jsonMatch = text.match(/```json\n([\s\S]*?)\n```/);
+      const jsonString = jsonMatch ? jsonMatch[1].trim() : text;
+      content = JSON.parse(jsonString);
+    } catch (err) {
+      console.warn("⚠️ OpenRouter failed, falling back to Gemini");
+
+      const geminiRes = await axios.post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+        { contents: [{ parts: [{ text: prompt }] }] },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      let text = geminiRes.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+      if (!text) throw new Error("Empty Gemini response");
+
+      text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+      content = JSON.parse(text);
+    }
 
     const sectionChildren: Paragraph[] = [];
 
-    const addHeading = (label: string) =>
-      sectionChildren.push(new Paragraph({
-        text: label.toUpperCase(),
-        heading: HeadingLevel.HEADING_2,
-        spacing: { after: 200 },
-      }));
+    const centeredHeader = (text: string, size = 28) =>
+      new Paragraph({
+        children: [new TextRun({ text, bold: true, size })],
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 50 },
+      });
+
+    const addSectionHeading = (label: string) =>
+      sectionChildren.push(
+        new Paragraph({
+          children: [new TextRun({ text: label.toUpperCase(), bold: true, size: 24 })],
+          alignment: AlignmentType.LEFT,
+          spacing: { after: 100 },
+        })
+      );
 
     const addLine = () =>
-      sectionChildren.push(new Paragraph({
-        border: {
-          bottom: { style: BorderStyle.SINGLE, size: 6, color: "auto" },
-        },
-        spacing: { after: 100 },
-      }));
+      sectionChildren.push(
+        new Paragraph({
+          border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: "auto" } },
+          spacing: { after: 80 },
+        })
+      );
 
     const spacedParagraph = (text: string, isBullet = false) =>
       new Paragraph({
         text,
-        spacing: { after: 120, line: 276 },
+        spacing: { after: 80, line: 200 },
         ...(isBullet ? { bullet: { level: 0 } } : {}),
       });
 
-    const name = formData.vitals?.name || "Full Name";
-    const role = formData.preferences?.professionalPreference || "Job Title";
-    const email = formData.vitals?.email || "";
-    const expYears = calculateYearsOfExperience(experiences);
+    const vitals = formData.vitals || {};
+    const preferences = formData.preferences || {};
+    const name = vitals.name || "Full Name";
+    const role = preferences.professionalPreference || "Job Title";
+
+    // Total years of experience calculation
+    let totalYears = 0;
+    if (content.experience?.length) {
+      totalYears = content.experience.reduce((acc: number, e: any) => {
+        const start = parseInt(e.startYear);
+        const end =
+          e.endYear?.toLowerCase() === "present"
+            ? new Date().getFullYear()
+            : parseInt(e.endYear);
+        if (!isNaN(start) && !isNaN(end) && end >= start) {
+          return acc + (end - start);
+        }
+        return acc;
+      }, 0);
+    }
+
+    // Header: name | role | +X years (only if X > 0)
+    const headerLine = `${name} | ${role}${
+      totalYears > 0 ? ` | +${totalYears} Years Experience` : ""
+    }`;
+
+    const contactItems: (TextRun | ExternalHyperlink)[] = [];
+    if (vitals.email) contactItems.push(new TextRun({ text: vitals.email }));
+    if (vitals.phone) contactItems.push(new TextRun({ text: ` | ${vitals.phone}` }));
+    if (vitals.linkedin) {
+      contactItems.push(new TextRun({ text: " | " }));
+      contactItems.push(
+        new ExternalHyperlink({
+          link: vitals.linkedin,
+          children: [new TextRun({ text: "LinkedIn", underline: {} })],
+        })
+      );
+    }
+    if (vitals.github) {
+      contactItems.push(new TextRun({ text: " | " }));
+      contactItems.push(
+        new ExternalHyperlink({
+          link: vitals.github,
+          children: [new TextRun({ text: "GitHub", underline: {} })],
+        })
+      );
+    }
 
     sectionChildren.push(
+      centeredHeader(headerLine),
       new Paragraph({
-        children: [new TextRun({ text: `${name} – ${role} – ${expYears} Years Experience`, bold: true, size: 36 })],
-        alignment: AlignmentType.CENTER,
-        spacing: { after: 150 },
-      }),
-      new Paragraph({
-        children: [new TextRun({ text: email, size: 22 })],
+        children: contactItems,
         alignment: AlignmentType.CENTER,
         spacing: { after: 200 },
       })
     );
+
     addLine();
 
-    addHeading("Objective");
-    sectionChildren.push(spacedParagraph(content.summary || "Motivated professional."));
+    // SUMMARY
+    addSectionHeading("SUMMARY");
+    sectionChildren.push(spacedParagraph(content.summary));
     addLine();
 
-    addHeading("Experience");
-    let experienceCount = 0;
+    // EXPERIENCE
+    addSectionHeading("WORK EXPERIENCE");
     for (const exp of content.experience || []) {
-      sectionChildren.push(spacedParagraph(`${exp.company} | ${exp.title} (${exp.startYear} – ${exp.endYear})`));
-      experienceCount++;
-
+      sectionChildren.push(
+        spacedParagraph(`${exp.company} | ${exp.title} (${exp.startYear} – ${exp.endYear})`)
+      );
       for (const bullet of exp.bullets || []) {
         sectionChildren.push(spacedParagraph(bullet, true));
-        experienceCount++;
-      }
-
-      if (experienceCount < 12) {
-        sectionChildren.push(
-          spacedParagraph("• Participated in Agile ceremonies", true),
-          spacedParagraph("• Wrote technical documentation and test cases", true),
-          spacedParagraph("• Collaborated with QA teams to ensure quality delivery", true)
-        );
-        experienceCount += 3;
       }
     }
     addLine();
 
-    addHeading("Education");
-    for (const edu of content.education || []) {
-      sectionChildren.push(spacedParagraph(`${edu.institution} | ${edu.degree} in ${edu.field} (${edu.year})`));
-    }
-    addLine();
+    // PROJECTS
+    addSectionHeading("PROJECTS");
 
-    addHeading("Projects");
-    let projectCount = 0;
+    const allProjectTechs = new Set<string>();
+
     for (const proj of content.projects || []) {
-      sectionChildren.push(
-        spacedParagraph(proj.name),
-        spacedParagraph(`• ${proj.description}`, true),
-        spacedParagraph(`• Technologies: ${proj.technologies.join(", ")}`, true)
-      );
-      projectCount += 3;
+      sectionChildren.push(spacedParagraph(proj.name));
+      for (const bullet of proj.description || []) {
+        sectionChildren.push(spacedParagraph(bullet, true));
+      }
+
+      for (const tech of proj.technologies || []) {
+        allProjectTechs.add(tech.toLowerCase());
+      }
     }
 
     addLine();
-    addHeading("Skills");
-    sectionChildren.push(spacedParagraph((content.skills || []).join(" • ")));
 
-    sectionChildren.push(new Paragraph({ spacing: { before: 100 } }));
-
-    // 🧱 Cap total content to 1 page
-    if (sectionChildren.length > 35) {
-      sectionChildren.splice(35);
+    // EDUCATION
+    addSectionHeading("EDUCATION");
+    for (const edu of content.education || []) {
+      sectionChildren.push(
+        spacedParagraph(
+          `${edu.degree}, ${edu.field} | ${edu.institution} (${edu.graduationYear || edu.year})`
+        )
+      );
     }
+
+    addLine();
+
+    // SKILLS
+    addSectionHeading("SKILLS");
+
+    const baseSkills = content.skills || [];
+    const listedSkills = new Set(baseSkills.map((s: string) => s.toLowerCase()));
+    const additionalSkills = Array.from(allProjectTechs).filter(
+      (skill) => !listedSkills.has(skill)
+    );
+    const allSkills = [...baseSkills, ...additionalSkills];
+    const formattedSkills = allSkills.map(
+      (s) => s.charAt(0).toUpperCase() + s.slice(1)
+    );
+
+    sectionChildren.push(spacedParagraph(formattedSkills.join(" • ")));
 
     const doc = new Document({ sections: [{ children: sectionChildren }] });
     const buffer = await Packer.toBuffer(doc);
 
-    const tempDir = path.join(__dirname, "../../temp");
-    if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
-    const docxPath = path.join(tempDir, "cv.docx");
-    fs.writeFileSync(docxPath, buffer);
-
-    const job = await cloudConvert.jobs.create({
-      tasks: {
-        upload: { operation: "import/upload" },
-        convert: {
-          operation: "convert",
-          input: "upload",
-          input_format: "docx",
-          output_format: "pdf",
-        },
-        export: { operation: "export/url", input: "convert" },
-      },
-    });
-
-    const uploadTask = job.tasks.find((task: any) => task.name === "upload");
-    if (!uploadTask) throw new Error("Upload task not found");
-
-    await cloudConvert.tasks.upload(uploadTask, fs.createReadStream(docxPath));
-
-    const completedJob = await cloudConvert.jobs.wait(job.id);
-    const exportTask = completedJob.tasks.find((t: any) => t.name === "export");
-
-    if (!exportTask?.result?.files?.[0]?.url) {
-      throw new Error("CloudConvert PDF URL not found");
-    }
-
-    const fileUrl = exportTask.result.files[0].url;
-    const pdfBuffer = await axios.get(fileUrl, { responseType: "arraybuffer" });
-
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", "attachment; filename=cv.pdf");
-    res.send(pdfBuffer.data);
-
-    fs.unlinkSync(docxPath);
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    );
+    res.setHeader("Content-Disposition", "attachment; filename=cv.docx");
+    res.send(buffer);
   } catch (err: any) {
-    console.error("🔥 Internal error:", err.message);
-    res.status(500).json({ error: err.message || "Failed to generate PDF" });
+    console.error("🔥 Internal error generating CV:", err.message);
+    res.status(500).json({ error: err.message || "Failed to generate CV" });
   }
 };

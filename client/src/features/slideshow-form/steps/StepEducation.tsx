@@ -12,9 +12,9 @@ import {
   fieldsOfStudyCollection,
   initialInstitutesCollection,
   initialYearsCollection,
+  type EducationFormData,
 } from "../schemas/educationSchema";
 import { SelectField, ComboboxField } from "../components";
-import type { Degree, FieldOfStudy, Year } from "../types";
 import StepNavigationButtons from "../components/StepNavigationButtons";
 import ReturnDashboard from "../components/ReturnDashboard";
 
@@ -78,49 +78,43 @@ const StepEducation = ({ nextStep, prevStep }: StepEducationProps) => {
             <SelectField
               label="Degree"
               placeholder="Select a degree"
-              collection={degreesCollection}
+              collection={degreesCollection.items}
               error={errors.degree?.message}
               invalid={!!errors.degree}
               value={currentValues.degree}
-              onValueChange={(value) => setValue("degree", value as Degree)}
+              onValueChange={(value) => setValue("degree", value as EducationFormData["degree"])}
             />
 
             <SelectField
               label="Field of Study"
               placeholder="Select a field of study"
-              collection={fieldsOfStudyCollection}
+              collection={fieldsOfStudyCollection.items}
               error={errors.fieldOfStudy?.message}
               invalid={!!errors.fieldOfStudy}
               value={currentValues.fieldOfStudy}
-              onValueChange={(value) =>
-                setValue("fieldOfStudy", value as FieldOfStudy)
-              }
+              onValueChange={(value) => setValue("fieldOfStudy", value as EducationFormData["fieldOfStudy"])}
             />
 
             <ComboboxField
               label="Institution"
               placeholder="Type to search"
-              collection={institutesCollection}
+              collection={institutesCollection.items}
               error={errors.institution?.message}
               invalid={!!errors.institution}
               value={currentValues.institution}
               onInputValueChange={filterInstitutes}
-              onValueChange={(value) =>
-                setValue("institution", value as string)
-              }
+              onValueChange={(value) => setValue("institution", value)}
             />
 
             <ComboboxField
               label="Graduation Year"
               placeholder="Type to search"
-              collection={yearsCollection}
+              collection={yearsCollection.items}
               error={errors.graduationYear?.message}
               invalid={!!errors.graduationYear}
               value={currentValues.graduationYear}
               onInputValueChange={filterYears}
-              onValueChange={(value) =>
-                setValue("graduationYear", value as Year)
-              }
+              onValueChange={(value) => setValue("graduationYear", value as EducationFormData["graduationYear"])}
             />
           </Box>
         </Stack>

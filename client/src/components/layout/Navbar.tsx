@@ -1,4 +1,4 @@
-import { useAuth } from "@/context/AuthContext";
+import { useAuthStore } from "@/store/auth/store";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -12,9 +12,7 @@ import { pages } from "@/constants/pages";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const  {logout}  = useAuth();
-
-
+  const { logout } = useAuthStore();
 
   const handleSignOut = () => {
     logout();
@@ -25,7 +23,6 @@ const Navbar = () => {
     navigate("/edit-profile");
   };
 
- 
   return (
     <Box bg="gray.800" px={4} position="relative">
       <Flex
@@ -36,18 +33,18 @@ const Navbar = () => {
       >
         <Box>
           <HStack gap={8} alignItems="center" flexDir="row-reverse">
-            <ProfileDropdown onSignOut={handleSignOut} onRedirectEditProfile={handleRedirectEditProfile}  />
+            <ProfileDropdown onSignOut={handleSignOut} onRedirectEditProfile={handleRedirectEditProfile} />
        
             {pages.map(({ label, path }) => (
-               <BaseButton
-                  key={label}
-                  variant="outline"
-                  color="orange.500"
-                  colorScheme="orange"
-                  onClick={() => navigate(path)}
-                >
-                  {label}
-                </BaseButton>       
+              <BaseButton
+                key={label}
+                variant="outline"
+                color="orange.500"
+                colorScheme="orange"
+                onClick={() => navigate(path)}
+              >
+                {label}
+              </BaseButton>       
             ))}
           </HStack>
         </Box>

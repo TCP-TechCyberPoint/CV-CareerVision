@@ -10,7 +10,7 @@ import type {
 
 export interface SlideshowFormData {
   vitals: Vitals;
-  hardSkills: HardSkill[];
+  hardSkills: { [key: string]: HardSkill[] };
   softSkills: SoftSkill[];
   education: Education;
   experience: Experience[];

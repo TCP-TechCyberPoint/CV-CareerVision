@@ -1,8 +1,10 @@
 import { Outlet, RouterProvider } from "react-router-dom";
 import { router } from "./router";
 import ErrorBoundary from "./components/shared/ErrorBoundary";
+import useAppInit from "./hooks/useAppInit";
 
 function App() {
+  useAppInit();
   return (
     // show details in development mode only
     <ErrorBoundary showDetails={import.meta.env.DEV}>

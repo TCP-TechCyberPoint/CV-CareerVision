@@ -48,4 +48,4 @@ export interface AxiosError {
     status?: number;
     data?: { message?: string };
   };
-} 
+}

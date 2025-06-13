@@ -7,66 +7,32 @@ type AuthResponse = {
   token?: string;
 };
 
-export const registerUser = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    const result: AuthResponse = await AuthService.register(req.body);
-    res.status(result.status).json({ message: result.message });
-  } catch (error: unknown) {
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "An unexpected error occurred during registration.";
-    res.status(400).json({ error: errorMessage });
+    const { email, password, name } = req.body;
+
+    const newUser = await AuthService.register({ email, password, name });
+    if (newUser.status === 201) {
+      const result = await AuthService.login({ email, password });
+      res.status(result.status).json(result.data);
+    } else res.status(400).json({ message: newUser.data.message });
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
   }
 };
 
-export const loginUser = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const result: AuthResponse = await AuthService.login(req.body);
-    if (result.token) {
-      res
-        .status(result.status)
-        .json({ message: result.message, token: result.token });
-    } else {
-      console.log("result", result);
-      res.status(result.status).json({ message: result.message });
-    }
-  } catch (err: unknown) {
-    const errorMessage =
-      err instanceof Error
-        ? err.message
-        : "An unexpected error occurred during login.";
-    res.status(401).json({ error: errorMessage });
-  }
-};
+export const login = async (req: Request, res: Response): Promise<void> => {
+  const { email, password } = req.body;
 
-export const validateToken = async (req: Request, res: Response): Promise<void> => {
   try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      res.status(401).json({ message: "No token provided" });
-      return;
-    }
-
-    const token = authHeader.substring(7); // Remove 'Bearer ' prefix
-    const result = await AuthService.validateToken(token);
-    
-    if (result.valid) {
-      res.status(200).json({ 
-        message: "Token is valid", 
-        user: result.user 
-      });
-    } else {
-      res.status(401).json({ message: "Invalid token" });
-    }
+    const result = await AuthService.login({ email, password });
+    res.status(result.status).json(result.data);
   } catch (error: unknown) {
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "An unexpected error occurred during token validation.";
-    res.status(401).json({ error: errorMessage });
+    console.log("error", error);
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: "An unexpected error occurred" });
+    }
   }
 };

@@ -22,7 +22,7 @@ export const useStepExperience = (nextStep: () => void) => {
   const updateFormData = useSlideshowFormStore((state) => state.updateFormData);
 
   // Handle both old format (single object) and new format (array)
-  const getDefaultExperiences = () => {
+  const getDefaultExperience = () => {
     if (!experience) return [] as Experience[];
     return experience;
   };
@@ -37,7 +37,7 @@ export const useStepExperience = (nextStep: () => void) => {
   } = useForm<ExperienceFormData>({
     resolver: zodResolver(experienceFormSchema),
     defaultValues: {
-      experience: getDefaultExperiences() as Experience[],
+      experience: getDefaultExperience() as Experience[],
     },
   });
 
@@ -46,7 +46,7 @@ export const useStepExperience = (nextStep: () => void) => {
     name: "experience",
   });
 
-  const watchedExperiences = watch("experience");
+  const watchedExperience = watch("experience");
 
   const addExperience = () => {
     append(createEmptyExperience());
@@ -60,7 +60,7 @@ export const useStepExperience = (nextStep: () => void) => {
 
   const getCurrentJobsCount = () => {
     return (
-      watchedExperiences?.filter((exp) => exp?.isCurrentJob === true).length ||
+      watchedExperience?.filter((exp) => exp?.isCurrentJob === true).length ||
       0
     );
   };
@@ -82,7 +82,7 @@ export const useStepExperience = (nextStep: () => void) => {
     onSubmit,
     errors,
     fields,
-    watchedExperiences,
+    watchedExperience,
     addExperience,
     removeExperience,
     getCurrentJobsCount,

@@ -1,8 +1,4 @@
-export enum Gender {
-  Male = "Male",
-  Female = "Female",
-  Other = "Other",
-}
+export type Gender = "Male" | "Female" | "Other";
 export interface Vitals {
   name: string;
   dateOfBirth: Date;
@@ -13,5 +9,5 @@ export interface Vitals {
   street: string;
   phone: string;
   linkedin: string;
-
+  github: string;
 }

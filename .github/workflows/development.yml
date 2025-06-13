@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - dev-clean
+  workflow_dispatch:
 
 jobs:
   dev-pipeline:
@@ -25,9 +26,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-
-      - name: Setup GitHub CLI
-        uses: cli/cli-action@v2
 
       - name: Create Pull Request from dev to staging
         env:

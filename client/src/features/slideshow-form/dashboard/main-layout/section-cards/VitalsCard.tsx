@@ -12,6 +12,7 @@ const VitalsCard = () => {
     formatDate,
     formatAddress,
     completionPercentage,
+    isValidDate,
   } = useVitalsCard();
 
   const customContent = (
@@ -33,8 +34,9 @@ const VitalsCard = () => {
           </Text>
         </HStack>
         <Text fontSize="sm" fontWeight="medium" color={{ base: "blue.500", _dark: "blue.300" }}>
-          {vitalsData?.dateOfBirth ? formatDate(vitalsData.dateOfBirth) : "Not provided"}
-          {vitalsData?.dateOfBirth && (
+          {vitalsData?.dateOfBirth && isValidDate(vitalsData.dateOfBirth) ? 
+            formatDate(vitalsData.dateOfBirth) : "Not provided"}
+          {vitalsData?.dateOfBirth && isValidDate(vitalsData.dateOfBirth) && (
             <Text as="span" fontSize="xs" color={{ base: "blue.400", _dark: "blue.400" }} ml={2}>
               (Age: {calculateAge(vitalsData.dateOfBirth)})
             </Text>

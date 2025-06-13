@@ -25,7 +25,7 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
     onSubmit,
     errors,
     fields,
-    watchedExperiences,
+    watchedExperience,
     addExperience,
     removeExperience,
     control,
@@ -67,7 +67,7 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
                 errors={errors}
                 setValue={setValue}
                 onRemove={removeExperience}
-                watchedExperiences={watchedExperiences}
+                watchedExperience={watchedExperience}
               />
             ))}
           </Stack>
@@ -78,7 +78,7 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
           {/* Form Error */}
           {errors.experience && (
             <Text color="red.500" textAlign="center" fontSize="sm">
-              {errors.experience.message ||
+              {JSON.stringify(errors.experience) ||
                 "Please check your experience entries"}
             </Text>
           )}
@@ -90,7 +90,7 @@ const StepExperience = ({ nextStep, prevStep }: StepExperienceProps) => {
           />
         </VStack>
       </Box>
-      {import.meta.env.DEV && <DevTool control={control} />}
+      { <DevTool control={control} />}
     </MotionBox>
   );
 };

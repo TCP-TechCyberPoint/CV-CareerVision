@@ -1,12 +1,11 @@
 import { z } from "zod";
-import { Gender } from "../types/vitals.types";
 
 export const vitalsSchema = z.object({
   name: z
     .string()
     .min(2, "I bet you have more than 2 characters in your name, right? 🤔")
     .max(20, "Love your name, but it's too long for me to remember it")
-    .regex(/^[a-zA-Z\s\-'\.]+$/, "Cool name, but our system doesn't support special characters or numbers 🔢"),
+    .regex(/^[a-zA-Z\s-']+$/, "Cool name, but our system doesn't support special characters or numbers 🔢"),
   dateOfBirth: z
     .date({
       required_error: "Cool, you're a time traveler! 🤖",
@@ -17,8 +16,8 @@ export const vitalsSchema = z.object({
       const minDate = new Date(today.getFullYear() - 120, today.getMonth(), today.getDate());
       const maxDate = new Date(today.getFullYear() - 13, today.getMonth(), today.getDate());
       return date >= minDate && date <= maxDate;
-    }, "Are you not too young to find a job? 🤔"),
-  gender: z.nativeEnum(Gender, {
+    }, "Are you not too yo  ung to find a job? 🤔"),
+  gender: z.string({
     required_error: "Please select a gender",
   }),
   email: z
@@ -46,6 +45,12 @@ export const vitalsSchema = z.object({
     .string()
     .url("That doesn't look like a LinkedIn URL! 🔗")
     .refine((url) => url.includes("linkedin.com"), "This should be a LinkedIn URL")
+    .optional()
+    .or(z.literal("")),
+  github: z
+    .string()
+    .url("That doesn't look like a GitHub URL! 🔗")
+    .refine((url) => url.includes("github.com"), "This should be a GitHub URL")
     .optional()
     .or(z.literal("")),
 });

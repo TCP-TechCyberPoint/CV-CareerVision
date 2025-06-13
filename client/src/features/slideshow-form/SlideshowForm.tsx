@@ -13,7 +13,10 @@ import {
 import { useSlideshowFormStore } from "./store";
 import StepExperience from "./steps/StepExperience";
 import { CriticalErrorBoundary } from "@/components/shared/ErrorBoundary";
-import { useSaveCvData } from "./hooks/useSaveCvData";
+import cvService, {
+  type SectionName,
+  type SectionData,
+} from "./services/cvService";
 
 const slideComponents = {
   intro: StepIntro,
@@ -31,17 +34,21 @@ const SlideshowForm = () => {
   const { step = "intro" } = useParams<{ step: keyof typeof slideMap }>();
   const navigate = useNavigate();
   const currentIndex = slideMap[step];
-  
+
   const entries = Object.entries(slideMap);
-  const { formData } = useSlideshowFormStore();
-  const { saveSectionData } = useSaveCvData();
 
   const nextStep = async () => {
+    // Get fresh data from the store
+    const freshData = useSlideshowFormStore.getState().formData;
+    
     // Save current step data before moving to next
-    if (step !== 'intro' && step !== 'end') {
-      const sectionData = formData[step as keyof typeof formData];
+    if (step !== "intro" && step !== "end") {
+      const sectionData = freshData[step as keyof typeof freshData];
       if (sectionData) {
-        await saveSectionData(step, sectionData);
+        await cvService.saveSection(
+          step as SectionName,
+          sectionData as SectionData
+        );
       }
     }
 
