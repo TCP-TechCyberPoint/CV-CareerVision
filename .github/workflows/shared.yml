@@ -121,9 +121,18 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Debug Docker login setup
+        run: |
+          echo "=== Docker Login Debug ==="
+          echo "DOCKERHUB_USERNAME exists: ${{ secrets.DOCKERHUB_USERNAME != '' }}"
+          echo "DOCKERHUB_PASSWORD exists: ${{ secrets.DOCKERHUB_PASSWORD != '' }}"
+          echo "Current working directory: $(pwd)"
+          echo "Docker version: $(docker --version)"
+  
       - name: Log in to DockerHub
         uses: docker/login-action@v3
         with:
+          registry: docker.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
