@@ -160,9 +160,9 @@ jobs:
           file: client/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/${{ steps.repo.outputs.repo_lower }}-${{ inputs.environment }}:${{ needs.build-and-test.outputs.version }}
-            ${{ secrets.DOCKER_USERNAME }}/${{ steps.repo.outputs.repo_lower }}-${{ inputs.environment }}:${{ github.sha }}
-            ${{ inputs.environment == 'production' && format('{0}/{1}-{2}:latest', secrets.DOCKER_USERNAME, steps.repo.outputs.repo_lower, inputs.environment) || '' }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.repo.outputs.repo_lower }}-${{ inputs.environment }}:${{ needs.build-and-test.outputs.version }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.repo.outputs.repo_lower }}-${{ inputs.environment }}:${{ github.sha }}
+            ${{ inputs.environment == 'production' && format('{0}/{1}-{2}:latest', secrets.DOCKERHUB_USERNAME, steps.repo.outputs.repo_lower, inputs.environment) || '' }}
           build-args: |
             NODE_ENV=${{ inputs.environment }}
           cache-from: type=local,src=/tmp/.buildx-cache
