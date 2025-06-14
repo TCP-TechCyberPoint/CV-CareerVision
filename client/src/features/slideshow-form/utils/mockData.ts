@@ -24,14 +24,12 @@ export const vitalsData: Vitals = {
   github: "https://github.com/TCP-TechCyberPoint/CV-CareerVision",
 };
 
-// Updated to match output.json structure - simple string arrays
-export const hardSkillsData: HardSkill[] = [
-  "React",
-  "Node.js", 
-  "MongoDB",
-  "Express",
-  "TypeScript"
-];
+// Updated to match output.json structure - object with categories
+export const hardSkillsData: { [key: string]: HardSkill[] } = {
+  "Frontend": ["React", "TypeScript"],
+  "Backend": ["Node.js", "Express"],
+  "Database": ["MongoDB"]
+};
 
 export const softSkillsData: SoftSkill[] = [
   "Teamwork",

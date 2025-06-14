@@ -2,24 +2,24 @@ import { Box, Heading, Flex, Badge, Wrap, WrapItem } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
 import { ScaleFade } from "@chakra-ui/transition";
 import { motion } from "framer-motion";
-import SkillTag from "./SkillTag";
+import SkillTag from "@slideshow-form/components/Skills/SkillTag";
 import type { HardSkill } from "@slideshow-form/types/skills";
 
 const MotionBox = motion.create(Box);
 
-interface SelectedSkillsSectionProps {
+interface SelectedSkillsSectionProps<T extends string> {
   selectedSkills: string[] | { [key: string]: HardSkill[] };
-  onRemoveSkill: (skill: string) => void;
-  getColorScheme: (skill: string) => string;
+  onRemoveSkill: (skill: T) => void;
+  getColorScheme: (skill: T) => string;
   useAnimation?: boolean;
 }
 
-const SelectedSkillsSection = ({ 
+const SelectedSkillsSection = <T extends string>({ 
   selectedSkills, 
   onRemoveSkill, 
   getColorScheme,
   useAnimation = false 
-}: SelectedSkillsSectionProps) => {
+}: SelectedSkillsSectionProps<T>) => {
   const bgColor = useColorModeValue("white", "gray.800");
 
   // Convert selectedSkills to array if it's an object
@@ -51,9 +51,9 @@ const SelectedSkillsSection = ({
             <SkillTag
               skill={skill}
               isSelected={true}
-              colorScheme={getColorScheme(skill)}
+              colorScheme={getColorScheme(skill as T)}
               size="md"
-              onClick={() => onRemoveSkill(skill)}
+              onClick={() => onRemoveSkill(skill as T)}
               variant="solid"
             />
           </WrapItem>

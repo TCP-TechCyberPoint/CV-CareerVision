@@ -1,10 +1,10 @@
 // Soft Skills Types
 export type SoftSkillCategory = 
-  | "Communication" 
-  | "Collaboration" 
-  | "Leadership" 
-  | "Adaptability" 
-  | "ProblemSolving";
+  | "communication" 
+  | "collaboration" 
+  | "leadership" 
+  | "adaptability" 
+  | "problemsolving";
 
 // Flattened Soft Skills - direct union of all skill strings
 export type SoftSkill = 
