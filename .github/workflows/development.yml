@@ -18,6 +18,9 @@ jobs:
       run_smoke_test: false
       run_e2e: false
       deploy: true
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
   create-pr-to-staging:
     needs: dev-pipeline
