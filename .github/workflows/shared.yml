@@ -28,6 +28,11 @@ on:
         type: boolean
         default: false
         description: "Whether to deploy after successful build"
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_PASSWORD:
+        required: true
 
 jobs:
   build-and-test:
