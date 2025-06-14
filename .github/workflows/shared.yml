@@ -124,7 +124,8 @@ jobs:
       - name: Debug DOCKER_USERNAME (REMOVE AFTER DEBUGGING)
         run: |
           echo "DOCKER_USERNAME length: ${{ secrets.DOCKER_USERNAME.length }}"
-          echo "DOCKER_PAT exists: ${{ !empty(secrets.DOCKER_PAT) }}"
+          echo "DOCKER_PAT exists: ${{ secrets.DOCKER_PAT != '' }}"
+
 
       - name: Login to GHCR
         uses: docker/login-action@v3.1.0
