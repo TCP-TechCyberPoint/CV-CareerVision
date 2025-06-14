@@ -21,6 +21,25 @@ jobs:
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+  
+  print-secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if DOCKERHUB_USERNAME exists
+        run: |
+          if [ -z "${{ secrets.DOCKERHUB_USERNAME }}" ]; then
+            echo "DOCKERHUB_USERNAME is not set"
+          else
+            echo "DOCKERHUB_USERNAME exists"
+          fi
+
+      - name: Check if DOCKERHUB_PASSWORD exists
+        run: |
+          if [ -z "${{ secrets.DOCKERHUB_PASSWORD }}" ]; then
+            echo "DOCKERHUB_PASSWORD is not set"
+          else
+            echo "DOCKERHUB_PASSWORD exists"
+          fi
 
   create-pr-to-staging:
     needs: dev-pipeline
