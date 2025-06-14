@@ -4,26 +4,26 @@ import {
   SkillCategoriesSection,
   SkillSubcategoriesSection,
   SelectedSkillsSection,
-} from "@slideshow-form/components/skills";
+} from "@slideshow-form/components/Skills";
 import type { HardSkill } from "@slideshow-form/types/skills";
 import StepNavigationButtons from "@slideshow-form/components/StepNavigationButtons";
 
-interface SkillsStepProps {
+interface SkillsStepProps<T extends string> {
   subtitle: string;
   cardTitle: string;
   categories: string[];
   selectedSkills: string[] | { [key: string]: HardSkill[] };
   expandedSkills: string[];
   nextSkills: string[];
-  onSkillClick: (skill: string) => void;
-  onRemoveSkill: (skill: string) => void;
-  getColorScheme: (skill: string) => string;
+  onSkillClick: (skill: T) => void;
+  onRemoveSkill: (skill: T) => void;
+  getColorScheme: (skill: T) => string;
   nextStep: () => void;
   prevStep: () => void;
   useHardSkillsAnimation?: boolean;
 }
 
-const SkillsStep = ({
+const SkillsStep = <T extends string>({
   subtitle,
   cardTitle,
   categories,
@@ -36,7 +36,7 @@ const SkillsStep = ({
   nextStep,
   prevStep,
   useHardSkillsAnimation = false,
-}: SkillsStepProps) => {
+}: SkillsStepProps<T>) => {
   return (
     <SkillsContainer subtitle={subtitle}>
       <SkillsSelectionCard title={cardTitle}>

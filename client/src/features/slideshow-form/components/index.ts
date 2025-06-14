@@ -5,22 +5,22 @@ export { default as ExperienceFormFields } from "./experience/ExperienceFormFiel
 export { default as AddExperienceButton } from "./experience/AddExperienceButton";
 
 // Projects-related components
-export { default as ProjectsHeader } from "./projects/ProjectsHeader";
-export { default as ProjectStepForm } from "./projects/ProjectStepForm";
-export { default as ProjectFormFields } from "./projects/ProjectFormFields";
-export { default as AddProjectButton } from "./projects/AddProjectButton";
+export { default as ProjectsHeader } from "./Projects/ProjectsHeader";
+export { default as ProjectStepForm } from "./Projects/ProjectStepForm";
+export { default as ProjectFormFields } from "./Projects/ProjectFormFields";
+export { default as AddProjectButton } from "./Projects/AddProjectButton";
 
 // Generic step components
 export { default as StepNavigationButtons } from "./StepNavigationButtons";
 
 // Skills-related components
-export * from "./skills";
+export * from "./Skills";
 
 // Preferences-related components
-export { default as CvStyleField } from "./preferences/CvStyleField";
-export { default as PreferenceSelectField } from "./preferences/PreferenceSelectField";
-export { default as PreferencesHeader } from "./preferences/PreferencesHeader";
-export { default as PreferencesFormFields } from "./preferences/PreferencesFormFields";
+export { default as CvStyleField } from "./Preferences/CvStyleField";
+export { default as PreferenceSelectField } from "./Preferences/PreferenceSelectField";
+export { default as PreferencesHeader } from "./Preferences/PreferencesHeader";
+export { default as PreferencesFormFields } from "./Preferences/PreferencesFormFields";
 
 // Form-related components (existing)
 export { default as ComboboxField } from "./shared/ComboboxField";

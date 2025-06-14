@@ -8,7 +8,7 @@ import type {
 } from "react-hook-form";
 import type { FieldArrayWithId } from "react-hook-form";
 import type { Project } from "@slideshow-form/types";
-import ProjectFormFields from "./ProjectFormFields";
+import ProjectFormFields from "@slideshow-form/components/Projects/ProjectFormFields";
 import { BaseCard } from "@slideshow-form/components/cards";
 
 const MotionBaseCard = motion.create(BaseCard);

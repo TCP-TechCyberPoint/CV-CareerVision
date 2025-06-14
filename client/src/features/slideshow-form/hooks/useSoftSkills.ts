@@ -15,10 +15,10 @@ export const useSoftSkills = () => {
 
   const handleSkillClick = (skill: SoftSkill | SoftSkillCategory) => {
     const isMainCategory =
-      SOFT_SKILLS_HIERARCHY[skill as SoftSkillCategory] !== undefined;
+      SOFT_SKILLS_HIERARCHY[skill.toLowerCase() as SoftSkillCategory] !== undefined;
 
     if (isMainCategory) {
-      const category = skill as SoftSkillCategory;
+      const category = skill.toLowerCase() as SoftSkillCategory;
       if (!expandedSkills.includes(category)) {
         setExpandedSkills((prev) => [...prev, category]);
       } else {
@@ -51,7 +51,7 @@ export const useSoftSkills = () => {
   const getNextSkills = (): SoftSkill[] => {
     const next: SoftSkill[] = [];
     expandedSkills.forEach((skill) => {
-      const category = SOFT_SKILLS_HIERARCHY[skill];
+      const category = SOFT_SKILLS_HIERARCHY[skill.toLowerCase() as SoftSkillCategory];
       if (category) {
         next.push(
           ...(category.skills.filter(
@@ -64,7 +64,7 @@ export const useSoftSkills = () => {
   };
 
   const getColorScheme = (skill: SoftSkill | SoftSkillCategory): SkillColor => {
-    const category = SOFT_SKILLS_HIERARCHY[skill as SoftSkillCategory];
+    const category = SOFT_SKILLS_HIERARCHY[skill.toLowerCase() as SoftSkillCategory];
     if (category) {
       return category.color;
     }

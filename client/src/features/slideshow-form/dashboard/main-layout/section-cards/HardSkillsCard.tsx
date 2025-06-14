@@ -29,7 +29,7 @@ const HardSkillsCard = () => {
           Top Skills
         </Text>
         <Wrap gap={2}>
-          {processedData.topSkills.map((skill: any, index: any) => (
+          {processedData.topSkills.map((skill: string, index: number) => (
             <Badge key={index} colorPalette="green" variant="subtle" size="sm">
               {skill}
             </Badge>
