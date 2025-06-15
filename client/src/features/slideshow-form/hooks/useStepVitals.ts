@@ -7,6 +7,7 @@ import { vitalsSchema, type VitalsFormData } from "../schemas/vitalsSchema";
 export const useStepVitals = (nextStep: () => void) => {
   const vitals = useSlideshowFormStore((state) => state.formData.vitals);
   const updateFormData = useSlideshowFormStore((state) => state.updateFormData);
+  const dob = vitals?.dateOfBirth ? new Date(vitals.dateOfBirth) : new Date(2000, 0, 1);
 
   const {
     register,
@@ -18,7 +19,7 @@ export const useStepVitals = (nextStep: () => void) => {
     resolver: zodResolver(vitalsSchema),
     defaultValues: {
       name: vitals?.name ?? "",
-      dateOfBirth: vitals?.dateOfBirth ?? new Date(2000, 0, 1),
+      dateOfBirth: dob ?? new Date(2000, 0, 1),
       gender: vitals?.gender ?? "Male",
       email: vitals?.email ?? "",
       country: vitals?.country ?? "",
@@ -35,22 +36,7 @@ export const useStepVitals = (nextStep: () => void) => {
     nextStep();
   };
 
-  // Helper function to calculate age from date of birth
-  const calculateAge = (dateOfBirth: Date): number => {
-    const today = new Date();
-    const birthDate = new Date(dateOfBirth);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
 
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-
-    return age;
-  };
 
   return {
     register,
@@ -58,7 +44,6 @@ export const useStepVitals = (nextStep: () => void) => {
     setValue,
     onSubmit,
     errors,
-    calculateAge,
     getValues,
   };
 };

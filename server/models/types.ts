@@ -11,7 +11,7 @@ export interface ICv {
     city: string;
     street: string;
     phone: string;
-    dateOfBirth: string;
+    dateOfBirth: Date;
     linkedin: string;
     github: string;
   };

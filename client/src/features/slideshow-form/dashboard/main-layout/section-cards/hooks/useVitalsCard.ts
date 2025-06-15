@@ -11,49 +11,7 @@ export const useVitalsCard = () => {
     navigate(getSectionStepPath("vitals"));
   };
 
-  // Function to calculate age from date of birth
-  const calculateAge = (dateOfBirth: Date | string): number => {
-    const today = new Date();
-    const birthDate = new Date(dateOfBirth);
-    
-    // Check if the date is valid
-    if (isNaN(birthDate.getTime())) {
-      return 0;
-    }
-    
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    
-    return age;
-  };
-
-  // Format date for display
-  const formatDate = (date: Date | string): string => {
-    const dateObj = new Date(date);
-    
-    // Check if the date is valid
-    if (isNaN(dateObj.getTime())) {
-      return "Invalid date";
-    }
-    
-    return dateObj.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
-  // Check if date is valid
-  const isValidDate = (date: Date | string): boolean => {
-    const dateObj = new Date(date);
-    return !isNaN(dateObj.getTime());
-  };
-
-  // Function to calculate completion percentage based on filled fields
+   // Function to calculate completion percentage based on filled fields
   const calculateCompletion = () => {
     if (!vitalsData) return 0;
 
@@ -91,10 +49,9 @@ export const useVitalsCard = () => {
   return {
     vitalsData,
     handleClick,
-    calculateAge,
-    formatDate,
-    formatAddress,
+    
+      formatAddress,
     completionPercentage,
-    isValidDate,
+    
   };
 }; 
