@@ -1,5 +1,10 @@
-import { RadioGroup, VStack, Text } from "@chakra-ui/react";
-import type { UseFormRegister, FieldErrors, UseFormSetValue, UseFormGetValues } from "react-hook-form";
+import { RadioGroup, VStack } from "@chakra-ui/react";
+import type {
+  UseFormRegister,
+  FieldErrors,
+  UseFormSetValue,
+  UseFormGetValues,
+} from "react-hook-form";
 import type { VitalsFormData } from "../../schemas/vitalsSchema";
 import type { Gender } from "../../types/vitals.types";
 import StyledInput from "@/components/shared/StyledInput";
@@ -11,17 +16,15 @@ interface PersonalDetailsSectionProps {
   errors: FieldErrors<VitalsFormData>;
   setValue: UseFormSetValue<VitalsFormData>;
   getValues: UseFormGetValues<VitalsFormData>;
-  calculatedAge: number | null;
   handleDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const PersonalDetailsSection = ({ 
-  register, 
-  errors, 
-  setValue, 
-  getValues, 
-  calculatedAge, 
-  handleDateChange 
+const PersonalDetailsSection = ({
+  register,
+  errors,
+  setValue,
+  getValues,
+  handleDateChange,
 }: PersonalDetailsSectionProps) => (
   <InfoCard title="From Birth to Resume" icon="🍼" color="blue">
     <FormField label="Full Name" error={errors.name?.message}>
@@ -35,27 +38,12 @@ const PersonalDetailsSection = ({
 
     <FormField label="Date of Birth" error={errors.dateOfBirth?.message}>
       <StyledInput
-        defaultValue={(() => {
-          const dateValue = getValues("dateOfBirth");
-          if (!dateValue) return "";
-          
-          // Handle Date object (which is what the schema expects)
-          if (dateValue instanceof Date && !isNaN(dateValue.getTime())) {
-            return dateValue.toISOString().split("T")[0];
-          }
-          
-          return "";
-        })()}
+        defaultValue={getValues("dateOfBirth").toISOString().split("T")[0]}
         type="date"
         onChange={handleDateChange}
         hoverColor="blue"
         focusColor="blue"
       />
-      {calculatedAge !== null && (
-        <Text fontSize="xs" color="blue.600" mt={1} fontWeight="medium">
-          🎂 Age: {calculatedAge} years old
-        </Text>
-      )}
     </FormField>
 
     <FormField label="Gender" error={errors.gender?.message}>
@@ -79,4 +67,4 @@ const PersonalDetailsSection = ({
   </InfoCard>
 );
 
-export default PersonalDetailsSection; 
+export default PersonalDetailsSection;
