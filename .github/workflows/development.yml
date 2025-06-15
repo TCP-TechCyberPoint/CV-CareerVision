@@ -36,8 +36,13 @@ jobs:
 
       - name: Create Pull Request from dev to staging
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
-          gh auth setup-git
-          gh pr create --title "Sync dev to staging" --body "Automated PR from dev to staging branch" --base staging --head dev-clean || echo "PR might already exist"
+           gh auth login --with-token <<< "${GITHUB_TOKEN}"
+           gh auth setup-git
+           if ! gh pr list --base staging --head dev-clean | grep 'Sync dev to staging'; then
+             gh pr create --title "Sync dev to staging" --body "Automated PR from dev to staging branch" --base staging --head dev-clean
+           else
+             echo "PR already exists"
+           fi
 
