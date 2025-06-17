@@ -16,6 +16,7 @@ import { useLoginForm } from "@/hooks/useAuthForm";
 import type { LoginFormData } from "@/utils/validations";
 import loginBg from "../assets/images/login-background.png";
 import BaseButton from "@/components/ui/BaseButton";
+import LinkedInButton from "@/api/LinkedInButton";
 
 const LoginPage: React.FC = () => {
   const { register, handleSubmit: hookFormSubmit } = useForm<LoginFormData>();
@@ -83,10 +84,11 @@ const LoginPage: React.FC = () => {
                 variant="solid"
                 color="white"
                 _hover={{ bg: "blue.500" }}
-                disabled={isLoading}  
+                disabled={isLoading}
               >
                 {isLoading ? "Signing in..." : "Sign In"}
               </BaseButton>
+              <LinkedInButton />
               <BaseButton
                 colorPalette="gray"
                 variant="outline"
