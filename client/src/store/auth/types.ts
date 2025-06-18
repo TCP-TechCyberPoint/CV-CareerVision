@@ -7,6 +7,7 @@ export interface AuthState {
   error: string | null;
   login: (credentials: LoginCredentials) => Promise<boolean>;
   register: (credentials: RegisterCredentials) => Promise<boolean>;
+  linkedInLogin: (code: string) => Promise<boolean>;
   logout: () => void;
   clearError: () => void;
 }

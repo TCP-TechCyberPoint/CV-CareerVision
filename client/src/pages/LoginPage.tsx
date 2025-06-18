@@ -13,6 +13,7 @@ import { useColorModeValue } from "@chakra-ui/color-mode";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useLoginForm } from "@/hooks/useAuthForm";
+import { useAuthStore } from "@/store/auth/store";
 import type { LoginFormData } from "@/utils/validations";
 import loginBg from "../assets/images/login-background.png";
 import BaseButton from "@/components/ui/BaseButton";
@@ -21,6 +22,7 @@ import LinkedInButton from "@/api/LinkedInButton";
 const LoginPage: React.FC = () => {
   const { register, handleSubmit: hookFormSubmit } = useForm<LoginFormData>();
   const { handleSubmit, errors, isLoading } = useLoginForm();
+  const { error } = useAuthStore();
 
   return (
     <Flex
@@ -53,6 +55,22 @@ const LoginPage: React.FC = () => {
             <Text fontSize="sm" color="gray.500" textAlign="center">
               Please login to your account
             </Text>
+
+            {error && (
+              <Text
+                fontSize="sm"
+                color="red.500"
+                textAlign="center"
+                bg="red.50"
+                p={3}
+                rounded="md"
+                border="1px solid"
+                borderColor="red.200"
+              >
+                {error}
+              </Text>
+            )}
+
             <Field.Root id="email" invalid={!!errors.email}>
               <Field.Label>Email address</Field.Label>
               <Input
@@ -88,6 +106,9 @@ const LoginPage: React.FC = () => {
               >
                 {isLoading ? "Signing in..." : "Sign In"}
               </BaseButton>
+              <Text fontSize="sm" textAlign="center" color="gray.500">
+                ──── or ────
+              </Text>
               <LinkedInButton />
               <BaseButton
                 colorPalette="gray"
@@ -95,7 +116,7 @@ const LoginPage: React.FC = () => {
                 onClick={() => {
                   const quickLoginData = {
                     email: "careervision2026@gmail.com",
-                    password: "Pa$$w0rd"
+                    password: "Pa$$w0rd",
                   };
                   handleSubmit(quickLoginData);
                 }}

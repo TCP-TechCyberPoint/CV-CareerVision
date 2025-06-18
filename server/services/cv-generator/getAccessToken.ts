@@ -4,17 +4,16 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const getAccessToken = async (code: string): Promise<string> => {
-  const clientSecret = process.env.VITE_LINKEDIN_CLIENT_SECRET;
-  if (!clientSecret) {
+  const CLIENT_SECRET = process.env.VITE_LINKEDIN_CLIENT_SECRET;
+  if (!CLIENT_SECRET) {
     throw new Error("LinkedIn client secret is not configured");
   }
-
   const params = new URLSearchParams({
     grant_type: "authorization_code",
     code,
-    redirect_uri: "http://localhost:5173/linkedin", // MUST match LinkedIn app + frontend login step
     client_id: "776iicpmhtuhxt",
-    client_secret: clientSecret,
+    client_secret: CLIENT_SECRET,
+    redirect_uri: "http://localhost:5173/linkedin", // MUST match LinkedIn app + frontend login step
   });
 
   try {

@@ -44,16 +44,13 @@ export const linkedinLogin = async (
   res: Response
 ): Promise<void> => {
   const { code } = req.body;
-  console.log("code", code);
-
   try {
     const accessToken = await getAccessToken(code);
-    console.log("accessToken", accessToken);
-
     const user = await axios.get("https://api.linkedin.com/v2/userinfo", {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-    console.log("user", user);
+    const result = await AuthService.linkedinAuth(user.data);
+    res.status(result.status).json(result.data);
   } catch (err: any) {
     if (axios.isAxiosError(err)) {
       console.error("LinkedIn auth Axios error:", {
