@@ -4,6 +4,7 @@ import { forwardRef } from "react";
 type ButtonProps = {
   children?: React.ReactNode;
   variant?: "outline" | "solid" | "ghost" | "subtle" | "surface" | "plain";
+  bg?: string;
   colorScheme?: string;
   color?: string;
   colorPalette?: string;

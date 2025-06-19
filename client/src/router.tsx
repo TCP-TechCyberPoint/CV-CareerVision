@@ -3,6 +3,7 @@ import { Home, About, LoginPage, RegisterPage, EditProfilePage } from "@/pages";
 import MainLayout from "@/components/layout/MainLayout";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { slideshowRoutes } from "./features/slideshow-form/routes/slideshowRoutes";
+import { LinkedInCallback } from "react-linkedin-login-oauth2";
 
 export const router = createBrowserRouter([
   {
@@ -36,5 +37,9 @@ export const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "/linkedin",
+    element: <LinkedInCallback />,
   },
 ]);

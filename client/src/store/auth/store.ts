@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { cookieUtils } from "@/utils/cookie-utils";
-import { loginUser, registerUser } from "./actions";
+import { loginUser, registerUser, linkedInLogin } from "./actions";
 import type { AuthState, LoginCredentials, RegisterCredentials } from "./types";
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -15,6 +15,10 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   register: async (credentials: RegisterCredentials) => {
     return registerUser(credentials, set);
+  },
+
+  linkedInLogin: async (code: string) => {
+    return linkedInLogin(code, set);
   },
 
   logout: () => {

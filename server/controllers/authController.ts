@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import * as AuthService from "../services/authService";
+import axios from "axios";
+import { getAccessToken } from "../services/cv-generator/getAccessToken";
 
 type AuthResponse = {
   status: number;
@@ -34,5 +36,32 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     } else {
       res.status(500).json({ message: "An unexpected error occurred" });
     }
+  }
+};
+
+export const linkedinLogin = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { code } = req.body;
+  try {
+    const accessToken = await getAccessToken(code);
+    const user = await axios.get("https://api.linkedin.com/v2/userinfo", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    const result = await AuthService.linkedinAuth(user.data);
+    res.status(result.status).json(result.data);
+  } catch (err: any) {
+    if (axios.isAxiosError(err)) {
+      console.error("LinkedIn auth Axios error:", {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+      });
+    } else {
+      console.error("LinkedIn auth unknown error:", err);
+    }
+
+    res.status(500).json({ error: "LinkedIn login failed" });
   }
 };
