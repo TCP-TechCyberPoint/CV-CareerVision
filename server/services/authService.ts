@@ -38,8 +38,10 @@ const register = async ({ name, email, password }: RegisterCredentials) => {
     if (existingUser) {
       return { status: 400, data: { message: "User already exists" } };
     }
-
-    const user = await createUser({ name, email, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("hashedPassword", hashedPassword);
+    const user = await createUser({ name, email, password: hashedPassword });
+    console.log("user", user);
 
     return { status: 201, data: { user } };
   } catch (error: unknown) {

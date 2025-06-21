@@ -41,8 +41,11 @@ const PersonalDetailsSection = ({
         defaultValue={getValues("dateOfBirth").toISOString().split("T")[0]}
         type="date"
         onChange={handleDateChange}
+        contentEditable={false}
         hoverColor="blue"
         focusColor="blue"
+        min={new Date(new Date().setFullYear(new Date().getFullYear() - 100)).toISOString().split("T")[0]}
+        max={new Date(new Date().setFullYear(new Date().getFullYear() - 16)).toISOString().split("T")[0]}
       />
     </FormField>
 

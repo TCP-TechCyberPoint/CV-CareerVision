@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/input";
 import { useColorModeValue } from "@chakra-ui/color-mode";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useLoginForm } from "@/hooks/useAuthForm";
 import { useAuthStore } from "@/store/auth/store";
@@ -23,6 +23,8 @@ const LoginPage: React.FC = () => {
   const { register, handleSubmit: hookFormSubmit } = useForm<LoginFormData>();
   const { handleSubmit, errors, isLoading } = useLoginForm();
   const { error } = useAuthStore();
+  const location = useLocation();
+  const successMessage = location.state?.message;
 
   return (
     <Flex
@@ -52,10 +54,7 @@ const LoginPage: React.FC = () => {
             <Heading fontSize="2xl" textAlign="center">
               Welcome Back
             </Heading>
-            <Text fontSize="sm" color="gray.500" textAlign="center">
-              Please login to your account
-            </Text>
-
+    
             {error && (
               <Text
                 fontSize="sm"
@@ -68,6 +67,21 @@ const LoginPage: React.FC = () => {
                 borderColor="red.200"
               >
                 {error}
+              </Text>
+            )}
+
+            {successMessage && (
+              <Text
+                fontSize="sm"
+                color="green.500"
+                textAlign="center"
+                bg="green.50"
+                p={3}
+                rounded="md"
+                border="1px solid"
+                borderColor="green.200"
+              >
+                {successMessage}
               </Text>
             )}
 
