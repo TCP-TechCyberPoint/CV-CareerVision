@@ -11,7 +11,6 @@ export const useEducationCard = () => {
     navigate(getSectionStepPath("education"));
   };
 
-  // Calculate completion based on education data
   const calculateCompletion = () => {
     if (!educationData) return 0;
 
@@ -29,15 +28,6 @@ export const useEducationCard = () => {
     return Math.round((filledFields / requiredFields.length) * 100);
   };
 
-  // Get completion color based on percentage
-  const getCompletionColor = (percentage: number) => {
-    if (percentage >= 75) return "green";
-    if (percentage >= 50) return "blue";
-    if (percentage >= 25) return "orange";
-    return "red";
-  };
-
-  // Process education data for display
   const processedData = {
     latestDegree:
       educationData?.degree && educationData?.fieldOfStudy
@@ -54,7 +44,6 @@ export const useEducationCard = () => {
     educationData,
     processedData,
     handleClick,
-    getCompletionColor,
     completionPercentage,
   };
 };

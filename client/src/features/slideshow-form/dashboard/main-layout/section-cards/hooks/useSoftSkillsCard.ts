@@ -11,20 +11,15 @@ export const useSoftSkillsCard = () => {
     navigate(getSectionStepPath("softSkills"));
   };
 
-  // Calculate completion based on skills data
   const calculateCompletion = () => {
     if (!softSkillsData || softSkillsData.length === 0) return 0;
 
     const skillsCount = softSkillsData.length;
 
-    // Consider complete if has at least 3 skills
     if (skillsCount >= 5) return 100;
-    if (skillsCount >= 3) return 75;
-    if (skillsCount >= 1) return 50;
-    return 25;
+    return Math.round((skillsCount / 5) * 100);
   };
 
-  // Process skills data for display
   const processedData = {
     totalSkills: softSkillsData?.length || 0,
     skills: softSkillsData || [],

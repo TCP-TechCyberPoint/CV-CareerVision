@@ -7,12 +7,16 @@ import {
   Badge,
   Flex,
 } from "@chakra-ui/react";
+import type { SlideshowFormData } from "@slideshow-form/types/form.types";
+import { useProgressCalculation } from "@slideshow-form/hooks/useProgressCalculation";
 
 interface ProgressBarProps {
-  completionPercentage?: number;
+  formData: SlideshowFormData;
   label?: string;
   showPercentage?: boolean;
   size?: "xs" | "sm" | "md" | "lg";
+  width?: string;
+  maxWidth?: string;
   colorPalette?:
     | "gray"
     | "red"
@@ -27,35 +31,15 @@ interface ProgressBarProps {
 }
 
 const ProgressBar = ({
-  completionPercentage = 0,
+  formData,
   label = "Profile Completion",
   showPercentage = true,
   size = "md",
-  colorPalette = "green",
+  width = "full",
+  maxWidth = "800px", 
 }: ProgressBarProps) => {
-  // Ensure percentage is between 0 and 100
-  const clampedPercentage = Math.min(Math.max(completionPercentage, 0), 100);
-
-  // Get status color based on completion
-  const getStatusColor = (percentage: number): typeof colorPalette => {
-    if (percentage < 25) return "red";
-    if (percentage < 50) return "orange";
-    if (percentage < 75) return "yellow";
-    if (percentage < 100) return "blue";
-    return colorPalette;
-  };
-
-  const statusColor = getStatusColor(clampedPercentage);
-
-  // Get status text
-  const getStatusText = (percentage: number) => {
-    if (percentage === 0) return "Not Started";
-    if (percentage < 25) return "Getting Started";
-    if (percentage < 50) return "In Progress";
-    if (percentage < 75) return "Well Underway";
-    if (percentage < 100) return "Almost Done";
-    return "Complete";
-  };
+  const { overallCompletion, getStatusColor, getStatusText } = useProgressCalculation(formData);
+  const statusColor = getStatusColor(overallCompletion);
 
   return (
     <Box
@@ -65,8 +49,8 @@ const ProgressBar = ({
       border="1px"
       borderColor={{ base: "gray.200", _dark: "gray.600" }}
       shadow="sm"
-      w="full"
-      maxW="600px"
+      w={width}
+      maxW={maxWidth}
     >
       <Stack gap={4} align="stretch">
         {/* Header with label and percentage */}
@@ -79,7 +63,7 @@ const ProgressBar = ({
             {label}
           </Text>
           {showPercentage && (
-            <HStack gap={2}>
+            <HStack gap={4}>
               <Badge
                 colorPalette={statusColor}
                 variant="subtle"
@@ -88,14 +72,14 @@ const ProgressBar = ({
                 borderRadius="full"
                 fontSize="sm"
               >
-                {getStatusText(clampedPercentage)}
+                {getStatusText(overallCompletion)}
               </Badge>
               <Text
                 fontSize="xl"
                 fontWeight="bold"
                 color={`${statusColor}.500`}
               >
-                {clampedPercentage}%
+                {overallCompletion}%
               </Text>
             </HStack>
           )}
@@ -103,7 +87,7 @@ const ProgressBar = ({
 
         {/* Progress bar */}
         <Progress.Root
-          value={clampedPercentage}
+          value={overallCompletion}
           size={size}
           colorPalette={statusColor}
           striped

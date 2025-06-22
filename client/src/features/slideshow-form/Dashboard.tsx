@@ -10,9 +10,11 @@ import {
   ProjectsCard,
   PreferencesCard,
 } from "./dashboard/main-layout/section-cards";
-import { calculateOverallCompletion } from "./utils/mockData";
+import { useSlideshowFormStore } from "./store";
 
 const Dashboard = () => {
+  const formData = useSlideshowFormStore((state) => state.formData);
+
   return (
     <>
       <Flex minH="100vh" bg={{ base: "gray.50", _dark: "gray.900" }}>
@@ -24,10 +26,8 @@ const Dashboard = () => {
           <Container maxW="7xl" py={8} px={6}>
             <Stack gap={8}>
               {/* Progress Bar Section */}
-              <Box>
-                <ProgressBar
-                  completionPercentage={calculateOverallCompletion()}
-                />
+              <Box display="flex" justifyContent="center" >
+                <ProgressBar formData={formData} width="900px" />
               </Box>
 
               {/* Cards Grid Section */}
