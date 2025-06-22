@@ -1,3 +1,4 @@
+import { useAuth0Integration } from "@/hooks/useAuth0Integration";
 import { useAuthStore } from "@/store/auth/store";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,15 +13,22 @@ import { pages } from "@/constants/pages";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { logout } = useAuthStore();
+  const { logout, isAuthenticated: auth0IsAuthenticated, loginWithAuth0 } = useAuth0Integration();
+  const { isAuthenticated: storeIsAuthenticated } = useAuthStore();
+
+  // Use store authentication as fallback when Auth0 is having issues
+  const isAuthenticated = auth0IsAuthenticated || storeIsAuthenticated;
 
   const handleSignOut = () => {
     logout();
-    navigate("/");
   };
 
   const handleRedirectEditProfile = () => {
     navigate("/edit-profile");
+  };
+
+  const handleLogin = () => {
+    loginWithAuth0();
   };
 
   return (
@@ -33,19 +41,31 @@ const Navbar = () => {
       >
         <Box>
           <HStack gap={8} alignItems="center" flexDir="row-reverse">
-            <ProfileDropdown onSignOut={handleSignOut} onRedirectEditProfile={handleRedirectEditProfile} />
-       
-            {pages.map(({ label, path }) => (
+            {isAuthenticated ? (
+              <>
+                <ProfileDropdown onSignOut={handleSignOut} onRedirectEditProfile={handleRedirectEditProfile} />
+                {pages.map(({ label, path }) => (
+                  <BaseButton
+                    key={label}
+                    variant="outline"
+                    color="orange.500"
+                    colorScheme="orange"
+                    onClick={() => navigate(path)}
+                  >
+                    {label}
+                  </BaseButton>       
+                ))}
+              </>
+            ) : (
               <BaseButton
-                key={label}
                 variant="outline"
                 color="orange.500"
                 colorScheme="orange"
-                onClick={() => navigate(path)}
+                onClick={handleLogin}
               >
-                {label}
-              </BaseButton>       
-            ))}
+                Login
+              </BaseButton>
+            )}
           </HStack>
         </Box>
 

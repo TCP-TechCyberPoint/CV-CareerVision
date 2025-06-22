@@ -42,13 +42,50 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// CORS configuration
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174", 
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "http://127.0.0.1:5173",
+  "http://127.0.0.1:5174",
+  "http://127.0.0.1:3000",
+  "http://127.0.0.1:3001"
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // Frontend URL
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        console.log("CORS blocked origin:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "x-fallback-auth"],
   })
 );
+
 app.use(express.json());
+
+// Add error handling middleware
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (err.message === "Not allowed by CORS") {
+    return res.status(403).json({
+      error: "CORS error: Origin not allowed",
+      origin: req.headers.origin,
+      allowedOrigins
+    });
+  }
+  next(err);
+});
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/auth", authRoutes);

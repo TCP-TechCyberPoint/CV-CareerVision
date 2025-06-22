@@ -1,45 +1,42 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Home, About, LoginPage, RegisterPage, EditProfilePage } from "@/pages";
+import { Home, About, EditProfilePage } from "@/pages";
 import MainLayout from "@/components/layout/MainLayout";
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { slideshowRoutes } from "./features/slideshow-form/routes/slideshowRoutes";
-import { LinkedInCallback } from "react-linkedin-login-oauth2";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <ProtectedRoute>
-        <MainLayout />
-      </ProtectedRoute>
-    ),
+    element: <MainLayout />,
     children: [
-      {
-        path: "/",
-        element: <Home />,
+      { 
+        path: "/", 
+        element: (
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        ) 
       },
-      {
-        path: "/about",
-        element: <About />,
+      { 
+        path: "/about", 
+        element: (
+          <ProtectedRoute>
+            <About />
+          </ProtectedRoute>
+        ) 
       },
-      {
-        path: "/edit-profile",
-        element: <EditProfilePage />,
+      { 
+        path: "/edit-profile", 
+        element: (
+          <ProtectedRoute>
+            <EditProfilePage />
+          </ProtectedRoute>
+        ) 
       },
-      // Import all slideshow-form routes
-      ...slideshowRoutes,
+      ...slideshowRoutes.map(route => ({
+        ...route,
+        element: <ProtectedRoute>{route.element}</ProtectedRoute>
+      })),
     ],
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
-  },
-  {
-    path: "/linkedin",
-    element: <LinkedInCallback />,
   },
 ]);

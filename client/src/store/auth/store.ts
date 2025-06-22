@@ -1,25 +1,13 @@
 import { create } from "zustand";
 import { cookieUtils } from "@/utils/cookie-utils";
-import { loginUser, registerUser, linkedInLogin } from "./actions";
-import type { AuthState, LoginCredentials, RegisterCredentials } from "./types";
+import type { AuthState } from "./types";
+import type { User } from "@/utils/auth-types";
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
   isLoading: false,
   error: null,
-
-  login: async (credentials: LoginCredentials) => {
-    return loginUser(credentials, set);
-  },
-
-  register: async (credentials: RegisterCredentials) => {
-    return registerUser(credentials, set);
-  },
-
-  linkedInLogin: async (code: string) => {
-    return linkedInLogin(code, set);
-  },
 
   logout: () => {
     set({
@@ -32,5 +20,38 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   clearError: () => set({ error: null }),
 
-  setLoading: (loading: boolean) => set({ isLoading: loading }),
+  setLoading: (loading: boolean) => {
+    set({ isLoading: loading });
+  },
+
+  setUserAndToken: (user: User | null) => {
+    if (user) {
+      cookieUtils.setUser(user);
+      cookieUtils.setToken("authenticated");
+    } else {
+      cookieUtils.clearAll();
+    }
+    
+    set({
+      user,
+      isAuthenticated: !!user,
+      isLoading: false,
+    });
+  },
+
+  initFromCookies: () => {
+    const token = cookieUtils.getToken();
+    const user = cookieUtils.getUser();
+    
+    if (token && user) {
+      set({
+        user,
+        isAuthenticated: true,
+      });
+    } else if (user) {
+      set({
+        user,
+      });
+    }
+  },
 }));

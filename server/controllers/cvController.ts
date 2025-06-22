@@ -1,17 +1,18 @@
 import { Request, Response } from "express";
 import { generateCvDocx } from "../services/cv-generator/generateCv";
-import { getUserCv, updateUserCv } from "../repositories/userRepository";
+import { getUserCv, updateUserCv, findByEmail } from "../repositories/userRepository";
 import { ICv } from "../models/types";
 
 export const generateCv = generateCvDocx;
 
 export const getCvData = async (req: Request, res: Response) => {
   try {
-    const { email } = req.body;
+    const email = req.body.email;
     
     if (!email) {
       return res.status(400).json({
-        error: "Email is required",
+        error: "Email not found in request",
+        message: "User authentication failed"
       });
     }
     
@@ -19,11 +20,18 @@ export const getCvData = async (req: Request, res: Response) => {
     if (!cv) {
       return res.status(404).json({
         error: "CV data not found",
+        userEmail: email
       });
     }
+    
+    const user = await findByEmail(email);
     res.status(200).json({
       message: "CV data fetched successfully",
       cv,
+      user: {
+        email: user?.email,
+        name: user?.name
+      }
     });
   } catch (error) {
     console.error("Error fetching CV data:", error);
@@ -36,24 +44,32 @@ export const getCvData = async (req: Request, res: Response) => {
 
 export const saveCvData = async (req: Request, res: Response) => {
   try {
-    const { email, ...cvData } = req.body;
+    const email = req.body.email;
+    const cvData = req.body;
 
     if (!email) {
       return res.status(400).json({
-        error: "Email is required",
+        error: "Email not found in request",
+        message: "User authentication failed"
       });
     }
+    
     const updatedUser = await updateUserCv(email, cvData as Partial<ICv>);
 
     if (!updatedUser) {
       return res.status(404).json({
-        error: "User not found",
+        error: "User not found in database",
+        userEmail: email
       });
     }
 
     res.status(200).json({
       message: "CV data saved successfully",
       cv: updatedUser.cv,
+      user: {
+        email: updatedUser.email,
+        name: updatedUser.name
+      }
     });
   } catch (error) {
     console.error("Error saving CV data:", error);

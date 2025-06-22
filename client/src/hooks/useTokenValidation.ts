@@ -42,7 +42,8 @@ export const useTokenValidation = () => {
 
     setIsTokenValid(false);
     setHasChecked(true);
-  }, [isAuthenticated, isLoading, hasChecked, isTokenValid]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, isLoading, hasChecked]);
 
   return { isTokenValid, isAuthenticated };
 };

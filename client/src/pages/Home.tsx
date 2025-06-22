@@ -42,7 +42,7 @@ const Feature = ({
 
 const Home = () => {
   const navigate = useNavigate();
-useCvData();
+  useCvData();
 
   return (
     <Box>

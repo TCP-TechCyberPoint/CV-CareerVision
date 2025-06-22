@@ -14,6 +14,7 @@
     "accessibility": "pa11y http://localhost:5173"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.3.0",
     "@chakra-ui/color-mode": "^2.2.0",
     "@chakra-ui/form-control": "^2.2.0",
     "@chakra-ui/input": "^2.1.2",
@@ -33,7 +34,6 @@
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.56.4",
     "react-icons": "^5.5.0",
-    "react-linkedin-login-oauth2": "^2.0.1",
     "react-router-dom": "^7.6.0",
     "universal-cookie": "^8.0.1",
     "zod": "^3.25.20",

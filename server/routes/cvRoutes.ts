@@ -1,14 +1,38 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
+import { requireAuth } from "../middlewares/auth0.middleware";
 import { generateCv, getCvData, saveCvData } from "../controllers/cvController";
-import { authMiddleware } from "../middlewares/auth.middleware";
 
 const router = Router();
 
 /**
  * @swagger
- * /api/cv/generate:
+ * /api/cv/me:
+ *   get:
+ *     summary: Get current user info
+ *     tags: [CV]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User info retrieved successfully
+ *       401:
+ *         description: Unauthorized - Invalid or missing token
+ *       500:
+ *         description: Server error
+ */
+router.get("/me", requireAuth, (req: Request, res: Response) => {
+  res.json({
+    message: "User authenticated successfully",
+    email: req.body.email,
+    auth: req.auth
+  });
+});
+
+/**
+ * @swagger
+ * /cv/generate:
  *   post:
- *     summary: Generate a new CV
+ *     summary: Generate CV
  *     tags: [CV]
  *     security:
  *       - bearerAuth: []
@@ -18,28 +42,18 @@ const router = Router();
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - prompt
  *             properties:
- *               prompt:
- *                 type: string
- *                 description: The prompt to generate the CV
+ *               formData:
+ *                 type: object
  *     responses:
  *       200:
  *         description: CV generated successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 cvData:
- *                   type: object
  *       401:
  *         description: Unauthorized - Invalid or missing token
  *       500:
  *         description: Server error
  */
-router.post("/generate", authMiddleware, generateCv);
+router.post("/generate", requireAuth, generateCv);
 
 /**
  * @swagger
@@ -69,7 +83,7 @@ router.post("/generate", authMiddleware, generateCv);
  *       500:
  *         description: Server error
  */
-router.post("/save", authMiddleware, saveCvData);
+router.post("/save", requireAuth, saveCvData);
 
 /**
  * @swagger
@@ -96,6 +110,6 @@ router.post("/save", authMiddleware, saveCvData);
  *       500:
  *         description: Server error
  */
-router.get("/get", authMiddleware, getCvData);
+router.get("/get", requireAuth, getCvData);
 
 export default router;

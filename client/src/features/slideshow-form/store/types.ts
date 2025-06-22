@@ -13,8 +13,12 @@ export type SectionStatus = SectionStatusMap[SectionKey];
 // Zustand store interface
 export interface SlideshowFormState {
   formData: SlideshowFormData;
-  updateFormData: (fields: Partial<SlideshowFormData>) => void;
   initialized: boolean;
+  isLoading: boolean;
+  error: string | null;
+  updateFormData: (fields: Partial<SlideshowFormData>) => void;
   setInitialized: () => void;
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
   fetchInitialFormData: () => Promise<void>;
 }

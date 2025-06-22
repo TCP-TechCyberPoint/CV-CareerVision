@@ -1,17 +1,7 @@
 // ErrorBoundary.tsx
 import { Component } from "react";
 import type { ErrorInfo, ReactNode } from "react";
-import {
-  Box,
-  VStack,
-  Text,
-  Button,
-  Alert,
-  Code,
-  CollapsibleContent,
-  CollapsibleRoot,
-  CollapsibleTrigger,
-} from "@chakra-ui/react";
+import { Box, Button, VStack, Alert, CollapsibleRoot, CollapsibleTrigger, CollapsibleContent } from "@chakra-ui/react";
 import { MdRefresh, MdBugReport } from "react-icons/md";
 
 interface Props {
@@ -19,6 +9,7 @@ interface Props {
   fallback?: ReactNode;
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
   showDetails?: boolean;
+  onRetry?: () => void;
 }
 
 interface State {
@@ -72,6 +63,12 @@ class ErrorBoundary extends Component<Props, State> {
   };
 
   private handleRetry = () => {
+    // Call custom retry handler if provided
+    if (this.props.onRetry) {
+      this.props.onRetry();
+    }
+    
+    // Reset error state
     this.setState({ hasError: false, error: null, errorInfo: null });
   };
 
@@ -118,6 +115,14 @@ const ErrorFallback = ({
   onReload,
   showDetails = false,
 }: ErrorFallbackProps) => {
+  const isNetworkError = error?.message?.includes('network') || 
+                        error?.message?.includes('fetch') ||
+                        error?.message?.includes('timeout');
+  
+  const isAuthError = error?.message?.includes('auth') || 
+                     error?.message?.includes('unauthorized') ||
+                     error?.message?.includes('401');
+
   return (
     <Box
       minH="400px"
@@ -130,10 +135,15 @@ const ErrorFallback = ({
         <Alert.Root status="error" borderRadius="lg">
           <Alert.Indicator />
           <Alert.Content>
-            <Alert.Title>Oops! Something went wrong</Alert.Title>
+            <Alert.Title>
+              {isNetworkError ? "Connection Error" : 
+               isAuthError ? "Authentication Error" : 
+               "Something went wrong"}
+            </Alert.Title>
             <Alert.Description>
-              We encountered an unexpected error. Please try refreshing the
-              page.
+              {isNetworkError ? "Please check your internet connection and try again." :
+               isAuthError ? "Please log in again to continue." :
+               "We encountered an unexpected error. Please try refreshing the page."}
             </Alert.Description>
           </Alert.Content>
         </Alert.Root>
@@ -158,48 +168,25 @@ const ErrorFallback = ({
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <Box
-                  bg="gray.50"
-                  _dark={{ bg: "gray.800" }}
-                  p={4}
-                  borderRadius="md"
-                  maxW="100%"
-                  overflow="auto"
                   mt={4}
+                  p={4}
+                  bg="gray.50"
+                  borderRadius="md"
+                  fontSize="sm"
+                  fontFamily="mono"
+                  textAlign="left"
+                  maxH="200px"
+                  overflow="auto"
                 >
-                  <VStack align="start" gap={3}>
-                    {error && (
-                      <Box>
-                        <Text fontWeight="semibold" mb={2}>
-                          Error Message:
-                        </Text>
-                        <Code
-                          colorPalette="red"
-                          p={2}
-                          borderRadius="md"
-                          display="block"
-                        >
-                          {error.message}
-                        </Code>
-                      </Box>
-                    )}
-
-                    {errorInfo?.componentStack && (
-                      <Box>
-                        <Text fontWeight="semibold" mb={2}>
-                          Component Stack:
-                        </Text>
-                        <Code
-                          fontSize="xs"
-                          p={2}
-                          borderRadius="md"
-                          display="block"
-                          whiteSpace="pre-wrap"
-                        >
-                          {errorInfo.componentStack}
-                        </Code>
-                      </Box>
-                    )}
-                  </VStack>
+                  <Box mb={2} fontWeight="bold">Error:</Box>
+                  <Box mb={4}>{error?.message}</Box>
+                  
+                  {errorInfo && (
+                    <>
+                      <Box mb={2} fontWeight="bold">Component Stack:</Box>
+                      <Box>{errorInfo.componentStack}</Box>
+                    </>
+                  )}
                 </Box>
               </CollapsibleContent>
             </CollapsibleRoot>

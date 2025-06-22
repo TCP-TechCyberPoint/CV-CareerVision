@@ -5,22 +5,11 @@ export interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  login: (credentials: LoginCredentials) => Promise<boolean>;
-  register: (credentials: RegisterCredentials) => Promise<boolean>;
-  linkedInLogin: (code: string) => Promise<boolean>;
   logout: () => void;
   clearError: () => void;
-}
-
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export interface RegisterCredentials {
-  name: string;
-  email: string;
-  password: string;
+  setLoading: (loading: boolean) => void;
+  setUserAndToken: (user: User | null) => void;
+  initFromCookies: () => void;
 }
 
 export type AuthResponse = {

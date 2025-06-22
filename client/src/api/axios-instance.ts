@@ -1,22 +1,47 @@
 import axios from "axios";
-import { cookieUtils } from "@/utils/cookie-utils";
-
-const VITE_API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 const axiosInstance = axios.create({
-  baseURL: VITE_API_BASE_URL, // Replace with your API URL
+  baseURL: import.meta.env.VITE_SERVER_URL,
 });
 
+let getAccessToken: (() => Promise<string | null>) | null = null;
+
+export const setTokenGetter = (tokenGetter: () => Promise<string | null>) => {
+  getAccessToken = tokenGetter;
+};
+
 axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = cookieUtils.getToken();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+  async (config) => {
+    try {
+      if (getAccessToken) {
+        const token = await getAccessToken();
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+      }
+    } catch (error) {
+      console.error("Error getting access token:", error);
     }
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor for better error handling
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response?.status === 401) {
+      console.error("API 401 Error:", {
+        url: error.config?.url,
+        method: error.config?.method,
+        message: error.response?.data?.message || "Unauthorized",
+      });
+    }
     return Promise.reject(error);
   }
 );

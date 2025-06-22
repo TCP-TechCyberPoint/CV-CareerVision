@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import { IUser } from "../models/User";
 import dotenv from "dotenv";
 import { createUser, findByEmail } from "../repositories/userRepository";
-import crypto from "crypto";
 
 dotenv.config();
 
@@ -21,17 +20,6 @@ interface LoginCredentials {
   password: IUser["password"];
 }
 
-interface LinkedInUserData {
-  sub: string;
-  email_verified: boolean;
-  name: string;
-  locale: { country: string; language: string };
-  given_name: string;
-  family_name: string;
-  email: string;
-  picture: string;
-}
-
 const register = async ({ name, email, password }: RegisterCredentials) => {
   try {
     const existingUser = await findByEmail(email);
@@ -39,9 +27,7 @@ const register = async ({ name, email, password }: RegisterCredentials) => {
       return { status: 400, data: { message: "User already exists" } };
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("hashedPassword", hashedPassword);
     const user = await createUser({ name, email, password: hashedPassword });
-    console.log("user", user);
 
     return { status: 201, data: { user } };
   } catch (error: unknown) {
@@ -80,58 +66,4 @@ const login = async ({ email, password }: LoginCredentials) => {
   }
 };
 
-const linkedinAuth = async (userData: LinkedInUserData) => {
-  try {
-    const { email, name } = userData;
-    
-    const existingUser = await findByEmail(email);
-    
-    if (existingUser) {
-      const token = jwt.sign(
-        { userId: existingUser._id, email: existingUser.email },
-        JWT_SECRET,
-        { expiresIn: "1h" }
-      );
-
-      const userWithoutPassword = {
-        _id: existingUser._id,
-        name: existingUser.name,
-        email: existingUser.email,
-      };
-
-      return { status: 200, data: { token, user: userWithoutPassword } };
-    } else {
-      // User doesn't exist, create new user with random password
-      const randomPassword = crypto.randomBytes(32).toString('hex');
-      const hashedPassword = await bcrypt.hash(randomPassword, 10);
-      
-      const newUser = await createUser({ 
-        name, 
-        email, 
-        password: hashedPassword 
-      });
-
-      // Generate token for the new user
-      const token = jwt.sign(
-        { userId: newUser._id, email: newUser.email },
-        JWT_SECRET,
-        { expiresIn: "1h" }
-      );
-
-      const userWithoutPassword = {
-        _id: newUser._id,
-        name: newUser.name,
-        email: newUser.email,
-      };
-
-      return { status: 201, data: { token, user: userWithoutPassword } };
-    }
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return { status: 500, data: { message: error.message } };
-    }
-    return { status: 500, data: { message: "An unknown error occurred" } };
-  }
-};
-
-export { register, login, linkedinAuth };
+export { register, login };
