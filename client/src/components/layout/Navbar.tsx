@@ -1,5 +1,4 @@
 import { useAuth0Integration } from "@/hooks/useAuth0Integration";
-import { useAuthStore } from "@/store/auth/store";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -13,11 +12,7 @@ import { pages } from "@/constants/pages";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { logout, isAuthenticated: auth0IsAuthenticated, loginWithAuth0 } = useAuth0Integration();
-  const { isAuthenticated: storeIsAuthenticated } = useAuthStore();
-
-  // Use store authentication as fallback when Auth0 is having issues
-  const isAuthenticated = auth0IsAuthenticated || storeIsAuthenticated;
+  const { logout, isAuthenticated, loginWithAuth0 } = useAuth0Integration();
 
   const handleSignOut = () => {
     logout();

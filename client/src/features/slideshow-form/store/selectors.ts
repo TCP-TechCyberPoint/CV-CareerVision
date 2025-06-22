@@ -1,11 +1,14 @@
 import { useSlideshowFormStore } from "./store";
 
+// Create a stable default date to prevent infinite re-renders
+const DEFAULT_DATE = new Date(2000, 0, 1);
+
 // Individual field selectors
 export const useName = () =>
   useSlideshowFormStore((state) => state.formData.vitals?.name ?? "");
 
 export const useDateOfBirth = () =>
-  useSlideshowFormStore((state) => state.formData.vitals?.dateOfBirth ?? new Date(2000, 0, 1));
+  useSlideshowFormStore((state) => state.formData.vitals?.dateOfBirth ?? DEFAULT_DATE);
 
 export const useSkills = () =>
   useSlideshowFormStore((state) => state.formData.hardSkills ?? {});
@@ -17,7 +20,7 @@ export const useSoftSkills = () =>
 export const useStepVitalsFields = () =>
   useSlideshowFormStore((state) => ({
     name: state.formData.vitals?.name ?? "",
-    dateOfBirth: state.formData.vitals?.dateOfBirth ?? new Date(2000, 0, 1),
+    dateOfBirth: state.formData.vitals?.dateOfBirth ?? DEFAULT_DATE,
     gender: state.formData.vitals?.gender ?? "Male",
     email: state.formData.vitals?.email ?? "",
     country: state.formData.vitals?.country ?? "",

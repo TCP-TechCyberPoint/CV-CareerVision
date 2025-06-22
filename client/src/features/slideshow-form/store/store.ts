@@ -49,7 +49,9 @@ export const useSlideshowFormStore = create<SlideshowFormState>()(
       setLoading: (loading: boolean) => set({ isLoading: loading }),
       setError: (error: string | null) => set({ error }),
       fetchInitialFormData: async () => {
-        if (get().initialized) return;
+        if (get().initialized) {
+          return;
+        }
 
         set({ isLoading: true, error: null });
         

@@ -4,18 +4,16 @@ import { useAuth0Integration } from "@/hooks/useAuth0Integration";
 
 const useAppInit = () => {
   const { isAuthenticated, isLoading: auth0IsLoading } = useAuth0Integration();
+  
   const initializationRef = useRef(false);
   const [loadingStep, setLoadingStep] = useState<string>("Initializing...");
 
-  const { 
-    fetchInitialFormData, 
-    isLoading: formDataIsLoading,
-    initialized: formDataInitialized 
-  } = useSlideshowFormStore((state) => ({
-    fetchInitialFormData: state.fetchInitialFormData,
-    isLoading: state.isLoading,
-    initialized: state.initialized
-  }));
+  // Get the function separately to avoid recreation on every render
+  const fetchInitialFormData = useSlideshowFormStore((state) => state.fetchInitialFormData);
+  
+  // Get state values separately
+  const formDataIsLoading = useSlideshowFormStore((state) => state.isLoading);
+  const formDataInitialized = useSlideshowFormStore((state) => state.initialized);
 
   useEffect(() => {
     // Don't initialize if Auth0 is still loading

@@ -13,11 +13,21 @@ export const setTokenGetter = (tokenGetter: () => Promise<string | null>) => {
 axiosInstance.interceptors.request.use(
   async (config) => {
     try {
+      console.log("Axios request interceptor called for:", config.url);
+      console.log("getAccessToken function exists:", !!getAccessToken);
+      
       if (getAccessToken) {
         const token = await getAccessToken();
+        console.log("Token retrieved:", token ? `Bearer ${token.substring(0, 20)}...` : "null");
+        
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
+          console.log("Authorization header set successfully");
+        } else {
+          console.log("No token available, request will be sent without authorization");
         }
+      } else {
+        console.log("No token getter function available");
       }
     } catch (error) {
       console.error("Error getting access token:", error);

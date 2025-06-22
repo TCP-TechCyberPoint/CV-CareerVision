@@ -1,11 +1,10 @@
 import { Box, Container, Heading, Input, Text } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import BaseButton from "@/components/ui/BaseButton";
-import { useAuthStore } from "@/store/auth/store";
+import { useAuth0Integration } from "@/hooks/useAuth0Integration";
 
 const EditProfilePage: React.FC = () => {
-  const user = useAuthStore((state) => state.user);
-  console.log("user", user);
+  const { user } = useAuth0Integration();
 
   return (
     <>
