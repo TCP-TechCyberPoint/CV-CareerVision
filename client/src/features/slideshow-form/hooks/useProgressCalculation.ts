@@ -120,6 +120,44 @@ const calculatePreferencesCompletion = (preferences: SlideshowFormData['preferen
   return Math.round((filledFields / requiredFields.length) * 100);
 };
 
+// Calculate completion percentage for military service section
+const calculateMilitaryServiceCompletion = (militaryService: SlideshowFormData['military']): number => {
+  if (!militaryService || !militaryService.militaryServiceStatus) return 0;
+  
+  const status = militaryService.militaryServiceStatus;
+  
+  if (status === 'exempted' || status === 'not_served') {
+    return 100; // Complete since status is selected
+  }
+  
+  const requiredFields = [
+    militaryService.militaryServiceStatus,
+  ];
+  
+  const optionalFields = [
+    militaryService.serviceDuration,
+    militaryService.serviceDetails,
+    militaryService.degreeGroup,
+    militaryService.degree,
+  ];
+  
+  const filledRequiredFields = requiredFields.filter(field => 
+    field && field.trim() !== ""
+  ).length;
+  
+  const filledOptionalFields = optionalFields.filter(field => 
+    field && field.trim() !== ""
+  ).length;
+  
+  // Base completion from required fields (60%)
+  const requiredCompletion = (filledRequiredFields / requiredFields.length) * 60;
+  
+  // Additional completion from optional fields (40%)
+  const optionalCompletion = (filledOptionalFields / optionalFields.length) * 40;
+  
+  return Math.round(requiredCompletion + optionalCompletion);
+};
+
 // Calculate overall completion percentage
 const calculateOverallCompletion = (formData: SlideshowFormData): number => {
   const sections = [
@@ -130,6 +168,7 @@ const calculateOverallCompletion = (formData: SlideshowFormData): number => {
     calculateExperienceCompletion(formData.experience),
     calculateProjectsCompletion(formData.projects),
     calculatePreferencesCompletion(formData.preferences),
+    calculateMilitaryServiceCompletion(formData.military),
   ];
   
   const totalPercentage = sections.reduce((sum, percentage) => sum + percentage, 0);
@@ -147,6 +186,7 @@ export const useProgressCalculation = (formData: SlideshowFormData) => {
     experience: calculateExperienceCompletion(formData.experience),
     projects: calculateProjectsCompletion(formData.projects),
     preferences: calculatePreferencesCompletion(formData.preferences),
+    militaryService: calculateMilitaryServiceCompletion(formData.military),
   };
 
   // Get status color based on completion

@@ -5,3 +5,4 @@ export { default as EducationCard } from "./EducationCard";
 export { default as ExperienceStepForm } from "./ExperienceCard";
 export { default as ProjectsCard } from "./ProjectsCard";
 export { default as PreferencesCard } from "./PreferencesCard";
+export { default as MilitaryCard } from "./MilitaryCard";

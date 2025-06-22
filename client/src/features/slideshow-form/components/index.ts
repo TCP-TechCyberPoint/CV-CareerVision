@@ -22,8 +22,11 @@ export { default as PreferenceSelectField } from "./Preferences/PreferenceSelect
 export { default as PreferencesHeader } from "./Preferences/PreferencesHeader";
 export { default as PreferencesFormFields } from "./Preferences/PreferencesFormFields";
 
+// Military-related components
+export * from "./military";
+
 // Form-related components (existing)
 export { default as ComboboxField } from "./shared/ComboboxField";
 export { default as SelectField } from "./shared/SelectField";
+export { default as ReturnDashboard } from "./ReturnDashboard";
 
-//

@@ -9,6 +9,7 @@ import {
   ExperienceStepForm,
   ProjectsCard,
   PreferencesCard,
+  MilitaryCard,
 } from "./dashboard/main-layout/section-cards";
 import { useSlideshowFormStore } from "./store";
 
@@ -48,6 +49,7 @@ const Dashboard = () => {
                   <ExperienceStepForm />
                   <ProjectsCard />
                   <PreferencesCard />
+                  <MilitaryCard />
                 </Grid>
               </Box>
             </Stack>
