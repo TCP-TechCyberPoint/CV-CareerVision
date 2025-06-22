@@ -51,6 +51,14 @@ export interface ICv {
     industryPreference: string;
     targetSalaryRange: string;
   };
+  military?: {
+    militaryServiceStatus: 'full_military' | 'partial_military' | 'national_service' | 'civil_service' | 'exempted' | 'not_served' | 'other';
+    serviceDuration?: string;
+    serviceDetails?: string;
+    otherServiceType?: string;
+    degreeGroup?: 'enlisted' | 'senior_ncos' | 'officers';
+    degree?: string;
+  };
 }
 
 export const cvSchema = new Schema<ICv>(
@@ -123,6 +131,22 @@ export const cvSchema = new Schema<ICv>(
       industryPreference: { type: String, required: false },
       targetSalaryRange: { type: String, required: false },
     },
+    military: {
+      militaryServiceStatus: { 
+        type: String, 
+        required: false,
+        enum: ['full_military', 'partial_military', 'national_service', 'civil_service', 'exempted', 'not_served', 'other']
+      },
+      serviceDuration: { type: String, required: false },
+      serviceDetails: { type: String, required: false },
+      otherServiceType: { type: String, required: false },
+      degreeGroup: { 
+        type: String, 
+        required: false,
+        enum: ['enlisted', 'senior_ncos', 'officers']
+      },
+      degree: { type: String, required: false },
+    },
   },
   { _id: false }
 );
@@ -141,6 +165,19 @@ cvSchema.pre("save", function () {
       }
     });
   }
+
+  // Handle military field dependencies
+  if (this.military) {
+    const status = this.military.militaryServiceStatus;
+    if (status === 'exempted' || status === 'not_served') {
+      // Clear dependent fields when status is exempted or not_served
+      this.military.degreeGroup = undefined;
+      this.military.degree = "";
+      this.military.serviceDuration = "";
+      this.military.serviceDetails = "";
+      this.military.otherServiceType = "";
+    }
+  }
 });
 
 // Pre-update middleware to handle endDate/isCurrentJob dependency during updates
@@ -158,5 +195,18 @@ cvSchema.pre(["updateOne", "findOneAndUpdate", "updateMany"], function () {
         exp.isCurrentJob = false;
       }
     });
+  }
+
+  // Handle military field dependencies during updates
+  if (update && update.military) {
+    const status = update.military.militaryServiceStatus;
+    if (status === 'exempted' || status === 'not_served') {
+      // Clear dependent fields when status is exempted or not_served
+      update.military.degreeGroup = undefined;
+      update.military.degree = "";
+      update.military.serviceDuration = "";
+      update.military.serviceDetails = "";
+      update.military.otherServiceType = "";
+    }
   }
 });

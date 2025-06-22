@@ -5,3 +5,4 @@ export { useEducationCard } from "./useEducationCard";
 export { useExperienceStepForm } from "./useExperienceCard";
 export { useProjectsCard } from "./useProjectsCard";
 export { usePreferencesCard } from "./usePreferencesCard";
+export { useMilitaryCard } from "./useMilitaryCard";

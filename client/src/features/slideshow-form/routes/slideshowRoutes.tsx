@@ -42,6 +42,7 @@ export const getSectionStepPath = (section: string) => {
     experience: 'experience',
     projects: 'projects',
     preferences: 'preferences',
+    military: 'military',
     end: 'end',
   };
   

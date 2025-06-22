@@ -10,6 +10,17 @@ export type { Education, Degree, FieldOfStudy, Year } from "./education.types";
 // Export project types
 export type { Project } from "./projects.types";
 
+// Export military service types
+export type { 
+  MilitaryService, 
+  MilitaryServiceInfo,
+  MilitaryDegreeGroup,
+  MilitaryDegree,
+  EnlistedDegree,
+  SeniorNCODegree,
+  OfficerDegree
+} from "./military.types";
+
 // Export preferences types from schema (centralized)
 export type {
   CvStyle,

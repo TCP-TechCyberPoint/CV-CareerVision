@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { SlideshowFormState } from "./types";
 import type { SlideshowFormData } from "../types";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 import cvService from "../services/cvService";
 
 export const useSlideshowFormStore = create<SlideshowFormState>()(
@@ -27,10 +27,8 @@ export const useSlideshowFormStore = create<SlideshowFormState>()(
     }),
     {
       name: "slideshow-form-storage",
-      partialize: (state) => ({
-        formData: state.formData,
-        initialized: state.initialized,
-      }),
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ formData: state.formData }),
     }
   )
 );

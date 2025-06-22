@@ -2,7 +2,6 @@
 
 import type { ReactNode } from "react";
 import { Box, Flex, Text, Badge } from "@chakra-ui/react";
-import { getCompletionColor } from "@slideshow-form/utils/mockData";
 import BaseCard from "./BaseCard";
 
 interface SectionCardProps {
@@ -81,7 +80,7 @@ const SectionCard = ({
         </Flex>
         {completion !== undefined && (
           <Badge 
-            colorPalette={getCompletionColor(completion)}
+            colorPalette={themeColor}
             variant="subtle"
             borderRadius="full"
           >

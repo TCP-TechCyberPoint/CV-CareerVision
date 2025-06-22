@@ -6,4 +6,5 @@ export { default as StepEducation } from './StepEducation';
 export { default as StepExperience } from './StepExperience';
 export { default as StepProjects } from './StepProjects';
 export { default as StepPreferences } from './StepPreferences';
+export { default as StepMilitary } from './StepMilitary';
 export { default as StepEnd } from './StepEnd';

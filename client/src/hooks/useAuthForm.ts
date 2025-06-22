@@ -37,8 +37,12 @@ export const useRegisterForm = () => {
     if (!isValid) return;
 
     try {
-      await register(data);
-      navigate("/login");
+      const result = await register(data);
+      if (result) {
+        navigate("/login", {
+          state: { message: "Registration was successful." },
+        });
+      }
     } catch (error: unknown) {
       console.error("Register error:", error);
       alert("Failed to register. Please try again.");

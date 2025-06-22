@@ -5,6 +5,7 @@ import { useAuthStore } from "@/store/auth/store";
 
 const EditProfilePage: React.FC = () => {
   const user = useAuthStore((state) => state.user);
+  console.log("user", user);
 
   return (
     <>
@@ -25,9 +26,9 @@ const EditProfilePage: React.FC = () => {
           <FormControl mb={6}>
             <FormLabel fontWeight="medium">Full Name</FormLabel>
             <Input
-              defaultValue={user?.name}
               size="lg"
               placeholder="Enter your full name"
+              defaultValue={user?.name}
               _focus={{
                 borderColor: "blue.400",
                 boxShadow: "0 0 0 1px blue.400",

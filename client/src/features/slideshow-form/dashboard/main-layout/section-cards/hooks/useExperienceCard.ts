@@ -44,13 +44,6 @@ export const useExperienceStepForm = () => {
     return totalFields > 0 ? Math.round((filledFields / totalFields) * 100) : 0;
   };
 
-  // Get completion color based on percentage
-  const getCompletionColor = (percentage: number) => {
-    if (percentage >= 75) return "green";
-    if (percentage >= 50) return "blue";
-    if (percentage >= 25) return "orange";
-    return "red";
-  };
 
   // Calculate total experience in years
   const calculateTotalExperience = () => {
@@ -76,10 +69,8 @@ export const useExperienceStepForm = () => {
     return `${years} years ${months} months`;
   };
 
-  // Find current job
   const currentJob = experienceData.find((exp) => exp.isCurrentJob);
 
-  // Process experience data for display
   const processedData = {
     currentRole:
       currentJob?.jobTitle || experienceData[0]?.jobTitle || "Not provided",
@@ -99,7 +90,6 @@ export const useExperienceStepForm = () => {
     experienceData,
     processedData,
     handleClick,
-    getCompletionColor,
     completionPercentage,
   };
 };

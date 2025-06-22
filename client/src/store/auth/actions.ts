@@ -15,10 +15,13 @@ export const loginUser = async (
   setState: SetState
 ): Promise<boolean> => {
   setState({ isLoading: true, error: null });
-  
+
   try {
-    const { data } = await axiosInstance.post<AuthResponse>("/auth/login", credentials);
-    
+    const { data } = await axiosInstance.post<AuthResponse>(
+      "/auth/login",
+      credentials
+    );
+
     if (data.token) {
       setState({
         user: data.user || null,
@@ -29,7 +32,7 @@ export const loginUser = async (
       cookieUtils.setToken(data.token);
       return true;
     }
-    
+
     setState({
       isLoading: false,
       error: data.message || "Login failed",
@@ -37,13 +40,13 @@ export const loginUser = async (
     return false;
   } catch (error: unknown) {
     let errorMessage = "An unexpected error occurred";
-    
+
     if (error instanceof AxiosError) {
       errorMessage = error?.response?.data?.message || error.message;
     } else if (error instanceof Error) {
       errorMessage = error.message;
     }
-    
+
     setState({
       isLoading: false,
       error: errorMessage,
@@ -57,18 +60,21 @@ export const registerUser = async (
   setState: SetState
 ): Promise<boolean> => {
   setState({ isLoading: true, error: null });
-  
+
   try {
-    const { data } = await axiosInstance.post<AuthResponse>("/auth/register", credentials);
-    
-    if (data.status === 201) {
+    const { data } = await axiosInstance.post<AuthResponse>(
+      "/auth/register",
+      credentials
+    );
+
+    if (data.user) {
       setState({
         isLoading: false,
         error: null,
       });
       return true;
     }
-    
+
     setState({
       isLoading: false,
       error: data.message || "Registration failed",
@@ -76,13 +82,13 @@ export const registerUser = async (
     return false;
   } catch (error: unknown) {
     let errorMessage = "An unexpected error occurred";
-    
+
     if (error instanceof AxiosError) {
       errorMessage = error?.response?.data?.message || error.message;
     } else if (error instanceof Error) {
       errorMessage = error.message;
     }
-    
+
     setState({
       isLoading: false,
       error: errorMessage,
@@ -107,10 +113,12 @@ export const linkedInLogin = async (
   setState: SetState
 ): Promise<boolean> => {
   setState({ isLoading: true, error: null });
-  
+
   try {
-    const { data } = await axiosInstance.post<AuthResponse>("/auth/linkedin", { code });
-    
+    const { data } = await axiosInstance.post<AuthResponse>("/auth/linkedin", {
+      code,
+    });
+
     if (data.token) {
       setState({
         user: data.user || null,
@@ -121,7 +129,7 @@ export const linkedInLogin = async (
       cookieUtils.setToken(data.token);
       return true;
     }
-    
+
     setState({
       isLoading: false,
       error: data.message || "LinkedIn login failed",
@@ -129,13 +137,13 @@ export const linkedInLogin = async (
     return false;
   } catch (error: unknown) {
     let errorMessage = "LinkedIn authentication failed";
-    
+
     if (error instanceof AxiosError) {
       errorMessage = error?.response?.data?.message || error.message;
     } else if (error instanceof Error) {
       errorMessage = error.message;
     }
-    
+
     setState({
       isLoading: false,
       error: errorMessage,

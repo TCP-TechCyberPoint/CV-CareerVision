@@ -7,6 +7,7 @@ export const slideMap = {
   experience: 5,
   projects: 6,
   preferences: 7,
-  end: 8,
+  military: 8,
+  end: 9,
 } as const;
 
