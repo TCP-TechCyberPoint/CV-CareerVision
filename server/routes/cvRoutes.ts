@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { generateCv, getCvData, saveCvData } from "../controllers/cvController";
+import {
+  generateCv,
+  getCvData,
+  saveCvData,
+  uploadCvOnly,
+} from "../controllers/cvController";
 import { authMiddleware } from "../middlewares/auth.middleware";
 
 const router = Router();
@@ -18,24 +23,9 @@ const router = Router();
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - prompt
- *             properties:
- *               prompt:
- *                 type: string
- *                 description: The prompt to generate the CV
  *     responses:
  *       200:
  *         description: CV generated successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 cvData:
- *                   type: object
- *       401:
- *         description: Unauthorized - Invalid or missing token
  *       500:
  *         description: Server error
  */
@@ -56,20 +46,61 @@ router.post("/generate", authMiddleware, generateCv);
  *           schema:
  *             type: object
  *             required:
- *               - cvData
+ *               - email
  *             properties:
- *               cvData:
+ *               email:
+ *                 type: string
+ *               vitals:
  *                 type: object
- *                 description: The CV data to save
+ *               experience:
+ *                 type: array
+ *               education:
+ *                 type: array
+ *               projects:
+ *                 type: array
+ *               skills:
+ *                 type: array
  *     responses:
  *       200:
  *         description: CV data saved successfully
- *       401:
- *         description: Unauthorized - Invalid or missing token
+ *       400:
+ *         description: Bad request
  *       500:
  *         description: Server error
  */
 router.post("/save", authMiddleware, saveCvData);
+
+/**
+ * @swagger
+ * /api/cv/upload:
+ *   post:
+ *     summary: Upload generated CV to Cloudinary
+ *     tags: [CV]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - vitals
+ *             properties:
+ *               vitals:
+ *                 type: object
+ *                 properties:
+ *                   email:
+ *                     type: string
+ *     responses:
+ *       200:
+ *         description: CV uploaded to Cloudinary successfully
+ *       400:
+ *         description: Email missing or invalid
+ *       500:
+ *         description: Server error
+ */
+router.post("/upload", authMiddleware, uploadCvOnly);
 
 /**
  * @swagger
@@ -82,17 +113,6 @@ router.post("/save", authMiddleware, saveCvData);
  *     responses:
  *       200:
  *         description: CV data retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 cvData:
- *                   type: object
- *       401:
- *         description: Unauthorized - Invalid or missing token
- *       404:
- *         description: No CV data found
  *       500:
  *         description: Server error
  */
