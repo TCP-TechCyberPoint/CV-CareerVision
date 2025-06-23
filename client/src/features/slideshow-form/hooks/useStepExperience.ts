@@ -9,8 +9,8 @@ const createEmptyExperience = (): Experience => ({
   id: crypto.randomUUID(),
   jobTitle: "",
   company: "",
-  startDate: new Date().toISOString().split("T")[0],
-  endDate: "",
+  startDate: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString().split("T")[0],
+  endDate: new Date().toISOString().split("T")[0],
   isCurrentJob: false,
   description: "",
 });

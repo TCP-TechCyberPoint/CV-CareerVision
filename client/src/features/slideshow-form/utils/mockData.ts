@@ -9,6 +9,7 @@ import type {
   Project,
   Preferences,
   Experience,
+  MilitaryService,
 } from "../types";
 
 export const vitalsData: Vitals = {
@@ -124,6 +125,14 @@ export const preferencesData: Preferences = {
   targetSalaryRange: "$150,000 - $200,000",
 };
 
+export const militaryServiceData: MilitaryService = {
+  militaryServiceStatus: "full_military",
+  serviceDuration: "3 years",
+  serviceDetails: "Served as a software engineer in the IDF, developing and maintaining critical systems. Led a team of 5 developers and implemented new features that improved system efficiency by 30%.",
+  degreeGroup: "officers",
+  degree: "captain",
+};
+
 export const calculateOverallCompletion = (formData?: SlideshowFormData) => {
   if (!formData) {
     const sections = [21, 22, 23, 24, 25, 26, 27];
@@ -142,6 +151,7 @@ export const calculateOverallCompletion = (formData?: SlideshowFormData) => {
     formData.experience?.length ? 100 : 0,
     formData.projects?.length ? 100 : 0,
     formData.preferences ? 100 : 0,
+    formData.military ? 100 : 0,
   ];
 
   const totalCompletion = sections.reduce(
@@ -168,4 +178,5 @@ export const mockData: SlideshowFormData = {
   experience: experienceData,
   projects: projectsData,
   preferences: preferencesData,
+  military: militaryServiceData,
 };

@@ -8,6 +8,7 @@ import {
   StepEducation,
   StepProjects,
   StepPreferences,
+  StepMilitary,
   StepEnd,
 } from "./steps";
 import { useSlideshowFormStore } from "./store";
@@ -17,6 +18,7 @@ import cvService, {
   type SectionName,
   type SectionData,
 } from "./services/cvService";
+import type { SlideshowFormData } from "./types";
 
 const slideComponents = {
   intro: StepIntro,
@@ -27,6 +29,7 @@ const slideComponents = {
   experience: StepExperience,
   projects: StepProjects,
   preferences: StepPreferences,
+  military: StepMilitary,
   end: StepEnd,
 };
 
@@ -43,7 +46,8 @@ const SlideshowForm = () => {
     
     // Save current step data before moving to next
     if (step !== "intro" && step !== "end") {
-      const sectionData = freshData[step as keyof typeof freshData];
+      const sectionData = freshData[step as keyof SlideshowFormData];
+      
       if (sectionData) {
         await cvService.saveSection(
           step as SectionName,

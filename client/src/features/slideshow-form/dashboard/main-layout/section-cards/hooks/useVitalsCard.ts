@@ -11,7 +11,7 @@ export const useVitalsCard = () => {
     navigate(getSectionStepPath("vitals"));
   };
 
-   // Function to calculate completion percentage based on filled fields
+  // Function to calculate completion percentage based on filled fields
   const calculateCompletion = () => {
     if (!vitalsData) return 0;
 
@@ -23,23 +23,24 @@ export const useVitalsCard = () => {
       vitalsData.country,
       vitalsData.city,
       vitalsData.street,
+      vitalsData.linkedin,
+      vitalsData.github,
     ];
 
-    const filledFields = requiredFields.filter(field => 
-      field !== undefined && field !== null && field !== ""
+    const filledFields = requiredFields.filter(
+      (field) => field !== undefined && field !== null && field !== ""
     ).length;
 
     return Math.round((filledFields / requiredFields.length) * 100);
   };
 
-  // Format full address
   const formatAddress = () => {
     if (!vitalsData) return "Not provided";
-    
+
     const parts = [
       vitalsData.street,
       vitalsData.city,
-      vitalsData.country
+      vitalsData.country,
     ].filter(Boolean);
     return parts.length > 0 ? parts.join(", ") : "Not provided";
   };
@@ -49,9 +50,8 @@ export const useVitalsCard = () => {
   return {
     vitalsData,
     handleClick,
-    
-      formatAddress,
+
+    formatAddress,
     completionPercentage,
-    
   };
-}; 
+};

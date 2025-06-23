@@ -6,6 +6,7 @@ import type {
   Preferences,
   HardSkill,
   SoftSkill,
+  MilitaryService,
 } from "../types/index";
 
 export interface SlideshowFormData {
@@ -16,4 +17,5 @@ export interface SlideshowFormData {
   experience: Experience[];
   projects: Project[];
   preferences: Preferences;
+  military: MilitaryService;
 }

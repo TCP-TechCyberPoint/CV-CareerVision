@@ -40,7 +40,6 @@ const register = async ({ name, email, password }: RegisterCredentials) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await createUser({ name, email, password: hashedPassword });
-
     return { status: 201, data: { user } };
   } catch (error: unknown) {
     if (error instanceof Error) {

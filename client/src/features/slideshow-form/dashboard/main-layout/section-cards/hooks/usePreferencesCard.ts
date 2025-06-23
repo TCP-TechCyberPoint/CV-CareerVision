@@ -11,7 +11,6 @@ export const usePreferencesCard = () => {
     navigate(getSectionStepPath("preferences"));
   };
 
-  // Calculate completion based on preferences data
   const calculateCompletion = () => {
     if (!preferencesData) return 0;
 
@@ -31,13 +30,7 @@ export const usePreferencesCard = () => {
     return Math.round((filledFields / requiredFields.length) * 100);
   };
 
-  // Get completion color based on percentage
-  const getCompletionColor = (percentage: number) => {
-    if (percentage >= 75) return "green";
-    if (percentage >= 50) return "blue";
-    if (percentage >= 25) return "orange";
-    return "red";
-  };
+
 
   // Process preferences data for display
   const processedData = {
@@ -57,7 +50,6 @@ export const usePreferencesCard = () => {
     preferencesData,
     processedData,
     handleClick,
-    getCompletionColor,
     completionPercentage,
   };
 };

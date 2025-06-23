@@ -34,14 +34,6 @@ export const useProjectsCard = () => {
     return totalFields > 0 ? Math.round((filledFields / totalFields) * 100) : 0;
   };
 
-  // Get completion color based on percentage
-  const getCompletionColor = (percentage: number) => {
-    if (percentage >= 75) return "green";
-    if (percentage >= 50) return "blue";
-    if (percentage >= 25) return "orange";
-    return "red";
-  };
-
   // Extract unique technologies from all projects
   const extractTechnologies = () => {
     if (!projectsData) return [];
@@ -69,7 +61,6 @@ export const useProjectsCard = () => {
     projectsData,
     processedData,
     handleClick,
-    getCompletionColor,
     completionPercentage,
   };
 };
