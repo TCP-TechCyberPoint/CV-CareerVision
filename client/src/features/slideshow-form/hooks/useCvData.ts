@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useSlideshowFormStore } from "../store";
-import { useAuth0Integration } from "@/hooks/useAuth0Integration";
+import { useAuth0Integration } from "@/auth/useAuth0Integration";
 import cvService from "../services/cvService";
 
 export const useCvData = () => {

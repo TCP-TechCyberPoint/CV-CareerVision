@@ -1,5 +1,5 @@
-import { useAuth0Integration } from "@/hooks/useAuth0Integration";
-import { useNavigate } from "react-router-dom";
+import { useAuth0Integration } from "@/auth/useAuth0Integration";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -7,19 +7,18 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import ProfileDropdown from "./ProfileDropdown";
-import BaseButton from "@/components/ui/BaseButton";
+import BaseButton from "@/components/shared/BaseButton";
 import { pages } from "@/constants/pages";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { logout, isAuthenticated, loginWithAuth0 } = useAuth0Integration();
+
+  const isLoginPage = location.pathname === "/login";
 
   const handleSignOut = () => {
     logout();
-  };
-
-  const handleRedirectEditProfile = () => {
-    navigate("/edit-profile");
   };
 
   const handleLogin = () => {
@@ -38,7 +37,7 @@ const Navbar = () => {
           <HStack gap={8} alignItems="center" flexDir="row-reverse">
             {isAuthenticated ? (
               <>
-                <ProfileDropdown onSignOut={handleSignOut} onRedirectEditProfile={handleRedirectEditProfile} />
+                <ProfileDropdown onSignOut={handleSignOut} />
                 {pages.map(({ label, path }) => (
                   <BaseButton
                     key={label}
@@ -51,6 +50,9 @@ const Navbar = () => {
                   </BaseButton>       
                 ))}
               </>
+            ) : isLoginPage ? (
+              // On login page, show nothing in the right side since login form is in the main content
+              <></>
             ) : (
               <BaseButton
                 variant="outline"

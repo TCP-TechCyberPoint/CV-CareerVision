@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSlideshowFormStore } from "@/features/slideshow-form/store/store";
-import { useAuth0Integration } from "@/hooks/useAuth0Integration";
+import { useAuth0Integration } from "@/auth/useAuth0Integration";
 
 const useAppInit = () => {
   const { isAuthenticated, isLoading: auth0IsLoading } = useAuth0Integration();

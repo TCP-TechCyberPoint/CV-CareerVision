@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth0Integration } from "@/hooks/useAuth0Integration";
+import { useAuth0Integration } from "@/auth/useAuth0Integration";
 import { cookieUtils } from "@/utils/cookie-utils";
 
 export const useTokenValidation = () => {

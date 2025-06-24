@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import type { User } from "@/utils/auth-types";
+import type { User } from "./types";
 import { cookieUtils } from "@/utils/cookie-utils";
 
 export const useAuth0Integration = () => {
@@ -14,6 +14,7 @@ export const useAuth0Integration = () => {
   } = useAuth0();
   
   const [user, setUser] = useState<User | null>(null);
+  const [isTokenLoading, setIsTokenLoading] = useState(false);
 
   // Sync Auth0 user with local state and cookies
   useEffect(() => {
@@ -28,20 +29,37 @@ export const useAuth0Integration = () => {
         email: auth0User.email || "",
       };
       
-      // Update local state
+      // Update local state immediately
       setUser(userData);
       
-      // Store in cookies
+      // Store user in cookies immediately
       cookieUtils.setUser(userData);
-      cookieUtils.setToken("authenticated");
       
       console.log("User authenticated and stored in cookies:", userData);
+      
+      // Get and store the actual access token asynchronously (non-blocking)
+      setIsTokenLoading(true);
+      getAccessTokenSilently({
+        authorizationParams: {
+          scope: "openid profile email",
+        }
+      }).then(token => {
+        if (token) {
+          cookieUtils.setToken(token);
+          console.log("Access token stored in cookies");
+        }
+      }).catch(error => {
+        console.error("Error getting access token for storage:", error);
+      }).finally(() => {
+        setIsTokenLoading(false);
+      });
+      
     } else if (!auth0IsAuthenticated) {
       // Clear local state and cookies
       setUser(null);
       cookieUtils.clearAll();
     }
-  }, [auth0IsAuthenticated, auth0User, isLoading]);
+  }, [auth0IsAuthenticated, auth0User, isLoading, getAccessTokenSilently]);
 
   // Initialize from cookies on mount (only once)
   useEffect(() => {
@@ -85,14 +103,24 @@ export const useAuth0Integration = () => {
 
   const getAccessToken = async (): Promise<string | null> => {
     try {
+      // First try to get from Auth0 if authenticated
       if (auth0IsAuthenticated) {
         const token = await getAccessTokenSilently({
           authorizationParams: {
             scope: "openid profile email",
           }
         });
+        // Update the stored token
+        if (token) {
+          cookieUtils.setToken(token);
+        }
         return token;
       } else {
+        // Try to get from cookies
+        const storedToken = cookieUtils.getToken();
+        if (storedToken && storedToken !== "authenticated") {
+          return storedToken;
+        }
         console.log("User is not authenticated with Auth0");
       }
       return null;
@@ -102,13 +130,16 @@ export const useAuth0Integration = () => {
     }
   };
 
-  // Determine if user is authenticated (Auth0 or cookies)
-  const isAuthenticated = auth0IsAuthenticated || (!!user && !!cookieUtils.getToken());
+  // Determine if user is authenticated (Auth0 or cookies with valid token)
+  const isAuthenticated = auth0IsAuthenticated || (!!user && !!cookieUtils.getToken() && cookieUtils.getToken() !== "authenticated");
+
+  // Combine loading states - only show loading if Auth0 is loading or we're getting initial token
+  const combinedLoading = isLoading || (auth0IsAuthenticated && isTokenLoading);
 
   return {
     isAuthenticated,
     user: auth0User || user,
-    isLoading,
+    isLoading: combinedLoading,
     loginWithAuth0,
     logout,
     getAccessToken
