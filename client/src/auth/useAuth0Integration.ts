@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import type { User } from "./types";
 import { cookieUtils } from "@/utils/cookie-utils";
+
+// Global timeout for Auth0 operations
+const AUTH0_TIMEOUT = 10000; // 10 seconds
 
 export const useAuth0Integration = () => {
   const { 
     isAuthenticated: auth0IsAuthenticated, 
     user: auth0User, 
-    isLoading,
+    isLoading: auth0IsLoading,
     getAccessTokenSilently,
     loginWithRedirect,
     logout: auth0Logout
@@ -15,10 +18,55 @@ export const useAuth0Integration = () => {
   
   const [user, setUser] = useState<User | null>(null);
   const [isTokenLoading, setIsTokenLoading] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [auth0Timeout, setAuth0Timeout] = useState(false);
+
+  // Initialize from cookies on mount (only once)
+  useEffect(() => {
+    const storedUser = cookieUtils.getUser();
+    const token = cookieUtils.getToken();
+    
+    if (storedUser && token && token !== "authenticated") {
+      setUser(storedUser);
+    }
+    
+    setIsInitialized(true);
+  }, []); // Empty dependency array - only run once
+
+  // Global timeout for Auth0 loading
+  useEffect(() => {
+    if (auth0IsLoading && !auth0Timeout) {
+      const timeout = setTimeout(() => {
+        console.warn("Auth0 loading timed out, proceeding with cached data");
+        setAuth0Timeout(true);
+      }, AUTH0_TIMEOUT);
+
+      return () => clearTimeout(timeout);
+    } else if (!auth0IsLoading) {
+      setAuth0Timeout(false);
+    }
+  }, [auth0IsLoading, auth0Timeout]);
+
+  // Optimized loading state calculation
+  const isLoading = useCallback(() => {
+    // If not initialized yet, show loading briefly
+    if (!isInitialized) return true;
+    
+    // If Auth0 timed out, don't show loading
+    if (auth0Timeout) return false;
+    
+    // If Auth0 is loading and we don't have cached user data, show loading
+    if (auth0IsLoading && !user) return true;
+    
+    // If we're getting a token for an authenticated user, show loading briefly
+    if (auth0IsAuthenticated && isTokenLoading) return true;
+    
+    return false;
+  }, [isInitialized, auth0IsLoading, user, auth0IsAuthenticated, isTokenLoading, auth0Timeout]);
 
   // Sync Auth0 user with local state and cookies
   useEffect(() => {
-    if (isLoading) {
+    if (!isInitialized || (auth0IsLoading && !auth0Timeout)) {
       return;
     }
 
@@ -32,45 +80,36 @@ export const useAuth0Integration = () => {
       // Update local state immediately
       setUser(userData);
       
-      // Store user in cookies immediately
       cookieUtils.setUser(userData);
-      
-      console.log("User authenticated and stored in cookies:", userData);
-      
-      // Get and store the actual access token asynchronously (non-blocking)
       setIsTokenLoading(true);
+      
+      // Add timeout to prevent hanging
+      const tokenTimeout = setTimeout(() => {
+        setIsTokenLoading(false);
+        console.warn("Token retrieval timed out");
+      }, 5000); // 5 second timeout
+      
       getAccessTokenSilently({
         authorizationParams: {
           scope: "openid profile email",
         }
       }).then(token => {
+        clearTimeout(tokenTimeout);
         if (token) {
           cookieUtils.setToken(token);
-          console.log("Access token stored in cookies");
         }
       }).catch(error => {
+        clearTimeout(tokenTimeout);
         console.error("Error getting access token for storage:", error);
       }).finally(() => {
         setIsTokenLoading(false);
       });
       
     } else if (!auth0IsAuthenticated) {
-      // Clear local state and cookies
       setUser(null);
       cookieUtils.clearAll();
     }
-  }, [auth0IsAuthenticated, auth0User, isLoading, getAccessTokenSilently]);
-
-  // Initialize from cookies on mount (only once)
-  useEffect(() => {
-    const storedUser = cookieUtils.getUser();
-    const token = cookieUtils.getToken();
-    
-    if (storedUser && token && !auth0IsAuthenticated) {
-      setUser(storedUser);
-      console.log("User loaded from cookies:", storedUser);
-    }
-  }, []); // Empty dependency array - only run once
+  }, [auth0IsAuthenticated, auth0User, auth0IsLoading, isInitialized, auth0Timeout, getAccessTokenSilently]);
 
   const loginWithAuth0 = async (returnTo?: string) => {
     try {
@@ -121,7 +160,6 @@ export const useAuth0Integration = () => {
         if (storedToken && storedToken !== "authenticated") {
           return storedToken;
         }
-        console.log("User is not authenticated with Auth0");
       }
       return null;
     } catch (error) {
@@ -133,13 +171,10 @@ export const useAuth0Integration = () => {
   // Determine if user is authenticated (Auth0 or cookies with valid token)
   const isAuthenticated = auth0IsAuthenticated || (!!user && !!cookieUtils.getToken() && cookieUtils.getToken() !== "authenticated");
 
-  // Combine loading states - only show loading if Auth0 is loading or we're getting initial token
-  const combinedLoading = isLoading || (auth0IsAuthenticated && isTokenLoading);
-
   return {
     isAuthenticated,
     user: auth0User || user,
-    isLoading: combinedLoading,
+    isLoading: isLoading(),
     loginWithAuth0,
     logout,
     getAccessToken

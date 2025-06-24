@@ -26,7 +26,6 @@ export const useCvData = () => {
 
     try {
       isFetchingRef.current = true;
-      console.log("Fetching CV data for authenticated user...");
       const cvData = await cvService.fetchCvData();
       if (cvData) {
         updateFormData(cvData);

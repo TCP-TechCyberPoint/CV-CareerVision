@@ -7,12 +7,8 @@ const useAppInit = () => {
   
   const initializationRef = useRef(false);
   const [loadingStep, setLoadingStep] = useState<string>("Initializing...");
-
-  // Get the function separately to avoid recreation on every render
-  const fetchInitialFormData = useSlideshowFormStore((state) => state.fetchInitialFormData);
   
-  // Get state values separately
-  const formDataIsLoading = useSlideshowFormStore((state) => state.isLoading);
+  const fetchInitialFormData = useSlideshowFormStore((state) => state.fetchInitialFormData);
   const formDataInitialized = useSlideshowFormStore((state) => state.initialized);
 
   useEffect(() => {
@@ -32,7 +28,7 @@ const useAppInit = () => {
       initializationRef.current = true;
       setLoadingStep("Loading your data...");
       fetchInitialFormData();
-    } else if (isAuthenticated && formDataInitialized) {
+    } else {
       setLoadingStep("Ready!");
     }
   }, [isAuthenticated, auth0IsLoading, formDataInitialized, fetchInitialFormData]);
@@ -45,15 +41,13 @@ const useAppInit = () => {
     }
   }, [isAuthenticated]);
 
-  // Calculate overall loading state
-  const isLoading = auth0IsLoading || (isAuthenticated && formDataIsLoading && !formDataInitialized);
+  // Calculate overall loading state - only show loading if Auth0 is loading AND user is not authenticated
+  const isLoading = auth0IsLoading && !isAuthenticated;
 
   return {
     isAuthenticated,
     isLoading,
-    loadingStep,
-    formDataIsLoading,
-    auth0IsLoading
+    loadingStep
   };
 };
 

@@ -32,7 +32,7 @@ const Login = () => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          minH="calc(100vh - 64px)"
+          minH="calc(100vh - 80px)"
         >
           <Text>Loading...</Text>
         </Box>
@@ -43,7 +43,7 @@ const Login = () => {
   return (
     <Box minH="100vh" bg={bgColor}>
       <Navbar />
-      <Box as="main" display="flex" alignItems="center" minH="calc(100vh - 64px)">
+      <Box as="main" display="flex" alignItems="center" minH="calc(100vh - 80px)">
         <Container maxW="container.sm">
           <VStack gap={8} textAlign="center">
             <VStack gap={4}>

@@ -1,5 +1,6 @@
 import { Auth0Provider } from "@auth0/auth0-react";
 import type { AppState } from "@auth0/auth0-react";
+import { Heading, Text } from "@chakra-ui/react";
 import type { PropsWithChildren } from "react";
 
 interface Auth0ProviderWithNavigateProps {
@@ -16,11 +17,11 @@ export const Auth0ProviderWithNavigate = ({
 
   if (!domain || !clientId) {
     return (
-      <div style={{ padding: '20px', textAlign: 'center' }}>
-        <h2>Configuration Error</h2>
-        <p>Auth0 environment variables are missing. Please check your .env file.</p>
-        <p>Required: VITE_AUTH0_DOMAIN, VITE_AUTH0_CLIENT_ID</p>
-      </div>
+      <Text p={4} textAlign="center">
+        <Heading as="h2" size="lg" mb={2}>Configuration Error</Heading>
+        <Text mb={2}>Auth0 environment variables are missing. Please check your .env file.</Text>
+        <Text>Required: VITE_AUTH0_DOMAIN, VITE_AUTH0_CLIENT_ID</Text>
+      </Text>
     );
   }
 
@@ -39,6 +40,8 @@ export const Auth0ProviderWithNavigate = ({
         scope: "openid profile email",
       }}
       onRedirectCallback={onRedirectCallback}
+      cacheLocation="localstorage"
+      useRefreshTokens={true}
     >
       {children}
     </Auth0Provider>
