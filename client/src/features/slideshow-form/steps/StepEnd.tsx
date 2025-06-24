@@ -16,11 +16,6 @@ const StepEnd = ({ prevStep }: StepEndProps) => {
   const [cvGenerated, setCvGenerated] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [cvGenerated, setCvGenerated] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-
-
   const handleGenerateCv = async () => {
     setIsGenerating(true);
     setCvGenerated(false);

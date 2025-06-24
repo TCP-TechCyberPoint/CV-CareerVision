@@ -51,11 +51,11 @@ const Home = () => {
       <Box as="main">
         
         {/* Hero Section */}
-        <Box bg={useColorModeValue("gray.50", "gray.900")} py={20}>
+        <Box bg={useColorModeValue("gray.50", "gray.900")} py={10}>
           <Container maxW="container.xl">
             <Stack align="center" textAlign="center" gap={8}>
               <Heading
-                fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
+                fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
                 fontWeight="bold"
               >
                 Your Career Journey
@@ -64,22 +64,17 @@ const Home = () => {
                   Starts Here
                 </Text>
               </Heading>
-              <Text
-                fontSize={{ base: "md", lg: "lg" }}
-                color="gray.600"
-                maxW="2xl"
-              >
-                Track your professional growth, set career goals, and visualize
-                your path to success. Start your journey towards a fulfilling
-                career today.
-              </Text>
+       
               <Stack direction={{ base: "column", md: "row" }} gap={4}>
                 <Button
                   size="lg"
                   colorScheme="blue"
                   px={8}
                   fontSize="md"
-                  rounded="full"
+                  borderLeftRadius="full"
+                  borderRightRadius="lg"
+                  bgColor="blue.700"
+                  color="white"
                   onClick={() => navigate("/create-cv")}
                 >
                   Get Started
@@ -87,10 +82,12 @@ const Home = () => {
                 <Button
                   size="lg"
                   colorScheme="blue"
-                  variant="outline"
                   px={8}
                   fontSize="md"
-                  rounded="full"
+                  borderLeftRadius="lg"
+                  borderRightRadius="full"
+                  bgColor="blue.700"
+                  color="white"
                   onClick={() => navigate("/dashboard")}
                 >
                   Dashboard
@@ -105,8 +102,12 @@ const Home = () => {
           <Container maxW="container.xl">
             <Stack gap={12}>
               <Stack align="center" textAlign="center" gap={4}>
-                <Heading>Why Choose Us</Heading>
-                <Text color="gray.600" maxW="2xl">
+                <Heading 
+                fontSize={{ base: "xl", md: "2xl", lg: "3xl" }}
+                fontWeight="bold"
+                color="whiteAlpha.900"
+                >Why Choose Us</Heading>
+                <Text color="whiteAlpha.900" maxW="2xl">
                   We provide the tools and insights you need to navigate your
                   career path effectively and achieve your professional goals.
                 </Text>
@@ -129,29 +130,6 @@ const Home = () => {
                   text="Connect with like-minded professionals and share experience."
                 />
               </SimpleGrid>
-            </Stack>
-          </Container>
-        </Box>
-
-        {/* CTA Section */}
-        <Box bg={useColorModeValue("blue.50", "blue.900")} py={20}>
-          <Container maxW="container.xl">
-            <Stack align="center" textAlign="center" gap={8}>
-              <Heading>Ready to Start Your Journey?</Heading>
-              <Text fontSize="lg" color="gray.600" maxW="2xl">
-                Join thousands of professionals who are already tracking their
-                career growth and achieving their goals.
-              </Text>
-              <Button
-                size="lg"
-                colorScheme="blue"
-                px={8}
-                fontSize="md"
-                rounded="full"
-                onClick={() => navigate("/create-cv")}
-              >
-                Sign Up Now
-              </Button>
             </Stack>
           </Container>
         </Box>

@@ -11,7 +11,21 @@ const ProfileDropdown = ({
   return (
     <Menu.Root>
       <Menu.Trigger asChild>
-        <BaseButton variant="outline" color="orange.500" colorScheme="orange">
+      <BaseButton
+                    key={"profile"}
+                    variant="outline"
+                    color="white"
+                    colorScheme="whiteAlpha.900"
+                    borderColor="whiteAlpha.900"
+                    fontWeight="bold"
+                    fontSize="lg"
+                    _hover={{
+                      bgColor: "whiteAlpha.900",
+                      color: "blue.700",
+                      borderColor: "whiteAlpha.900",
+                    }}
+                    
+                  >
           Profile
         </BaseButton>
       </Menu.Trigger>

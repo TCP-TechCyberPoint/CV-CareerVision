@@ -1,36 +1,14 @@
-import { Router, Request, Response } from "express";
-import { requireAuth } from "../middlewares/auth0.middleware";
+import { Router } from "express";
 import {
   generateCv,
   getCvData,
   saveCvData,
   uploadCvOnly,
 } from "../controllers/cvController";
-const router = Router();
+import { requireAuth } from "../middlewares/auth0.middleware";
+import { authMiddleware } from "../middlewares/auth.middleware";
 
-/**
- * @swagger
- * /api/cv/me:
- *   get:
- *     summary: Get current user info
- *     tags: [CV]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: User info retrieved successfully
- *       401:
- *         description: Unauthorized - Invalid or missing token
- *       500:
- *         description: Server error
- */
-router.get("/me", requireAuth, (req: Request, res: Response) => {
-  res.json({
-    message: "User authenticated successfully",
-    email: req.body.email,
-    auth: req.auth,
-  });
-});
+const router = Router();
 
 /**
  * @swagger
@@ -92,53 +70,6 @@ router.post("/generate", requireAuth, generateCv);
  *         description: Server error
  */
 router.post("/save", requireAuth, saveCvData);
-
-/**
- * @swagger
- * /api/cv/upload:
- *   post:
- *     summary: Upload generated CV to Cloudinary
- *     tags: [CV]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - vitals
- *             properties:
- *               vitals:
- *                 type: object
- *                 properties:
- *                   email:
- *                     type: string
- *     responses:
- *       200:
- *         description: CV uploaded to Cloudinary successfully
- *       400:
- *         description: Email missing or invalid
- *       500:
- *         description: Server error
- */
-router.post("/upload", authMiddleware, uploadCvOnly);
-
-/**
- * @swagger
- * /api/cv/get:
- *   get:
- *     summary: Get saved CV data
- *     tags: [CV]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: CV data retrieved successfully
- *       500:
- *         description: Server error
- */
 
 /**
  * @swagger

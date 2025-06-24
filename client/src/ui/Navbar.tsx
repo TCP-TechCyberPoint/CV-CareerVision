@@ -26,7 +26,7 @@ const Navbar = () => {
   };
 
   return (
-    <Box bg="gray.800" px={4} position="relative">
+    <Box bg="linear-gradient(157deg,rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);" px={4} position="relative">
       <Flex
         h={16}
         alignItems="center"
@@ -42,8 +42,16 @@ const Navbar = () => {
                   <BaseButton
                     key={label}
                     variant="outline"
-                    color="orange.500"
-                    colorScheme="orange"
+                    color="white"
+                    colorScheme="whiteAlpha.900"
+                    borderColor="whiteAlpha.900"
+                    fontWeight="bold"
+                    fontSize="lg"
+                    _hover={{
+                      bgColor: "whiteAlpha.900",
+                      color: "blue.700",
+                      borderColor: "whiteAlpha.900",
+                    }}
                     onClick={() => navigate(path)}
                   >
                     {label}

@@ -15,6 +15,9 @@ type ButtonProps = {
   _hover?: object;
   transition?: string;
   disabled?: boolean;
+  borderColor?: string;
+  fontSize?: string;
+  fontWeight?: string;
 };
 
 const BaseButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {

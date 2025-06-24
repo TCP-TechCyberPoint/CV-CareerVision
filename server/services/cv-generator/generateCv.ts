@@ -18,24 +18,20 @@ dotenv.config();
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
 
-
 export const uploadBufferToCloudinary = (buffer: Buffer, filename: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         public_id: filename,
         resource_type: "raw",
-
-        overwrite: true,           
-        unique_filename: false,    
+        overwrite: true,
+        unique_filename: false,
       },
       (error, result) => {
         if (error) reject(error);
         else resolve(result);
       }
     );
-
-
     streamifier.createReadStream(buffer).pipe(uploadStream);
   });
 };
@@ -46,13 +42,8 @@ export const generateCvDocx = async (req: Request, res: Response) => {
     const buffer = await generateCvBufferOnly(formData);
     const email = formData?.vitals?.email || "unknown";
     const publicId = `cv_${email.replace(/[^a-zA-Z0-9]/g, "_")}`;
-
     await uploadBufferToCloudinary(buffer, publicId);
-
-    res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    );
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     res.setHeader("Content-Disposition", "attachment; filename=cv.docx");
     res.send(buffer);
   } catch (err: any) {
@@ -63,10 +54,8 @@ export const generateCvDocx = async (req: Request, res: Response) => {
 
 export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
   const prompt = buildGeminiPrompt(formData);
-
   let content: any;
 
-  // Try OpenRouter
   try {
     const openrouterRes = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
@@ -84,7 +73,6 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
 
     let text = openrouterRes.data?.choices?.[0]?.message?.content?.trim();
     if (!text) throw new Error("Empty OpenRouter response");
-
     const jsonMatch = text.match(/```json\n([\s\S]*?)\n```/);
     const jsonString = jsonMatch ? jsonMatch[1].trim() : text;
     content = JSON.parse(jsonString);
@@ -98,9 +86,25 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
 
     let text = geminiRes.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
     if (!text) throw new Error("Empty Gemini response");
-
     text = text.replace(/^```json/, "").replace(/```$/, "").trim();
     content = JSON.parse(text);
+  }
+
+  // ✅ Truncate experience to 3 entries, with military fallback
+  if (Array.isArray(content.experience)) {
+    const professional = content.experience.filter((e: any) => e.startYear && e.endYear);
+    const military = content.experience.filter((e: any) => !e.startYear && !e.endYear);
+    const trimmedExperience = professional.slice(0, 3);
+    const remainingSlots = 3 - trimmedExperience.length;
+    if (remainingSlots > 0) {
+      trimmedExperience.push(...military.slice(0, remainingSlots));
+    }
+    content.experience = trimmedExperience;
+  }
+
+  // ✅ Truncate projects to 3
+  if (Array.isArray(content.projects)) {
+    content.projects = content.projects.slice(0, 3);
   }
 
   const sectionChildren: Paragraph[] = [];
@@ -191,7 +195,6 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
     })
   );
 
-
   addLine();
 
   addSectionHeading("SUMMARY");
@@ -201,7 +204,7 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
   addSectionHeading("WORK EXPERIENCE");
   for (const exp of content.experience || []) {
     sectionChildren.push(
-      spacedParagraph(`${exp.company} | ${exp.title} (${exp.startYear} – ${exp.endYear})`)
+      spacedParagraph(`${exp.company} | ${exp.title} (${exp.startYear || ""} – ${exp.endYear || ""})`)
     );
     for (const bullet of exp.bullets || []) {
       sectionChildren.push(spacedParagraph(bullet, true));
@@ -217,7 +220,6 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
     for (const bullet of proj.description || []) {
       sectionChildren.push(spacedParagraph(bullet, true));
     }
-
     for (const tech of proj.technologies || []) {
       allProjectTechs.add(tech.toLowerCase());
     }
@@ -228,14 +230,12 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
   addSectionHeading("EDUCATION");
   for (const edu of content.education || []) {
     sectionChildren.push(
-      spacedParagraph(
-
-        `${edu.degree}, ${edu.field} | ${edu.institution} (${edu.graduationYear || edu.year})`
-      )
+      spacedParagraph(`${edu.degree}, ${edu.field} | ${edu.institution} (${edu.graduationYear || edu.year})`)
     );
   }
 
   addLine();
+
   addSectionHeading("SKILLS");
   const baseSkills = content.skills || [];
   const listedSkills = new Set(baseSkills.map((s: string) => s.toLowerCase()));
@@ -251,5 +251,4 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
 
   const doc = new Document({ sections: [{ children: sectionChildren }] });
   return await Packer.toBuffer(doc);
-
 };
