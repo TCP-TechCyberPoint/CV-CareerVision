@@ -8,6 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@slideshow-form": path.resolve(__dirname, "./src/features/slideshow-form"),
     },
   },
 });

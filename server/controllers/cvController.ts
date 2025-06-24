@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { generateCvDocx } from "../services/cv-generator/generateCv";
 import { getUserCv, updateUserCv, findByEmail } from "../repositories/userRepository";
+import { generateCvDocx, generateCvBufferOnly, uploadBufferToCloudinary } from "../services/cv-generator/generateCv";
+
 import { ICv } from "../models/types";
 
 export const generateCv = generateCvDocx;
@@ -77,5 +78,21 @@ export const saveCvData = async (req: Request, res: Response) => {
       error: "Failed to save CV data",
       details: error instanceof Error ? error.message : "Unknown error",
     });
+  }
+};
+
+export const uploadCvOnly = async (req: Request, res: Response) => {
+  try {
+    const formData = req.body;
+    const email = formData?.vitals?.email;
+    if (!email) return res.status(400).json({ error: "Email is required" });
+
+    const buffer = await generateCvBufferOnly(formData);
+    const publicId = `cv_${email.replace(/[^a-zA-Z0-9]/g, "_")}`;
+    const result = await uploadBufferToCloudinary(buffer, publicId);
+
+    res.status(200).json({ message: "Uploaded to Cloudinary", url: result.secure_url });
+  } catch (err: any) {
+    res.status(500).json({ error: "Failed to upload CV" });
   }
 };
