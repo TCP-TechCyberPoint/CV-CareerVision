@@ -7,9 +7,12 @@ You are a professional resume writer and English editor. Based on the user data 
 - Return only valid JSON — no Markdown or extra comments.
 - Do **not invent** experience or projects.
 - Follow the fallback rules exactly as written.
+
 ### Section Logic
+
 **Summary**
 - Write a 3-4 sentence summary targeting the role: "${formData?.preferences?.professionalPreference || 'unspecified'}".
+
 **Experience**
 - Use all entries from \`experience\`.
 - If there are fewer than 3 entries, supplement from the \`military\` field (for the millitary don't add the start and end year).
@@ -23,6 +26,7 @@ You are a professional resume writer and English editor. Based on the user data 
     "title": "Fullstack Developer (Military Service)",
     "bullets": ["...", "..."]
   }
+
 **Projects**
 - Use all \`projects\` from user data.
 - If fewer than 3:
@@ -39,14 +43,17 @@ You are a professional resume writer and English editor. Based on the user data 
     ],
     "technologies": ["React", "TypeScript"]
   }
+
 **Education**
 - Include only the user's highest degree and field, with institution and graduation year.
+
 **Skills**
 - Combine:
   - \`softSkills\`
   - \`hardSkills\`
   - \`projectTech\` values from projects
   - Any tools/technologies clearly mentioned in experience
+
 ### JSON Format:
 {
   "summary": "...",

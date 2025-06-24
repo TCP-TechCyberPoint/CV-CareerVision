@@ -12,6 +12,9 @@ interface StepEndProps {
 
 const StepEnd = ({ prevStep }: StepEndProps) => {
   const formData = useSlideshowFormStore((state) => state.formData);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [cvGenerated, setCvGenerated] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [cvGenerated, setCvGenerated] = useState(false);
@@ -21,15 +24,16 @@ const StepEnd = ({ prevStep }: StepEndProps) => {
   const handleGenerateCv = async () => {
     setIsGenerating(true);
     setCvGenerated(false);
+
     try {
       const response = await axiosInstance.post("/api/cv/generate", formData, {
         responseType: "blob",
       });
-  
+
       const blob = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       });
-  
+
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;

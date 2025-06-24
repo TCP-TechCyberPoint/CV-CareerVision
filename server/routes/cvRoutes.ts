@@ -95,6 +95,38 @@ router.post("/save", requireAuth, saveCvData);
 
 /**
  * @swagger
+ * /api/cv/upload:
+ *   post:
+ *     summary: Upload generated CV to Cloudinary
+ *     tags: [CV]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - vitals
+ *             properties:
+ *               vitals:
+ *                 type: object
+ *                 properties:
+ *                   email:
+ *                     type: string
+ *     responses:
+ *       200:
+ *         description: CV uploaded to Cloudinary successfully
+ *       400:
+ *         description: Email missing or invalid
+ *       500:
+ *         description: Server error
+ */
+router.post("/upload", authMiddleware, uploadCvOnly);
+
+/**
+ * @swagger
  * /api/cv/get:
  *   get:
  *     summary: Get saved CV data
@@ -104,17 +136,6 @@ router.post("/save", requireAuth, saveCvData);
  *     responses:
  *       200:
  *         description: CV data retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 cvData:
- *                   type: object
- *       401:
- *         description: Unauthorized - Invalid or missing token
- *       404:
- *         description: No CV data found
  *       500:
  *         description: Server error
  */
