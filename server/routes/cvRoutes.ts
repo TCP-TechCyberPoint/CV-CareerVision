@@ -1,13 +1,36 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
+import { requireAuth } from "../middlewares/auth0.middleware";
 import {
   generateCv,
   getCvData,
   saveCvData,
   uploadCvOnly,
 } from "../controllers/cvController";
-import { authMiddleware } from "../middlewares/auth.middleware";
-
 const router = Router();
+
+/**
+ * @swagger
+ * /api/cv/me:
+ *   get:
+ *     summary: Get current user info
+ *     tags: [CV]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User info retrieved successfully
+ *       401:
+ *         description: Unauthorized - Invalid or missing token
+ *       500:
+ *         description: Server error
+ */
+router.get("/me", requireAuth, (req: Request, res: Response) => {
+  res.json({
+    message: "User authenticated successfully",
+    email: req.body.email,
+    auth: req.auth,
+  });
+});
 
 /**
  * @swagger
@@ -29,7 +52,7 @@ const router = Router();
  *       500:
  *         description: Server error
  */
-router.post("/generate", authMiddleware, generateCv);
+router.post("/generate", requireAuth, generateCv);
 
 /**
  * @swagger
@@ -68,7 +91,7 @@ router.post("/generate", authMiddleware, generateCv);
  *       500:
  *         description: Server error
  */
-router.post("/save", authMiddleware, saveCvData);
+router.post("/save", requireAuth, saveCvData);
 
 /**
  * @swagger
@@ -116,6 +139,53 @@ router.post("/upload", authMiddleware, uploadCvOnly);
  *       500:
  *         description: Server error
  */
-router.get("/get", authMiddleware, getCvData);
+
+/**
+ * @swagger
+ * /api/cv/upload:
+ *   post:
+ *     summary: Upload generated CV to Cloudinary
+ *     tags: [CV]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - vitals
+ *             properties:
+ *               vitals:
+ *                 type: object
+ *                 properties:
+ *                   email:
+ *                     type: string
+ *     responses:
+ *       200:
+ *         description: CV uploaded to Cloudinary successfully
+ *       400:
+ *         description: Email missing or invalid
+ *       500:
+ *         description: Server error
+ */
+router.post("/upload", requireAuth, uploadCvOnly);
+
+/**
+ * @swagger
+ * /api/cv/get:
+ *   get:
+ *     summary: Get saved CV data
+ *     tags: [CV]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: CV data retrieved successfully
+ *       500:
+ *         description: Server error
+ */
+router.get("/get", requireAuth, getCvData);
 
 export default router;

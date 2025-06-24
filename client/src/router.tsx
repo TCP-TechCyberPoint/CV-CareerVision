@@ -1,45 +1,42 @@
-import { createBrowserRouter } from "react-router-dom";
-import { Home, About, LoginPage, RegisterPage, EditProfilePage } from "@/pages";
-import MainLayout from "@/components/layout/MainLayout";
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import { Home, About, Login } from "@/ui";
 import { slideshowRoutes } from "./features/slideshow-form/routes/slideshowRoutes";
-import { LinkedInCallback } from "react-linkedin-login-oauth2";
+import { ProtectedRoute } from "@/auth/ProtectedRoute";
+
+// Component to handle root route based on authentication
+const RootRedirect = () => {
+  // This will be handled by the ProtectedRoute component
+  // which will redirect unauthenticated users to login
+  return <Navigate to="/home" replace />;
+};
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <ProtectedRoute>
-        <MainLayout />
-      </ProtectedRoute>
-    ),
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/about",
-        element: <About />,
-      },
-      {
-        path: "/edit-profile",
-        element: <EditProfilePage />,
-      },
-      // Import all slideshow-form routes
-      ...slideshowRoutes,
-    ],
+    element: <RootRedirect />,
   },
   {
     path: "/login",
-    element: <LoginPage />,
+    element: <Login />,
   },
   {
-    path: "/register",
-    element: <RegisterPage />,
+    path: "/home",
+    element: (
+      <ProtectedRoute>
+        <Home />
+      </ProtectedRoute>
+    ),
   },
   {
-    path: "/linkedin",
-    element: <LinkedInCallback />,
+    path: "/about",
+    element: (
+      <ProtectedRoute>
+        <About />
+      </ProtectedRoute>
+    ),
   },
+  ...slideshowRoutes.map(route => ({
+    ...route,
+    element: <ProtectedRoute>{route.element}</ProtectedRoute>
+  })),
 ]);

@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
 import * as AuthService from "../services/authService";
-import axios from "axios";
-import { getAccessToken } from "../services/cv-generator/getAccessToken";
 
 type AuthResponse = {
   status: number;
@@ -38,29 +36,37 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const linkedinLogin = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const { code } = req.body;
+export const getToken = async (req: Request, res: Response): Promise<void> => {
   try {
-    const accessToken = await getAccessToken(code);
-    const user = await axios.get("https://api.linkedin.com/v2/userinfo", {
-      headers: { Authorization: `Bearer ${accessToken}` },
+    const response = await fetch('https://dev-6jktmbydkkywgiti.us.auth0.com/oauth/token', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        "client_id": process.env.AUTH0_CLIENT_ID,
+        "client_secret": process.env.AUTH0_CLIENT_SECRET,
+        "audience": "https://dev-6jktmbydkkywgiti.us.auth0.com/api/v2/",
+        "grant_type": "client_credentials"
+      }),
     });
-    const result = await AuthService.linkedinAuth(user.data);
-    res.status(result.status).json(result.data);
-  } catch (err: any) {
-    if (axios.isAxiosError(err)) {
-      console.error("LinkedIn auth Axios error:", {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status,
-      });
-    } else {
-      console.error("LinkedIn auth unknown error:", err);
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
 
-    res.status(500).json({ error: "LinkedIn login failed" });
+    const data = await response.json();
+    console.log(data);
+    
+    res.status(200).json({
+      success: true,
+      message: "Token fetched successfully",
+      data: data
+    });
+  } catch (error) {
+    console.error('Error fetching token:', error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch token",
+      error: error instanceof Error ? error.message : "Unknown error"
+    });
   }
 };

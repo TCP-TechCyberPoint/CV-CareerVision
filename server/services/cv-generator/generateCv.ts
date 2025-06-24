@@ -15,9 +15,9 @@ import cloudinary from "../../utils/cloudinary";
 import streamifier from "streamifier";
 
 dotenv.config();
-
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
+
 
 export const uploadBufferToCloudinary = (buffer: Buffer, filename: string): Promise<any> => {
   return new Promise((resolve, reject) => {
@@ -25,6 +25,7 @@ export const uploadBufferToCloudinary = (buffer: Buffer, filename: string): Prom
       {
         public_id: filename,
         resource_type: "raw",
+
         overwrite: true,           
         unique_filename: false,    
       },
@@ -34,6 +35,7 @@ export const uploadBufferToCloudinary = (buffer: Buffer, filename: string): Prom
       }
     );
 
+
     streamifier.createReadStream(buffer).pipe(uploadStream);
   });
 };
@@ -42,7 +44,6 @@ export const generateCvDocx = async (req: Request, res: Response) => {
   try {
     const formData = req.body;
     const buffer = await generateCvBufferOnly(formData);
-
     const email = formData?.vitals?.email || "unknown";
     const publicId = `cv_${email.replace(/[^a-zA-Z0-9]/g, "_")}`;
 
@@ -89,7 +90,6 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
     content = JSON.parse(jsonString);
   } catch (err) {
     console.warn("⚠️ OpenRouter failed, falling back to Gemini");
-
     const geminiRes = await axios.post(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
       { contents: [{ parts: [{ text: prompt }] }] },
@@ -191,6 +191,7 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
     })
   );
 
+
   addLine();
 
   addSectionHeading("SUMMARY");
@@ -228,13 +229,13 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
   for (const edu of content.education || []) {
     sectionChildren.push(
       spacedParagraph(
+
         `${edu.degree}, ${edu.field} | ${edu.institution} (${edu.graduationYear || edu.year})`
       )
     );
   }
 
   addLine();
-
   addSectionHeading("SKILLS");
   const baseSkills = content.skills || [];
   const listedSkills = new Set(baseSkills.map((s: string) => s.toLowerCase()));
@@ -250,4 +251,5 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
 
   const doc = new Document({ sections: [{ children: sectionChildren }] });
   return await Packer.toBuffer(doc);
+
 };

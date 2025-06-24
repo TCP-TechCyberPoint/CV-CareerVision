@@ -1,17 +1,24 @@
-import { Outlet, RouterProvider } from "react-router-dom";
-import { router } from "./router";
-import ErrorBoundary from "./components/shared/ErrorBoundary";
 import useAppInit from "./hooks/useAppInit";
+import Loading from "./components/shared/Loading";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
+import { useAuth0Integration } from "@/auth/useAuth0Integration";
+import { setTokenGetter } from "./auth/api";
+import { useEffect } from "react";
 
 function App() {
-  useAppInit();
-  return (
-    // show details in development mode only
-    <ErrorBoundary showDetails={import.meta.env.DEV}>
-      <RouterProvider router={router} />
-      <Outlet />
-    </ErrorBoundary>
-  );
+  const { getAccessToken } = useAuth0Integration();
+  const { isLoading, loadingStep } = useAppInit();
+
+  useEffect(() => {
+    setTokenGetter(getAccessToken);
+  }, []);
+
+  if (isLoading) {
+    return <Loading message={loadingStep} />;
+  }
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;

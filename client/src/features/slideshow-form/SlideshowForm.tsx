@@ -19,6 +19,8 @@ import cvService, {
   type SectionData,
 } from "./services/cvService";
 import type { SlideshowFormData } from "./types";
+import Navbar from "@/ui/Navbar";
+import { Box } from "@chakra-ui/react";
 
 const slideComponents = {
   intro: StepIntro,
@@ -68,9 +70,14 @@ const SlideshowForm = () => {
   const Component = slideComponents[step] || (() => <div>Step not found</div>);
 
   return (
-    <CriticalErrorBoundary>
-      <Component nextStep={nextStep} prevStep={prevStep} />
-    </CriticalErrorBoundary>
+    <Box minH="100vh">
+      <Navbar />
+      <Box as="main" minH="calc(100vh - 64px)">
+        <CriticalErrorBoundary>
+          <Component nextStep={nextStep} prevStep={prevStep} />
+        </CriticalErrorBoundary>
+      </Box>
+    </Box>
   );
 };
 

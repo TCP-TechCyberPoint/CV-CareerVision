@@ -52,3 +52,31 @@ export default tseslint.config({
   },
 })
 ```
+
+# Career Vision Client
+
+## Auth0 Setup
+
+To use Auth0 authentication, you need to set up the following environment variables in your `.env` file:
+
+```env
+VITE_AUTH0_DOMAIN=your-domain.auth0.com
+VITE_AUTH0_CLIENT_ID=your-client-id
+VITE_AUTH0_AUDIENCE=your-api-identifier
+```
+
+### How to get these values:
+
+1. **Create an Auth0 account** at [auth0.com](https://auth0.com)
+2. **Create a new application** in your Auth0 dashboard
+3. **Set the application type** to "Single Page Application"
+4. **Configure the callback URLs** to include `http://localhost:5173` (or your dev server URL)
+5. **Copy the Domain and Client ID** from your application settings
+6. **Set the Audience** to your API identifier (if you have an API configured)
+
+## Features
+
+- Auth0 authentication integration
+- Protected routes
+- User profile management
+- Form data persistence

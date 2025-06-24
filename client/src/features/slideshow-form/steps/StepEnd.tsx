@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import BaseButton from "@/components/ui/BaseButton";
+import BaseButton from "@/components/shared/BaseButton";
 import { Box, Text, Stack } from "@chakra-ui/react";
-import { useSlideshowFormStore } from "@slideshow-form/store/store";
+import { useSlideshowFormStore } from "../store";
 import ReturnDashboard from "../components/ReturnDashboard";
-import axiosInstance from "@/api/axios-instance";
+import axiosInstance from "@/auth/api";
+import { useState } from "react";
 
 interface StepEndProps {
   nextStep: () => void;
@@ -15,6 +15,11 @@ const StepEnd = ({ prevStep }: StepEndProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [cvGenerated, setCvGenerated] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [cvGenerated, setCvGenerated] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
 
   const handleGenerateCv = async () => {
     setIsGenerating(true);

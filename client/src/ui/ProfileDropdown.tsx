@@ -1,15 +1,12 @@
 import { Menu, Portal } from "@chakra-ui/react";
-import BaseButton from "../ui/BaseButton";
-
+import BaseButton from "@/components/shared/BaseButton";
 
 type ProfileDropdownProps = {
   onSignOut: () => void;
-  onRedirectEditProfile: () => void;
 };
 
 const ProfileDropdown = ({
   onSignOut,
-  onRedirectEditProfile,
 }: ProfileDropdownProps) => {
   return (
     <Menu.Root>
@@ -21,9 +18,6 @@ const ProfileDropdown = ({
       <Portal>
         <Menu.Positioner>
           <Menu.Content>
-            <Menu.Item value="edit-profile" onClick={onRedirectEditProfile}>
-              Edit Profile
-            </Menu.Item>
             <Menu.Item value="sign-out" onClick={onSignOut}>
               Sign Out
             </Menu.Item>

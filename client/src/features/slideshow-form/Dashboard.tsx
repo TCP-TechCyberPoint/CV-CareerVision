@@ -12,13 +12,15 @@ import {
   MilitaryCard,
 } from "./dashboard/main-layout/section-cards";
 import { useSlideshowFormStore } from "./store";
+import Navbar from "@/ui/Navbar";
 
 const Dashboard = () => {
   const formData = useSlideshowFormStore((state) => state.formData);
 
   return (
-    <>
-      <Flex minH="100vh" bg={{ base: "gray.50", _dark: "gray.900" }}>
+    <Box minH="100vh">
+      <Navbar />
+      <Flex minH="calc(100vh - 64px)" bg={{ base: "gray.50", _dark: "gray.900" }}>
         {/* Sidebar Navigation */}
         <SidebarNavigation />
 
@@ -56,7 +58,7 @@ const Dashboard = () => {
           </Container>
         </Box>
       </Flex>
-    </>
+    </Box>
   );
 };
 

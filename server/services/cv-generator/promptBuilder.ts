@@ -1,7 +1,6 @@
 export const buildGeminiPrompt = (formData: any): string => {
   return `
 You are a professional resume writer and English editor. Based on the user data below, generate a clean, professional CV in valid JSON format.
-
 ### Requirements:
 - The final CV **must fit on a single A4 page**.
 - Use fluent, professional English. Correct all spelling, grammar, and formatting.
@@ -89,7 +88,6 @@ You are a professional resume writer and English editor. Based on the user data 
   ],
   "skills": ["..."]
 }
-
 ### User Data:
 ${JSON.stringify(formData, null, 2)}
 `.trim();

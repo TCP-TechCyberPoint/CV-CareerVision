@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { useAuthStore } from "@/store/auth/store";
+import { useAuth0Integration } from "@/auth/useAuth0Integration";
 import { cookieUtils } from "@/utils/cookie-utils";
 
 export const useTokenValidation = () => {
-  const { isAuthenticated, isLoading } = useAuthStore();
+  const { isAuthenticated, isLoading } = useAuth0Integration();
   const [isTokenValid, setIsTokenValid] = useState<boolean | null>(null);
   const [hasChecked, setHasChecked] = useState(false);
 
   useEffect(() => {
-    // If auth store is still loading, wait
+    // If auth is still loading, wait
     if (isLoading) {
       setIsTokenValid(null);
       return;
@@ -26,7 +26,7 @@ export const useTokenValidation = () => {
       return;
     }
 
-    // If auth store says we're authenticated and we have a token, assume it's valid
+    // If we're authenticated and we have a token, assume it's valid
     if (isAuthenticated && token) {
       setIsTokenValid(true);
       setHasChecked(true);
@@ -42,7 +42,8 @@ export const useTokenValidation = () => {
 
     setIsTokenValid(false);
     setHasChecked(true);
-  }, [isAuthenticated, isLoading, hasChecked, isTokenValid]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, isLoading, hasChecked]);
 
   return { isTokenValid, isAuthenticated };
 };

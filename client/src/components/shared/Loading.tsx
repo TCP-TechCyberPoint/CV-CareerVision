@@ -1,6 +1,10 @@
 import { Box, Spinner, Text, VStack } from "@chakra-ui/react";
 
-const Loading = () => {
+interface LoadingProps {
+  message?: string;
+}
+
+const Loading = ({ message = "Loading..." }: LoadingProps) => {
   return (
     <Box
       display="flex"
@@ -9,15 +13,17 @@ const Loading = () => {
       minH="100vh"
       bg="gray.50"
     >
-      <VStack gap={4}>
+      <VStack gap={4} maxW="400px" px={6}>
         <Spinner
-          borderWidth="4px"
           size="xl"
           color="blue.500"
         />
-        <Text color="gray.500" fontSize="lg">
-          Loading...
-        </Text>
+        
+        <VStack gap={2} textAlign="center">
+          <Text color="gray.700" fontSize="lg" fontWeight="medium">
+            {message}
+          </Text>
+        </VStack>
       </VStack>
     </Box>
   );
