@@ -12,7 +12,7 @@ function App() {
 
   useEffect(() => {
     setTokenGetter(getAccessToken);
-  }, []);
+  }, [getAccessToken]);
 
   if (isLoading) {
     return <Loading message={loadingStep} />;

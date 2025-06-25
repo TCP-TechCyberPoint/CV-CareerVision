@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -6,27 +7,29 @@ import {
   Text,
   Button,
   Image,
+  Spinner,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
 import { useAuth0Integration } from "@/auth/useAuth0Integration";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import Navbar from "./Navbar";
 import logo from "@/assets/images/career-vision-logo.png";
 
 const Login = () => {
-  const { isAuthenticated, isLoading, loginWithAuth0 } = useAuth0Integration();
-  const navigate = useNavigate();
+  const { isLoading, loginWithAuth0 } = useAuth0Integration();
   const bgColor = useColorModeValue("gray.50", "gray.900");
+  const [shouldRender, setShouldRender] = useState(false);
 
-  // Redirect to home if already authenticated
+  // Add a small delay to prevent race conditions
   useEffect(() => {
-    if (isAuthenticated && !isLoading) {
-      navigate("/home", { replace: true });
-    }
-  }, [isAuthenticated, isLoading, navigate]);
+    const timer = setTimeout(() => {
+      setShouldRender(true);
+    }, 100); // 100ms delay
 
-  if (isLoading) {
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Show loading spinner while Auth0 is initializing or during delay
+  if (isLoading || !shouldRender) {
     return (
       <Box minH="100vh" bg={bgColor}>
         <Navbar />
@@ -36,7 +39,7 @@ const Login = () => {
           alignItems="center"
           minH="calc(100vh - 80px)"
         >
-          <Text>Loading...</Text>
+          <Spinner size="xl" color="blue.300" />
         </Box>
       </Box>
     );

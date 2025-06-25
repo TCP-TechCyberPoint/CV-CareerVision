@@ -8,6 +8,7 @@ export const generateCv = generateCvDocx;
 export const getCvData = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
+    console.log(email, "email");
     if (!email) return res.status(400).json({ error: "Email is required" });
 
     const cv = await getUserCv(email);

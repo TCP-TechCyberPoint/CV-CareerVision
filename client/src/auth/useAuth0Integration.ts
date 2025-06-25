@@ -4,7 +4,7 @@ import type { User } from "./types";
 import { cookieUtils } from "@/utils/cookie-utils";
 
 // Global timeout for Auth0 operations
-const AUTH0_TIMEOUT = 10000; // 10 seconds
+
 
 export const useAuth0Integration = () => {
   const { 
@@ -20,26 +20,37 @@ export const useAuth0Integration = () => {
   const [isTokenLoading, setIsTokenLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [auth0Timeout, setAuth0Timeout] = useState(false);
+  const [hasValidToken, setHasValidToken] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
 
-  // Initialize from cookies on mount (only once)
+  // Mark component as mounted
   useEffect(() => {
-    const storedUser = cookieUtils.getUser();
-    const token = cookieUtils.getToken();
+    setHasMounted(true);
+  }, []);
+
+  // Check for existing token on mount to optimize loading state
+  useEffect(() => {
+    if (!hasMounted) {
+      return;
+    }
+
+    const existingToken = cookieUtils.getToken();
+    const existingUser = cookieUtils.getUser();
     
-    if (storedUser && token && token !== "authenticated") {
-      setUser(storedUser);
+    if (existingToken && existingUser) {
+      setHasValidToken(true);
+      setUser(existingUser);
     }
     
     setIsInitialized(true);
-  }, []); // Empty dependency array - only run once
+  }, [hasMounted]); // Run when component mounts
 
-  // Global timeout for Auth0 loading
+  // Increased timeout for Auth0 loading to give more time for session restoration
   useEffect(() => {
     if (auth0IsLoading && !auth0Timeout) {
       const timeout = setTimeout(() => {
-        console.warn("Auth0 loading timed out, proceeding with cached data");
         setAuth0Timeout(true);
-      }, AUTH0_TIMEOUT);
+      }, 2000); // Increased from 500ms to 2000ms to give Auth0 more time
 
       return () => clearTimeout(timeout);
     } else if (!auth0IsLoading) {
@@ -47,22 +58,39 @@ export const useAuth0Integration = () => {
     }
   }, [auth0IsLoading, auth0Timeout]);
 
-  // Optimized loading state calculation
+  // Optimized loading state calculation for better refresh handling
   const isLoading = useCallback(() => {
     // If not initialized yet, show loading briefly
-    if (!isInitialized) return true;
+    if (!isInitialized) {
+      return true;
+    }
     
-    // If Auth0 timed out, don't show loading
-    if (auth0Timeout) return false;
+    // If we have a valid token and Auth0 is loading, don't show loading
+    if (hasValidToken && auth0IsLoading && !auth0Timeout) {
+      return false;
+    }
     
-    // If Auth0 is loading and we don't have cached user data, show loading
-    if (auth0IsLoading && !user) return true;
+    // If Auth0 is loading, show loading only briefly
+    if (auth0IsLoading && !auth0Timeout) {
+      return true;
+    }
     
     // If we're getting a token for an authenticated user, show loading briefly
-    if (auth0IsAuthenticated && isTokenLoading) return true;
+    if (auth0IsAuthenticated && isTokenLoading) {
+      return true;
+    }
     
     return false;
-  }, [isInitialized, auth0IsLoading, user, auth0IsAuthenticated, isTokenLoading, auth0Timeout]);
+  }, [isInitialized, auth0IsLoading, auth0IsAuthenticated, isTokenLoading, auth0Timeout, hasValidToken]);
+
+  // Cleanup effect to clear data when authentication state changes
+  useEffect(() => {
+    if (isInitialized && !auth0IsLoading && !auth0IsAuthenticated) {
+      setUser(null);
+      setHasValidToken(false);
+      cookieUtils.clearAllStorage();
+    }
+  }, [isInitialized, auth0IsLoading, auth0IsAuthenticated]);
 
   // Sync Auth0 user with local state and cookies
   useEffect(() => {
@@ -77,8 +105,17 @@ export const useAuth0Integration = () => {
         email: auth0User.email || "",
       };
       
+      // SECURITY FIX: Always clear old data when Auth0 user changes
+      const currentUser = cookieUtils.getUser();
+      if (!currentUser || currentUser.email !== userData.email) {
+        cookieUtils.clearAllStorage();
+        setUser(null); // Clear local state first
+        setHasValidToken(false);
+      }
+      
       // Update local state immediately
       setUser(userData);
+      setHasValidToken(true);
       
       cookieUtils.setUser(userData);
       setIsTokenLoading(true);
@@ -86,8 +123,7 @@ export const useAuth0Integration = () => {
       // Add timeout to prevent hanging
       const tokenTimeout = setTimeout(() => {
         setIsTokenLoading(false);
-        console.warn("Token retrieval timed out");
-      }, 5000); // 5 second timeout
+      }, 1000); // 1 second timeout
       
       getAccessTokenSilently({
         authorizationParams: {
@@ -105,9 +141,11 @@ export const useAuth0Integration = () => {
         setIsTokenLoading(false);
       });
       
-    } else if (!auth0IsAuthenticated) {
+    } else if (!auth0IsAuthenticated && !auth0IsLoading) {
+      // Only clear data if Auth0 is not loading and not authenticated
       setUser(null);
-      cookieUtils.clearAll();
+      setHasValidToken(false);
+      cookieUtils.clearAllStorage();
     }
   }, [auth0IsAuthenticated, auth0User, auth0IsLoading, isInitialized, auth0Timeout, getAccessTokenSilently]);
 
@@ -126,53 +164,78 @@ export const useAuth0Integration = () => {
 
   const logout = async () => {
     try {
-      // Clear local state and cookies
+      // Clear local state and ALL storage IMMEDIATELY
       setUser(null);
-      cookieUtils.clearAll();
+      setHasValidToken(false);
+      cookieUtils.clearAllStorage();
       
-      await auth0Logout({
-        logoutParams: {
-          returnTo: window.location.origin
-        }
-      });
+      // Clear any cached Auth0 state
+      if (auth0Logout) {
+        await auth0Logout({
+          logoutParams: {
+            returnTo: window.location.origin
+          }
+        });
+      }
     } catch (error) {
       console.error("Auth0 logout error:", error);
+      // Even if Auth0 logout fails, ensure local cleanup happens
+      setUser(null);
+      setHasValidToken(false);
+      cookieUtils.clearAllStorage();
     }
   };
 
-  const getAccessToken = async (): Promise<string | null> => {
+  const getAccessToken = useCallback(async (): Promise<string | null> => {
     try {
-      // First try to get from Auth0 if authenticated
-      if (auth0IsAuthenticated) {
+      // If Auth0 is still loading and we have valid tokens, return the cached token
+      if (auth0IsLoading && hasValidToken) {
+        const cachedToken = cookieUtils.getToken();
+        return cachedToken;
+      }
+      
+      // SECURITY FIX: Only use Auth0 tokens, never fall back to cached tokens
+      if (auth0IsAuthenticated && auth0User) {
         const token = await getAccessTokenSilently({
           authorizationParams: {
             scope: "openid profile email",
           }
         });
-        // Update the stored token
+        
+        // Update the stored token only for current authenticated user
         if (token) {
           cookieUtils.setToken(token);
         }
         return token;
-      } else {
-        // Try to get from cookies
-        const storedToken = cookieUtils.getToken();
-        if (storedToken && storedToken !== "authenticated") {
-          return storedToken;
-        }
       }
+      
+      // SECURITY FIX: Never return cached tokens from previous users
+      // Clear any stale tokens
+      cookieUtils.clearAllStorage();
       return null;
     } catch (error) {
       console.error("Error getting access token:", error);
+      // SECURITY FIX: Clear potentially stale tokens on error
+      cookieUtils.clearAllStorage();
       return null;
     }
-  };
+  }, [auth0IsAuthenticated, auth0User, getAccessTokenSilently, auth0IsLoading, hasValidToken]);
 
-  // Determine if user is authenticated (Auth0 or cookies with valid token)
-  const isAuthenticated = auth0IsAuthenticated || (!!user && !!cookieUtils.getToken() && cookieUtils.getToken() !== "authenticated");
+  // Determine if user is authenticated (optimized for page refreshes)
+  const isAuthenticated = useCallback(() => {
+    const auth0Auth = auth0IsAuthenticated && !!auth0User;
+    
+    // During initial loading with valid token, consider user authenticated
+    const hasValidTokenDuringLoading = hasValidToken && auth0IsLoading && !auth0Timeout;
+    
+    // If we have valid tokens and Auth0 is not authenticated, still consider authenticated
+    const hasValidTokenButAuth0NotReady = hasValidToken && !auth0IsAuthenticated && (auth0IsLoading || auth0Timeout);
+    
+    return auth0Auth || hasValidTokenDuringLoading || hasValidTokenButAuth0NotReady;
+  }, [auth0IsAuthenticated, auth0User, hasValidToken, auth0IsLoading, auth0Timeout]);
 
   return {
-    isAuthenticated,
+    isAuthenticated: isAuthenticated(),
     user: auth0User || user,
     isLoading: isLoading(),
     loginWithAuth0,

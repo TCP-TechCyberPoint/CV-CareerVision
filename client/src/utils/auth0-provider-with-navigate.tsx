@@ -40,8 +40,8 @@ export const Auth0ProviderWithNavigate = ({
         scope: "openid profile email",
       }}
       onRedirectCallback={onRedirectCallback}
-      cacheLocation="localstorage"
-      useRefreshTokens={true}
+      cacheLocation="memory"
+      useRefreshTokens={false}
     >
       {children}
     </Auth0Provider>

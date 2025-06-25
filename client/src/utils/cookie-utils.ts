@@ -1,4 +1,4 @@
-import type { User } from "./auth-types";
+import type { User } from "@/auth/types";
 
 const TOKEN_KEY = "auth-token";
 const USER_KEY = "auth-user";
@@ -42,6 +42,43 @@ export const cookieUtils = {
   clearAll: () => {
     document.cookie = `${TOKEN_KEY}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
     document.cookie = `${USER_KEY}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
+  },
+
+  // Clear all browser storage (cookies + localStorage + sessionStorage)
+  clearAllStorage: () => {
+    // Clear cookies
+    cookieUtils.clearAll();
+    
+    // Clear localStorage (where Auth0 stores tokens)
+    try {
+      // Clear all localStorage
+      localStorage.clear();
+      console.log("Cleared localStorage");
+      
+      // Specifically clear Auth0 keys (in case they persist)
+      const auth0Keys = Object.keys(localStorage).filter(key => 
+        key.includes('auth0') || 
+        key.includes('Auth0') || 
+        key.includes('access_token') ||
+        key.includes('id_token')
+      );
+      
+      auth0Keys.forEach(key => {
+        localStorage.removeItem(key);
+        console.log(`Removed Auth0 key: ${key}`);
+      });
+      
+    } catch (e) {
+      console.error("Failed to clear localStorage:", e);
+    }
+    
+    // Clear sessionStorage
+    try {
+      sessionStorage.clear();
+      console.log("Cleared sessionStorage");
+    } catch (e) {
+      console.error("Failed to clear sessionStorage:", e);
+    }
   },
 
   // Check if user is authenticated based on cookies
