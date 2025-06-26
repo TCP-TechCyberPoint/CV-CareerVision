@@ -9,9 +9,27 @@ export const findById = async (id: string): Promise<IUser | null> => {
   return User.findById(id);
 };
 
+export const userExists = async (email: string): Promise<boolean> => {
+  const user = await User.findOne({ email }).select('_id');
+  return !!user;
+};
+
 export const createUser = async (userData: Partial<IUser>): Promise<IUser> => {
-  const user = new User(userData);
-  return user.save();
+  const existingUser = await findByEmail(userData.email!);
+  if (existingUser) {
+    throw new Error(`User with email ${userData.email} already exists`);
+  }
+
+  try {
+    const user = new User(userData);
+    return await user.save();
+  } catch (error: any) {
+    // Handle MongoDB duplicate key error (in case the check above fails)
+    if (error.code === 11000 && error.keyPattern?.email) {
+      throw new Error(`User with email ${userData.email} already exists`);
+    }
+    throw error;
+  }
 };
 
 export const getUserCv = async (email: string): Promise<ICv | null> => {
