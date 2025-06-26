@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useSlideshowFormStore } from "../store";
-import { useAuth0Integration } from "@/auth/useAuth0Integration";
+import { useAuth0Integration } from "@/auth";
 import cvService from "../services/cvService";
 
 export const useCvData = () => {
@@ -10,29 +10,38 @@ export const useCvData = () => {
   const retryCountRef = useRef(0);
   const maxRetries = 3;
 
+  // Use refs to track the latest values without causing re-renders
+  const authRef = useRef({ isAuthenticated, isLoading, user });
+  const updateFormDataRef = useRef(updateFormData);
+
+  // Update refs when values change
+  useEffect(() => {
+    authRef.current = { isAuthenticated, isLoading, user };
+  }, [isAuthenticated, isLoading, user]);
+
+  useEffect(() => {
+    updateFormDataRef.current = updateFormData;
+  }, [updateFormData]);
+
   const fetchCvData = useCallback(async () => {
     if (isFetchingRef.current) {
-      console.log("CV data fetch already in progress, skipping...");
       return;
     }
    
-    if (isLoading) {
-      console.log("Auth still loading, skipping CV data fetch...");
+    if (authRef.current.isLoading) {
       return;
     }
     
-    if (!isAuthenticated) {
-      console.log("User not authenticated, skipping CV data fetch...");
+    if (!authRef.current.isAuthenticated) {
       retryCountRef.current = 0; // Reset retry count when not authenticated
       return;
     }
 
     // SECURITY CHECK: Ensure we have a valid user before fetching
-    if (!user?.email) {
+    if (!authRef.current.user?.email) {
       console.error("No user email available, cannot fetch CV data");
       if (retryCountRef.current < maxRetries) {
         retryCountRef.current++;
-        console.log(`Retrying CV data fetch (${retryCountRef.current}/${maxRetries})...`);
         setTimeout(() => fetchCvData(), 1000); // Retry after 1 second
       }
       return;
@@ -41,14 +50,11 @@ export const useCvData = () => {
     try {
       isFetchingRef.current = true;
       retryCountRef.current = 0; // Reset retry count on successful attempt
-      console.log(`Fetching CV data for user: ${user.email}`);
       
       const cvData = await cvService.fetchCvData();
-      console.log("cvData received:", cvData ? "Data present" : "No data");
       
       if (cvData) {
-        console.log(`Updating form data for user: ${user.email}`);
-        updateFormData(cvData);
+        updateFormDataRef.current(cvData);
       }
     } catch (err) {
       const error = err instanceof Error ? err : new Error("Failed to fetch CV data");
@@ -57,15 +63,14 @@ export const useCvData = () => {
       // Retry on authentication errors
       if (error.message.includes("Authentication") && retryCountRef.current < maxRetries) {
         retryCountRef.current++;
-        console.log(`Authentication error, retrying CV data fetch (${retryCountRef.current}/${maxRetries})...`);
         setTimeout(() => fetchCvData(), 2000); // Retry after 2 seconds
       }
     } finally {
       isFetchingRef.current = false;
     }
-  }, [updateFormData, isAuthenticated, isLoading, user]);
+  }, []); // Empty dependency array since we use refs
 
   useEffect(() => {
     fetchCvData();
-  }, [fetchCvData]);
+  }, [isAuthenticated, isLoading, user]); // Direct dependencies instead of fetchCvData
 };

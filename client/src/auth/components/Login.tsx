@@ -10,9 +10,10 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
-import { useAuth0Integration } from "@/auth/useAuth0Integration";
-import Navbar from "./Navbar";
+import { useAuth0Integration } from "../hooks/useAuth0Integration";
+import Navbar from "@/ui/Navbar";
 import logo from "@/assets/images/career-vision-logo.png";
+import { AUTH_CONSTANTS } from "../constants";
 
 const Login = () => {
   const { isLoading, loginWithAuth0 } = useAuth0Integration();
@@ -23,7 +24,7 @@ const Login = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShouldRender(true);
-    }, 100); // 100ms delay
+    }, AUTH_CONSTANTS.APP_INIT_DELAY);
 
     return () => clearTimeout(timer);
   }, []);
@@ -46,16 +47,15 @@ const Login = () => {
   }
 
   return (
-    <Box minH="100vh" >
+    <Box minH="100vh">
       <Navbar />
-      <Box  as="main" display="flex" alignItems="center" minH="calc(100vh - 80px)" w="100%">
+      <Box as="main" display="flex" alignItems="center" minH="calc(100vh - 80px)" w="100%">
         <Container maxW="container.xl">
           <VStack gap={8} textAlign="center">
             <Image src={logo} alt="Career Vision" width={200} height={70} />
 
             <VStack gap={4}>
-           
-              <Heading  fontSize="2xl" color="blue.300" maxW="md">
+              <Heading fontSize="2xl" color="blue.300" maxW="md">
                 Your Career Journey Starts Here
               </Heading>
             </VStack>
@@ -72,7 +72,7 @@ const Login = () => {
                 bgColor="rgba(66, 153, 225, 0.2)"
                 border="1px solid rgba(255, 255, 255, 0.9)"
                 _hover={{
-                   bgColor: "rgba(66, 153, 225, 0.2)",
+                  bgColor: "rgba(66, 153, 225, 0.2)",
                   color: "white",
                   border: "1px solid white",
                   boxShadow: "0 0 8px rgba(66, 153, 225, 0.5)",
@@ -81,7 +81,6 @@ const Login = () => {
                 fontWeight="bold"
                 w="full"
                 onClick={() => loginWithAuth0()}
-                
                 py={6}
               >
                 Sign In to Continue
