@@ -5,79 +5,147 @@
 Career Vision is a digital platform designed to empower job seekers in the Israeli tech industry, particularly juniors and career switchers. Our mission is to provide smart, accessible tools that help users build their professional identity, create compelling CVs, and navigate their career journey with confidence.
 
 ### Core Values
+
 - **Accessibility**: High-quality tools available to everyone
 - **Innovation**: Smart AI-powered solutions
 - **Community**: Supportive environment for growth
-- **Empowerment**: Building confidence through technology
 
 ## 🎯 Core Features
 
-### 1. Career Identity Builder
-- Smart 8-page questionnaire with real-time analysis
-- Dual language support (Hebrew/English)
-- Real-time draft saving via WebSocket
-- AI-powered role matching and skill analysis
-- Progress tracking and motivational feedback
+### 1. Professional CV Builder
 
-### 2. Professional CV Builder
-- ATS-friendly templates
-- Smart content suggestions
-- Dual language support
-- Real-time preview
-- Export to multiple formats
+- ✅ Smart 8-page questionnaire with real-time analysis
+- ❓ Dual language support (Hebrew/English) (Currently Not Implemented)
+- ✅ Real-time draft saving
+- ✅ Dashboard for review all received data in a single page with
+- ✅ Questionnaire progress bar completion to review useful self data
+- ✅ AI-powered creating optimal CV generator
+- ❓ Progress tracking and motivational feedback (Currently Not Implemented)
+- ✅ Downloadable .docx format to user change option
 
-### 3. RealTalk AI Coach
+### 2. RealTalk AI Coach
+
 - HR interview simulations
 - Personalized feedback
 - Voice input support
 - Question adaptation based on profile
 - Performance analytics
 
-### 4. Progress Tracker
+### ❓ 3. Progress Tracker (Currently Not Implemented)
+
 - Interactive dashboard
 - Goal setting and tracking
 - Achievement system
 - Real-time updates
 - Personalized recommendations
 
-### 5. LinkedIn Job Fetcher
+### ❓ 5. LinkedIn Job Fetcher (Currently Not Implemented)
+
 - Smart job matching
-- Automated applications
+- Automated applicationsurrently not implemented)
 - Status tracking
 - Custom filters
 - Match percentage analysis
 
-### 6. CV Connect
+### ❓ 6. CV Connect (Currently Not Implemented)
+
 - Smart CV distribution
 - Application tracking
 - Status updates
 - Analytics dashboard
 - Success rate tracking
 
-### 7. TCP Community & Mentoring
+### ❓ 7. TCP Community & Mentoring (Currently Not Implemented)
+
 - Professional networking
 - Mentorship opportunities
 - Community events
 - Resource sharing
 - Career guidance
 
+### Development Setup
+
+#### 1. **Prerequisites**
+
+##### Softwares to install:
+
+- **Node.js** (v18+)
+- **Git**
+
+2. **Local Installation**
+
+   A. Create folder on your machine named: "Career Vision"
+   B. Open Git Bash Terminal and navigate to "Career Vision" directory
+
+   ###### Note need to install server and client separately
+
+
+   ```bash
+   # Clone the repository
+   git clone https://github.com/TCP-TechCyberPoint/CV-CareerVision.git
+   cd CV-CareerVision
+
+   # Install dependencies on Client (Frontend)
+   cd client
+   npm install
+
+   # Install dependencies on Server (Backend)
+   cd ../server
+   npm install
+   ```
+3. **Environment Setup**
+
+   A. Create a file on client + server named ".env" ( one file for each folder)
+
+   B. Take the environment data from Career Vision Team, and add them to .env in accordance to server/client side.
+
+   C. Save.
+4. **Running the Project**
+
+   Open 2 different terminals on the root folder
+
+   ```git
+   # to run client:
+   cd client 
+   npm run dev
+
+    validation:
+    ✅ terminal is presenting: 
+
+      VITE v6.3.5  ready in 1025 ms
+      ➡️  Local:   http://localhost:####/
+      ➡️  Network: use --host to expose
+      ➡️  press h + enter to show help
+
+   # to run local server:
+   cd server
+   npm run dev
+
+   validation:
+    ✅ terminal is presenting: 🚀 Server running on port ####
+
+   ```
+
 ## 💰 Subscription Plans
 
 ### Free Tier
-- Basic Career Identity Builder
-- One CV template
+
+- Limited CV generations
+- Single CV template for cloud saving
 - Limited interview simulations
 - Basic progress tracking
 - Community access
 
 ### Regular Tier (₪50/month)
+
 - Enhanced identity analysis
-- Multiple CV templates
+- Unlimited multiple CV templates
 - Extended interview features
 - Advanced progress tracking
 - Job matching features
 
 ### Premium Tier (₪100/month)
+
 - Advanced AI analysis
 - All CV templates
 - Full interview suite
@@ -87,88 +155,81 @@ Career Vision is a digital platform designed to empower job seekers in the Israe
 ## 🔧 Technical Stack
 
 ### Frontend
+
 - **Framework**: React.js with TypeScript
-- **State Management**: Redux Toolkit / React Context
-- **Styling**: Tailwind CSS
-- **Internationalization**: react-i18next
-- **Accessibility**: React Aria / axe DevTools
+- **State Management**: Zustand
+- **Styling**: Chakra UI 3.21
+- **Internationalization**: react-i18next (Currently Not Implemented)
+- **Accessibility**: React Aria
 - **Animations**: Framer Motion
-- **Forms**: Formik + Yup / React Hook Form
+- **Forms**: React Hook Form + ZOD
 - **API Client**: Axios
 - **Routing**: React Router
 - **Notifications**: React Toastify
 
 ### Backend
-- **API Framework**: FastAPI
-- **Database**: PostgreSQL
-- **Authentication**: Firebase Auth
+
+- **API Framework**: ___
+- **Database**: MongoDB
+- **Authentication**: Auth0
 - **Storage**: Firebase Storage
-- **Real-time**: WebSockets
-- **Caching**: Redis
+- **Real-time**: ___
+- **Caching**: ___
 - **Containerization**: Docker Compose
-- **Deployment**: Railway.app
+- **Deployment**: ___
 
 ### AI/ML
-- **NLP**: SpaCy & TextBlob (Free)
-- **Advanced Analysis**: LLaMA 2 (Premium)
-- **Transformers**: HuggingFace
-- **Embeddings**: Sentence Transformers
-- **OCR**: Tesseract
-- **Cloud Services**: Various APIs
+
+- **NLP**: ___
+- **Advanced Analysis**: ___
+- **Transformers**: ___
+- **Embeddings**: ___
+- **OCR**: ___
+- **Cloud Services**: ___
 
 ## 🛡️ Security & Privacy
 
 ### Data Protection
-- HTTPS encryption
-- AES-256 for sensitive data
+
 - JWT authentication
-- Rate limiting
-- Input validation
+
+> ‼️ _Needed to be filled..._
 
 ### Privacy Features
-- GDPR compliance
-- Data encryption
-- User consent management
-- Data deletion rights
-- Privacy controls
+
+> ‼️ _Needed to be filled..._
 
 ### Security Measures
-- Regular security audits
-- Automated scanning
-- Access control
-- Session management
-- Secure APIs
+
+> ‼️ _Needed to be filled..._
 
 ## 🎨 User Experience
 
-### Design Principles
-- Intuitive navigation
-- Responsive design
-- Accessibility (WCAG 2.1)
-- RTL/LTR support
-- Performance optimization
+> ‼️ _Needed to be filled..._
 
-### Features
-- Real-time feedback
-- Progress indicators
-- Motivational messages
-- Achievement system
-- Interactive elements
+### Design Principles
+
+> ‼️ _Needed to be filled..._
 
 ## 👥 Development Team
 
 ### Leadership
+
 - Yosi Leviev - Founder & Vision
 - Ben Harari - Team Leader Developer
 
+### UX/UI
+
+- Omer _lastname_
+
 ### Development
-- Yosi Kariv - Junior Front-End
-- Guy First - Junior Back-End
-- Lior Shavit - Junior Front-End
-- Itay - 
-- Laith Khater - 
+
+- Lior Silman - Junior Front-End
+- Itay Cohen - Junior Front-End
+- Laith Khater - Junior Back-End
 
 ### Quality & Operations
+
 - Eilon Manela - Junior QA
 - Bar Berkovich - Junior DevOps
 - Yagel - Information Security
@@ -176,10 +237,11 @@ Career Vision is a digital platform designed to empower job seekers in the Israe
 ## 📚 Documentation
 
 For detailed documentation, please refer to:
+
 - [Technical Architecture](docs/technical-architecture.md)
 - [AI/ML Features](docs/ai-ml-features.md)
 - [User Experience](docs/user-experience.md)
-- [Security & Privacy](docs/security-privacy.md)
+- [Security &amp; Privacy](docs/security-privacy.md)
 
 ## 🔗 Links
 
@@ -190,167 +252,79 @@ For detailed documentation, please refer to:
 ## 📊 Project Status
 
 ### Current Phase
+
 - 🟡 Planning & Architecture
 - 🟡 Documentation
-- 🔴 Development
+- 🟡 Development
 - 🔴 Testing
 - 🔴 Deployment
 
 ### Current Working Branches
+
 - **main** - Production branch (protected)
-- **develop** - Development branch (protected)
-- **feature/career-identity** - Career Identity Builder implementation
-- **feature/cv-builder** - CV Builder implementation
-- **feature/progress-tracker** - Progress Tracker implementation
-- **docs/architecture** - Technical documentation updates
+- **dev-clean** - Development branch (protected)
 
 ### Branch Strategy
-1. **Feature Branches**
-   - Created from `develop`
-   - Naming: `feature/feature-name`
-   - Merged back to `develop` via PR
 
-2. **Documentation Branches**
-   - Created from `develop`
-   - Naming: `docs/topic-name`
-   - Merged back to `develop` via PR
-
-3. **Hotfix Branches**
-   - Created from `main`
-   - Naming: `hotfix/issue-description`
-   - Merged to both `main` and `develop`
+> ‼️ _Needed to be filled..._
 
 ### Development Workflow
-1. Create feature branch from `develop`
-2. Implement changes
-3. Write tests
-4. Update documentation
-5. Create PR to `develop`
-6. Code review
-7. Merge to `develop`
-8. Deploy to staging
-9. QA testing
-10. Merge to `main` for production
+
+> ‼️ _Needed to be filled..._
 
 ## 🤝 Contributing
 
-### Development Setup
-1. **Prerequisites**
-   - Node.js (v18+)
-   - Python (v3.9+)
-   - Docker & Docker Compose
-   - PostgreSQL
-   - Redis
-
-2. **Installation**
-   ```bash
-   # Clone the repository
-   git clone https://github.com/TCP-TechCyberPoint/CV-CareerVision.git
-   cd CV-CareerVision
-
-   # Install dependencies
-   # Frontend
-   cd client
-   npm install
-
-   # Backend
-   cd ../server
-   python -m venv venv
-   source venv/bin/activate  # or `venv\Scripts\activate` on Windows
-   pip install -r requirements.txt
-   ```
-
-3. **Environment Setup**
-   ```bash
-   # Create .env files
-   cp .env.example .env
-   # Configure your environment variables
-   ```
-
-4. **Running the Project**
-   ```bash
-   # Using Docker Compose
-   docker-compose up
-
-   # Or run services separately
-   # Frontend
-   cd client
-   npm run dev
-
-   # Backend
-   cd server
-   uvicorn main:app --reload
-   ```
-
 ### Contribution Guidelines
+
 1. **Code Style**
-   - Follow TypeScript/React best practices
-   - Use ESLint and Prettier
-   - Write meaningful commit messages
+
+> ‼️ _Needed to be filled..._
 
 2. **Pull Request Process**
-   - Create feature branch
-   - Write tests
-   - Update documentation
-   - Submit PR with description
+
+> ‼️ _Needed to be filled..._
 
 3. **Testing**
-   - Write unit tests
-   - Run integration tests
-   - Ensure CI passes
+
+> ‼️ _Needed to be filled..._
 
 ## 🐛 Known Issues
 
 ### Current Limitations
-- Limited Hebrew NLP support
-- Basic CV templates only
-- No mobile app yet
+
+> ‼️ _Needed to be filled..._
 
 ### Planned Fixes
-- Enhanced Hebrew language processing
-- More CV templates
-- Mobile responsiveness improvements
+
+> ‼️ _Needed to be filled..._
 
 ## 📈 Performance Metrics
 
 ### Target Metrics
+
 - Page Load: < 2s
 - API Response: < 200ms
 - Real-time Updates: < 100ms
 - AI Processing: < 3s
 
 ### Monitoring
-- Frontend: Google Analytics
-- Backend: Prometheus
-- AI: Custom metrics
+
+> ‼️ _Needed to be filled..._
 
 ## 🔄 CI/CD Pipeline
 
 ### Development
-- Automated testing
-- Code quality checks
-- Security scanning
+
+> ‼️ _Needed to be filled..._
 
 ### Staging
-- Integration testing
-- Performance testing
-- User acceptance testing
+
+> ‼️ _Needed to be filled..._
 
 ### Production
-- Blue-green deployment
-- Automated rollback
-- Health monitoring
+
+> ‼️ _Needed to be filled..._
 
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- TCP Community for support
-- Open source contributors
-- Beta testers
-
----
-
-> **Empowering juniors to achieve their career dreams – one step at a time.**
