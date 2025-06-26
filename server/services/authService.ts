@@ -22,16 +22,16 @@ interface LoginCredentials {
 
 const register = async ({ name, email, password }: RegisterCredentials) => {
   try {
-    const existingUser = await findByEmail(email);
-    if (existingUser) {
-      return { status: 400, data: { message: "User already exists" } };
-    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await createUser({ name, email, password: hashedPassword });
 
     return { status: 201, data: { user } };
   } catch (error: unknown) {
     if (error instanceof Error) {
+      // Check if it's a duplicate email error
+      if (error.message.includes("already exists")) {
+        return { status: 409, data: { message: error.message } };
+      }
       return { status: 400, data: { message: error.message } };
     }
     return { status: 400, data: { message: "An unknown error occurred" } };

@@ -1,9 +1,8 @@
-import useAppInit from "./hooks/useAppInit";
+import useAppInit from "@/auth/hooks/useAppInit";
 import Loading from "./components/shared/Loading";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
-import { useAuth0Integration } from "@/auth/useAuth0Integration";
-import { setTokenGetter } from "./auth/api";
+import { useAuth0Integration, setTokenGetter } from "@/auth";
 import { useEffect } from "react";
 
 function App() {
@@ -12,7 +11,7 @@ function App() {
 
   useEffect(() => {
     setTokenGetter(getAccessToken);
-  }, []);
+  }, [getAccessToken]);
 
   if (isLoading) {
     return <Loading message={loadingStep} />;

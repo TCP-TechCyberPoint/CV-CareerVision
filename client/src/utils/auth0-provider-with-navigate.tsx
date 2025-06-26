@@ -36,12 +36,12 @@ export const Auth0ProviderWithNavigate = ({
       clientId={clientId}
       authorizationParams={{
         redirect_uri: redirectUri,
-        audience,
+        audience: audience,
         scope: "openid profile email",
       }}
       onRedirectCallback={onRedirectCallback}
-      cacheLocation="localstorage"
-      useRefreshTokens={true}
+      cacheLocation="memory"
+      useRefreshTokens={false}
     >
       {children}
     </Auth0Provider>

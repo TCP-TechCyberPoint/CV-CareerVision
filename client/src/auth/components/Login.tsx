@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -6,27 +7,30 @@ import {
   Text,
   Button,
   Image,
+  Spinner,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
-import { useAuth0Integration } from "@/auth/useAuth0Integration";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import Navbar from "./Navbar";
+import { useAuth0Integration } from "../hooks/useAuth0Integration";
+import Navbar from "@/ui/Navbar";
 import logo from "@/assets/images/career-vision-logo.png";
+import { AUTH_CONSTANTS } from "../constants";
 
 const Login = () => {
-  const { isAuthenticated, isLoading, loginWithAuth0 } = useAuth0Integration();
-  const navigate = useNavigate();
+  const { isLoading, loginWithAuth0 } = useAuth0Integration();
   const bgColor = useColorModeValue("gray.50", "gray.900");
+  const [shouldRender, setShouldRender] = useState(false);
 
-  // Redirect to home if already authenticated
+  // Add a small delay to prevent race conditions
   useEffect(() => {
-    if (isAuthenticated && !isLoading) {
-      navigate("/home", { replace: true });
-    }
-  }, [isAuthenticated, isLoading, navigate]);
+    const timer = setTimeout(() => {
+      setShouldRender(true);
+    }, AUTH_CONSTANTS.APP_INIT_DELAY);
 
-  if (isLoading) {
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Show loading spinner while Auth0 is initializing or during delay
+  if (isLoading || !shouldRender) {
     return (
       <Box minH="100vh" bg={bgColor}>
         <Navbar />
@@ -36,23 +40,22 @@ const Login = () => {
           alignItems="center"
           minH="calc(100vh - 80px)"
         >
-          <Text>Loading...</Text>
+          <Spinner size="xl" color="blue.300" />
         </Box>
       </Box>
     );
   }
 
   return (
-    <Box minH="100vh" >
+    <Box minH="100vh">
       <Navbar />
-      <Box  as="main" display="flex" alignItems="center" minH="calc(100vh - 80px)" w="100%">
+      <Box as="main" display="flex" alignItems="center" minH="calc(100vh - 80px)" w="100%">
         <Container maxW="container.xl">
           <VStack gap={8} textAlign="center">
             <Image src={logo} alt="Career Vision" width={200} height={70} />
 
             <VStack gap={4}>
-           
-              <Heading  fontSize="2xl" color="blue.300" maxW="md">
+              <Heading fontSize="2xl" color="blue.300" maxW="md">
                 Your Career Journey Starts Here
               </Heading>
             </VStack>
@@ -69,7 +72,7 @@ const Login = () => {
                 bgColor="rgba(66, 153, 225, 0.2)"
                 border="1px solid rgba(255, 255, 255, 0.9)"
                 _hover={{
-                   bgColor: "rgba(66, 153, 225, 0.2)",
+                  bgColor: "rgba(66, 153, 225, 0.2)",
                   color: "white",
                   border: "1px solid white",
                   boxShadow: "0 0 8px rgba(66, 153, 225, 0.5)",
@@ -78,7 +81,6 @@ const Login = () => {
                 fontWeight="bold"
                 w="full"
                 onClick={() => loginWithAuth0()}
-                
                 py={6}
               >
                 Sign In to Continue

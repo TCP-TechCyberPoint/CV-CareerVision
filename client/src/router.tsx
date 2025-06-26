@@ -1,13 +1,24 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { Home, About, Login } from "@/ui";
+import { Home, About } from "@/ui";
+import { Login, ProtectedRoute, useAuth0Integration } from "@/auth";
 import { slideshowRoutes } from "./features/slideshow-form/routes/slideshowRoutes";
-import { ProtectedRoute } from "@/auth/ProtectedRoute";
+import Loading from "@/components/shared/Loading";
 
 // Component to handle root route based on authentication
 const RootRedirect = () => {
-  // This will be handled by the ProtectedRoute component
-  // which will redirect unauthenticated users to login
-  return <Navigate to="/home" replace />;
+  const { isAuthenticated, isLoading } = useAuth0Integration();
+
+  // Show loading while Auth0 is initializing
+  if (isLoading) {
+    return <Loading message="Initializing..." />;
+  }
+
+  // Redirect based on authentication state
+  if (isAuthenticated) {
+    return <Navigate to="/home" replace />;
+  } else {
+    return <Navigate to="/login" replace />;
+  }
 };
 
 export const router = createBrowserRouter([

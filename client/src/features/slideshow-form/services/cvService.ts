@@ -1,4 +1,4 @@
-import axiosInstance from "@/auth/api";
+import axiosInstance from "@/auth/services/api";
 import type { SlideshowFormData } from "@slideshow-form/types";
 
 export type SectionName = keyof SlideshowFormData;

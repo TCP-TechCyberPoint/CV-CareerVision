@@ -1,4 +1,4 @@
-import { useAuth0Integration } from "@/auth/useAuth0Integration";
+import { useAuth0Integration } from "@/auth";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Box,

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth0Integration } from "@/auth/useAuth0Integration";
-import { cookieUtils } from "@/utils/cookie-utils";
+import { useAuth0Integration, storageUtils } from "@/auth";
 
 export const useTokenValidation = () => {
   const { isAuthenticated, isLoading } = useAuth0Integration();
@@ -19,7 +18,7 @@ export const useTokenValidation = () => {
       return;
     }
 
-    const token = cookieUtils.getToken();
+    const token = storageUtils.getToken();
     if (!token) {
       setIsTokenValid(false);
       setHasChecked(true);

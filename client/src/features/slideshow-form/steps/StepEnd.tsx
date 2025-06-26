@@ -2,7 +2,7 @@ import BaseButton from "@/components/shared/BaseButton";
 import { Box, Text, Stack } from "@chakra-ui/react";
 import { useSlideshowFormStore } from "../store";
 import ReturnDashboard from "../components/ReturnDashboard";
-import axiosInstance from "@/auth/api";
+import axiosInstance from "@/auth/services/api";
 import { useState } from "react";
 
 interface StepEndProps {

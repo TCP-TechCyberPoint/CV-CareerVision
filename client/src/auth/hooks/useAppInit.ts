@@ -1,47 +1,46 @@
 import { useEffect, useRef, useState } from "react";
 import { useSlideshowFormStore } from "@/features/slideshow-form/store/store";
-import { useAuth0Integration } from "@/auth/useAuth0Integration";
+import { useAuth0Integration } from "./useAuth0Integration";
+import { AUTH_CONSTANTS } from "../constants";
 
 const useAppInit = () => {
   const { isAuthenticated, isLoading: auth0IsLoading } = useAuth0Integration();
   
   const initializationRef = useRef(false);
-  const [loadingStep, setLoadingStep] = useState<string>("Initializing...");
+  const [loadingStep, setLoadingStep] = useState<string>(AUTH_CONSTANTS.LOADING_STEPS.INITIALIZING);
   
   const fetchInitialFormData = useSlideshowFormStore((state) => state.fetchInitialFormData);
   const formDataInitialized = useSlideshowFormStore((state) => state.initialized);
 
   useEffect(() => {
-    // Don't initialize if Auth0 is still loading
     if (auth0IsLoading) {
-      setLoadingStep("Authenticating...");
+      setLoadingStep(AUTH_CONSTANTS.LOADING_STEPS.AUTHENTICATING);
       return;
     }
 
-    // Don't initialize if already done
     if (initializationRef.current) {
       return;
     }
 
-    // Only initialize if authenticated and form data hasn't been initialized
     if (isAuthenticated && !formDataInitialized) {
       initializationRef.current = true;
-      setLoadingStep("Loading your data...");
+      setLoadingStep(AUTH_CONSTANTS.LOADING_STEPS.LOADING_DATA);
       fetchInitialFormData();
     } else {
-      setLoadingStep("Ready!");
+      setLoadingStep(AUTH_CONSTANTS.LOADING_STEPS.READY);
     }
-  }, [isAuthenticated, auth0IsLoading, formDataInitialized, fetchInitialFormData]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, auth0IsLoading, formDataInitialized]);
 
   // Reset initialization flag when authentication state changes
   useEffect(() => {
     if (!isAuthenticated) {
       initializationRef.current = false;
-      setLoadingStep("Initializing...");
+      setLoadingStep(AUTH_CONSTANTS.LOADING_STEPS.INITIALIZING);
     }
   }, [isAuthenticated]);
 
-  // Calculate overall loading state - only show loading if Auth0 is loading AND user is not authenticated
+  // Calculate overall loading state
   const isLoading = auth0IsLoading && !isAuthenticated;
 
   return {
@@ -51,4 +50,4 @@ const useAppInit = () => {
   };
 };
 
-export default useAppInit;
+export default useAppInit; 

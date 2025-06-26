@@ -7,7 +7,7 @@ interface UseRetryOptions {
 }
 
 export const useRetry = (options: UseRetryOptions = {}) => {
-  const { maxAttempts = 3, baseDelay = 1000, maxDelay = 10000 } = options;
+  const { maxAttempts = 2, baseDelay = 500, maxDelay = 2000 } = options;
   const [attempts, setAttempts] = useState(0);
   const [isRetrying, setIsRetrying] = useState(false);
 
