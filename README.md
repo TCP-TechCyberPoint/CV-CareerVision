@@ -1,205 +1,199 @@
-# Career Vision (CV) 🚀
+# 🚀 Career Vision (CV)
 
 ## 🌟 Vision & Mission
 
 Career Vision is a digital platform designed to empower job seekers in the Israeli tech industry, particularly juniors and career switchers. Our mission is to provide smart, accessible tools that help users build their professional identity, create compelling CVs, and navigate their career journey with confidence.
 
-### Core Values
+### 🔑 Core Values
 
-- **Accessibility**: High-quality tools available to everyone
-- **Innovation**: Smart AI-powered solutions
-- **Community**: Supportive environment for growth
+- **Accessibility**: High-quality tools available to everyone  
+- **Innovation**: Smart AI-powered solutions  
+- **Community**: Supportive environment for growth  
 
 ## 🎯 Core Features
 
-### 1. Professional CV Builder
+### 📄 Professional CV Builder
 
-- ✅ Smart 8-page questionnaire with real-time analysis
-- ❓ Dual language support (Hebrew/English) (Currently Not Implemented)
-- ✅ Real-time draft saving
-- ✅ Dashboard for review all received data in a single page with
-- ✅ Questionnaire progress bar completion to review useful self data
-- ✅ AI-powered creating optimal CV generator
-- ❓ Progress tracking and motivational feedback (Currently Not Implemented)
-- ✅ Downloadable .docx format to user change option
+- ✅ Smart 8-page questionnaire with real-time analysis  
+- ❓ Dual language support (Hebrew/English) *(Currently Not Implemented)*  
+- ✅ Real-time draft saving  
+- ✅ Dashboard for reviewing all collected data in a single page  
+- ✅ Questionnaire progress bar to reflect completion  
+- ✅ AI-powered CV generation  
+- ❓ Progress tracking and motivational feedback *(Currently Not Implemented)*  
+- ✅ Downloadable `.docx` format for user customization  
 
-### 2. RealTalk AI Coach
+### 🧠 RealTalk AI Coach
 
-- HR interview simulations
-- Personalized feedback
-- Voice input support
-- Question adaptation based on profile
-- Performance analytics
+- HR interview simulations  
+- Personalized feedback  
+- Voice input support  
+- Question adaptation based on profile  
+- Performance analytics  
 
-### ❓ 3. Progress Tracker (Currently Not Implemented)
+### 📈 Progress Tracker *(Currently Not Implemented)*
 
-- Interactive dashboard
-- Goal setting and tracking
-- Achievement system
-- Real-time updates
-- Personalized recommendations
+- Interactive dashboard  
+- Goal setting and tracking  
+- Achievement system  
+- Real-time updates  
+- Personalized recommendations  
 
-### ❓ 5. LinkedIn Job Fetcher (Currently Not Implemented)
+### 💼 LinkedIn Job Fetcher *(Currently Not Implemented)*
 
-- Smart job matching
-- Automated applicationsurrently not implemented)
-- Status tracking
-- Custom filters
-- Match percentage analysis
+- Smart job matching  
+- Automated applications *(Currently Not Implemented)*  
+- Status tracking  
+- Custom filters  
+- Match percentage analysis  
 
-### ❓ 6. CV Connect (Currently Not Implemented)
+### 🔗 CV Connect *(Currently Not Implemented)*
 
-- Smart CV distribution
-- Application tracking
-- Status updates
-- Analytics dashboard
-- Success rate tracking
+- Smart CV distribution  
+- Application tracking  
+- Status updates  
+- Analytics dashboard  
+- Success rate tracking  
 
-### ❓ 7. TCP Community & Mentoring (Currently Not Implemented)
+### 👥 TCP Community & Mentoring *(Currently Not Implemented)*
 
-- Professional networking
-- Mentorship opportunities
-- Community events
-- Resource sharing
-- Career guidance
+- Professional networking  
+- Mentorship opportunities  
+- Community events  
+- Resource sharing  
+- Career guidance  
 
-### Development Setup
+## 🛠️ Development Setup
 
-#### 1. **Prerequisites**
+### ⚙️ 1. Prerequisites
 
-##### Softwares to install:
+#### 📦 Required Software
 
-- **Node.js** (v18+)
-- **Git**
+- **Node.js** (v18+)  
+- **Git**  
 
-2. **Local Installation**
+### 💾 2. Local Installation
 
-   A. Create folder on your machine named: "Career Vision"
-   B. Open Git Bash Terminal and navigate to "Career Vision" directory
+#### 📁 Step 1: Create Project Folder
 
-   ###### Note need to install server and client separately
+Create a folder on your machine named **`Career Vision`**.
 
+#### 💻 Step 2: Open Git Bash & Clone Repository
 
-   ```bash
-   # Clone the repository
-   git clone https://github.com/TCP-TechCyberPoint/CV-CareerVision.git
-   cd CV-CareerVision
+Navigate to the newly created directory and run:
 
-   # Install dependencies on Client (Frontend)
-   cd client
-   npm install
+```bash
+# Clone the repository
+git clone https://github.com/TCP-TechCyberPoint/CV-CareerVision.git
+cd CV-CareerVision
 
-   # Install dependencies on Server (Backend)
-   cd ../server
-   npm install
-   ```
-3. **Environment Setup**
+# Install dependencies for the Client (Frontend)
+cd client
+npm install
 
-   A. Create a file on client + server named ".env" ( one file for each folder)
+# Install dependencies for the Server (Backend)
+cd ../server
+npm install
+```
+### 🧪 3. Environment Setup
 
-   B. Take the environment data from Career Vision Team, and add them to .env in accordance to server/client side.
+- Create a `.env` file in both `client/` and `server/` directories.  
+- Request environment variables from the **Career Vision Team**.  
+- Add them accordingly and save the files.  
 
-   C. Save.
-4. **Running the Project**
+### ▶️ 4. Running the Project
 
-   Open 2 different terminals on the root folder
+Open **two terminals** in the root directory:
 
-   ```git
-   # to run client:
-   cd client 
-   npm run dev
+```bash
+# Terminal 1 – Start the client
+cd client
+npm run dev
 
-    validation:
-    ✅ terminal is presenting: 
+# ✅ Should display:
+# VITE v6.3.5  ready in #### ms
+# ➡️  Local:   http://localhost:####
+# ➡️  Network: use --host to expose
 
-      VITE v6.3.5  ready in 1025 ms
-      ➡️  Local:   http://localhost:####/
-      ➡️  Network: use --host to expose
-      ➡️  press h + enter to show help
+# Terminal 2 – Start the backend server
+cd server
+npm run dev
 
-   # to run local server:
-   cd server
-   npm run dev
-
-   validation:
-    ✅ terminal is presenting: 🚀 Server running on port ####
-
-   ```
-
+# ✅ Should display:
+# 🚀 Server running on port ####
+```
 ## 💰 Subscription Plans
 
-### Free Tier
+### 🆓 Free Tier
 
-- Limited CV generations
-- Single CV template for cloud saving
-- Limited interview simulations
-- Basic progress tracking
-- Community access
+- Limited CV generations  
+- Single CV template for cloud saving  
+- Limited interview simulations  
+- Basic progress tracking  
+- Community access  
 
-### Regular Tier (₪50/month)
+### 💳 Regular Tier (₪50/month)
 
-- Enhanced identity analysis
-- Unlimited multiple CV templates
-- Extended interview features
-- Advanced progress tracking
-- Job matching features
+- Enhanced identity analysis  
+- Unlimited CV templates  
+- Extended interview features  
+- Advanced progress tracking  
+- Job matching features  
 
-### Premium Tier (₪100/month)
+### 💎 Premium Tier (₪100/month)
 
-- Advanced AI analysis
-- All CV templates
-- Full interview suite
-- Comprehensive tracking
-- Priority support
+- Advanced AI analysis  
+- All CV templates  
+- Full interview suite  
+- Comprehensive tracking  
+- Priority support  
 
 ## 🔧 Technical Stack
 
-### Frontend
+## 🧩 Technical Stack
 
-- **Framework**: React.js with TypeScript
-- **State Management**: Zustand
-- **Styling**: Chakra UI 3.21
-- **Internationalization**: react-i18next (Currently Not Implemented)
-- **Accessibility**: React Aria
-- **Animations**: Framer Motion
-- **Forms**: React Hook Form + ZOD
-- **API Client**: Axios
-- **Routing**: React Router
-- **Notifications**: React Toastify
+- **Framework**: React.js + TypeScript  
+- **State Management**: Zustand  
+- **Styling**: Chakra UI 3.21  
+- **Internationalization**: react-i18next *(Not Implemented)*  
+- **Accessibility**: React Aria  
+- **Animations**: Framer Motion  
+- **Forms**: React Hook Form + ZOD  
+- **API Client**: Axios  
+- **Routing**: React Router  
+- **Notifications**: React Toastify  
 
-### Backend
+### 🔧 Backend
 
-- **API Framework**: ___
-- **Database**: MongoDB
-- **Authentication**: Auth0
-- **Storage**: Firebase Storage
-- **Real-time**: ___
-- **Caching**: ___
-- **Containerization**: Docker Compose
-- **Deployment**: ___
+- **API Framework**: ___  
+- **Database**: MongoDB  
+- **Authentication**: Auth0  
+- **Storage**: Firebase Storage  
+- **Real-time**: ___  
+- **Caching**: ___  
+- **Containerization**: Docker Compose  
+- **Deployment**: ___  
 
-### AI/ML
+### 🧠 AI / ML
 
-- **NLP**: ___
-- **Advanced Analysis**: ___
-- **Transformers**: ___
-- **Embeddings**: ___
-- **OCR**: ___
-- **Cloud Services**: ___
+- **NLP**: ___  
+- **Advanced Analysis**: ___  
+- **Transformers**: ___  
+- **Embeddings**: ___  
+- **OCR**: ___  
+- **Cloud Services**: ___  
 
-## 🛡️ Security & Privacy
+### 🔒 Data Protection
 
-### Data Protection
-
-- JWT authentication
+- JWT authentication  
 
 > ‼️ _Needed to be filled..._
 
-### Privacy Features
+### 🕵️ Privacy Features
 
 > ‼️ _Needed to be filled..._
 
-### Security Measures
+### 🛡️ Security Measures
 
 > ‼️ _Needed to be filled..._
 
@@ -207,124 +201,140 @@ Career Vision is a digital platform designed to empower job seekers in the Israe
 
 > ‼️ _Needed to be filled..._
 
-### Design Principles
+### 📐 Design Principles
 
 > ‼️ _Needed to be filled..._
-
 ## 👥 Development Team
 
-### Leadership
+### 🧭 Leadership
 
-- Yosi Leviev - Founder & Vision
-- Ben Harari - Team Leader Developer
+- **Yosi Leviev** – Founder & Vision  
+- **Ben Harari** – Team Leader Developer  
 
-### UX/UI
+### 🎨 UX/UI
 
-- Omer _lastname_
+- **Omer _lastname_**
 
-### Development
+### 💻 Development
 
-- Lior Silman - Junior Front-End
-- Itay Cohen - Junior Front-End
-- Laith Khater - Junior Back-End
+- **Lior Silman** – Junior Front-End  
+- **Itay Cohen** – Junior Front-End  
+- **Laith Khater** – Junior Back-End  
 
-### Quality & Operations
+### ✅ Quality & Operations
 
-- Eilon Manela - Junior QA
-- Bar Berkovich - Junior DevOps
-- Yagel - Information Security
+- **Eilon Manela** – Junior QA  
+- **Bar Berkovich** – Junior DevOps  
+- **Yagel** – Information Security  
+
 
 ## 📚 Documentation
 
-For detailed documentation, please refer to:
-
-- [Technical Architecture](docs/technical-architecture.md)
-- [AI/ML Features](docs/ai-ml-features.md)
-- [User Experience](docs/user-experience.md)
-- [Security &amp; Privacy](docs/security-privacy.md)
+- [📘 Technical Architecture](docs/technical-architecture.md)  
+- [🤖 AI/ML Features](docs/ai-ml-features.md)  
+- [🎨 User Experience](docs/user-experience.md)  
+- [🔐 Security & Privacy](docs/security-privacy.md)  
 
 ## 🔗 Links
 
-- [TCP Community](https://www.techcyberpoint.co.il)
-- [TCP About-Page](https://www.techcyberpoint.co.il/%d7%90%d7%95%d7%93%d7%95%d7%aa/)
-- [GitHub Repository](https://github.com/TCP-TechCyberPoint/CV-CareerVision)
+- 🌐 [TCP Community](https://www.techcyberpoint.co.il)  
+- 🧾 [TCP About Page](https://www.techcyberpoint.co.il/%d7%90%d7%95%d7%93%d7%95%d7%aa/)  
+- 💻 [GitHub Repository](https://github.com/TCP-TechCyberPoint/CV-CareerVision)  
 
 ## 📊 Project Status
 
-### Current Phase
+### 🧭 Current Phase
 
-- 🟡 Planning & Architecture
-- 🟡 Documentation
-- 🟡 Development
-- 🔴 Testing
-- 🔴 Deployment
+- 🟡 Planning & Architecture  
+- 🟡 Documentation  
+- 🟡 Development  
+- 🔴 Testing  
+- 🔴 Deployment  
 
-### Current Working Branches
+### 🌿 Current Working Branches
 
-- **main** - Production branch (protected)
-- **dev-clean** - Development branch (protected)
+- **main** – Production branch *(protected)*  
+- **dev-clean** – Development branch *(protected)*  
 
-### Branch Strategy
-
-> ‼️ _Needed to be filled..._
-
-### Development Workflow
+### 🌱 Branch Strategy
 
 > ‼️ _Needed to be filled..._
 
-## 🤝 Contributing
-
-### Contribution Guidelines
-
-1. **Code Style**
+### ⚙️ Development Workflow
 
 > ‼️ _Needed to be filled..._
 
-2. **Pull Request Process**
+## 🤝 Contribution Guidelines
 
+#### 1. Branch Naming Convention
+
+All branches should follow the format:
+
+```
+type/developer-name/short-description
+```
+
+**Where:**
+
+- `type` — describes the purpose of the branch. Use one of the following:
+  - `feature` — for new features
+  - `bug` — for bug fixes
+  - `fix` — for minor fixes or tweaks
+  - `refactor` — for code restructuring without feature changes
+  - `docs` — for documentation updates
+  - `test` — for testing-related work
+- `developer-name` — your name or GitHub handle
+- `short-description` — concise, kebab-case summary of the change
+
+✅ **Examples:**
+
+```
+feature/lior/create-ui-chatbot
+bug/itay/fix-login-redirect
+docs/omer/update-readme
+refactor/laith/optimize-user-service
+test/eilon/add-cv-tests
+```
+
+> 🔐 **Note:** Avoid using uppercase letters or spaces. Use hyphens (`-`) instead of underscores
+
+#### 2. Pull Request Process  
 > ‼️ _Needed to be filled..._
 
-3. **Testing**
-
+#### 3. Testing  
 > ‼️ _Needed to be filled..._
 
-## 🐛 Known Issues
+## 🐞 Known Issues
 
-### Current Limitations
-
+### 🚧 Current Limitations  
 > ‼️ _Needed to be filled..._
 
-### Planned Fixes
-
+### 🛠️ Planned Fixes  
 > ‼️ _Needed to be filled..._
 
 ## 📈 Performance Metrics
 
-### Target Metrics
+### 🎯 Target Metrics
 
-- Page Load: < 2s
-- API Response: < 200ms
-- Real-time Updates: < 100ms
-- AI Processing: < 3s
+- **Page Load**: < 2s  
+- **API Response**: < 200ms  
+- **Real-time Updates**: < 100ms  
+- **AI Processing**: < 3s  
 
-### Monitoring
-
+### 📡 Monitoring  
 > ‼️ _Needed to be filled..._
 
-## 🔄 CI/CD Pipeline
+## 🔁 CI/CD Pipeline
 
-### Development
-
+### 🧪 Development  
 > ‼️ _Needed to be filled..._
 
-### Staging
-
+### 🚧 Staging  
 > ‼️ _Needed to be filled..._
 
-### Production
-
+### 🚀 Production  
 > ‼️ _Needed to be filled..._
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
