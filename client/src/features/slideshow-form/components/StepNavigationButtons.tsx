@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import BaseButton from "@/components/shared/BaseButton";
+import BaseButton from "@/ui/BaseButton";
 
 interface StepNavigationButtonsProps {
   onPrevStep: () => void;

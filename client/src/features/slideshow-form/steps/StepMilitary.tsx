@@ -46,60 +46,56 @@ const StepMilitary = ({ nextStep, prevStep }: StepMilitaryProps) => {
 
   return (
     <MotionBox
-      mt={8}
+      mt={{ base: 4, sm: 0 }}
+      mx="auto"
+      maxW={{ base: "100%", md: "75%" }}
+      p={{ base: 4, md: 8, lg: 10 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
+      position="relative"
     >
-      <Box
-        p={8}
-        borderRadius="xl"
-        boxShadow="xl"
-        bg="white"
-        maxW="800px"
-        mx="auto"
-        position="relative"
-      >
-        <Box position="absolute" top={4} left={4}>
-          <ReturnDashboard />
-        </Box>
+      <Box mt={{ base: 2, sm: 3, md: 4 }} position="relative" top={{ base: 2, sm: 3, md: 4 }} left={{ base: 2, sm: 3, md: 4 }}>
+        <ReturnDashboard />
+      </Box>
 
-        <Stack gap={6} mt={12}>
-          <Text fontSize="2xl" fontWeight="bold" color="blue.600">
-            Military Service Information
-          </Text>
+      <Stack gap={{ base: 6 }} mt={{ base: 8, sm: 10, md: 12, lg: 14 }}>
+        <Text fontSize={{ base: "xl", sm: "2xl", md: "3xl" }} fontWeight="bold" color="blue.600" textAlign="center">
+          Military Service Information
+        </Text>
 
-          <VStack gap={6} align="stretch">
-            <MilitaryServiceStatusSection
-              currentStatus={currentValues.militaryServiceStatus}
-              onStatusChange={handleMilitaryServiceStatusChange}
-              error={errors.militaryServiceStatus?.message}
-            />
+        <VStack gap={{ base: 4, sm: 6, md: 8, lg: 10 }} align="stretch">
+          <MilitaryServiceStatusSection
+            currentStatus={currentValues.militaryServiceStatus}
+            onStatusChange={handleMilitaryServiceStatusChange}
+            error={errors.militaryServiceStatus?.message}
+          />
 
-            <MilitaryDegreeSection
-              currentStatus={currentValues.militaryServiceStatus}
-              currentDegreeGroup={currentValues.degreeGroup}
-              currentDegree={currentValues.degree}
-              onDegreeGroupChange={handleDegreeGroupChange}
-              onDegreeChange={handleDegreeChange}
-              degreeGroupError={errors.degreeGroup?.message}
-              degreeError={errors.degree?.message}
-            />
+          <MilitaryDegreeSection
+            currentStatus={currentValues.militaryServiceStatus}
+            currentDegreeGroup={currentValues.degreeGroup}
+            currentDegree={currentValues.degree}
+            onDegreeGroupChange={handleDegreeGroupChange}
+            onDegreeChange={handleDegreeChange}
+            degreeGroupError={errors.degreeGroup?.message}
+            degreeError={errors.degree?.message}
+          />
 
-            <OtherServiceTypeSection
-              currentStatus={currentValues.militaryServiceStatus}
-              register={register}
-              error={errors.otherServiceType?.message}
-            />
+          <OtherServiceTypeSection
+            currentStatus={currentValues.militaryServiceStatus}
+            register={register}
+            error={errors.otherServiceType?.message}
+          />
 
-            <ServiceDetailsSection
-              currentStatus={currentValues.militaryServiceStatus}
-              register={register}
-            />
-          </VStack>
-        </Stack>
+          <ServiceDetailsSection
+            currentStatus={currentValues.militaryServiceStatus}
+            register={register}
+          />
+        </VStack>
+      </Stack>
 
+      <Box mt={{ base: 4, sm: 6, md: 8, lg: 10 }}>
         <StepNavigationButtons
           onPrevStep={prevStep}
           onNextStep={handleSubmit(onSubmit)}

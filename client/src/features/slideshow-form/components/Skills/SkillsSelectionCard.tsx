@@ -1,5 +1,4 @@
 import { Box, Heading } from "@chakra-ui/react";
-import { useColorModeValue } from "@chakra-ui/system";
 import type { ReactNode } from "react";
 
 interface SkillsSelectionCardProps {
@@ -8,11 +7,9 @@ interface SkillsSelectionCardProps {
 }
 
 const SkillsSelectionCard = ({ title, children }: SkillsSelectionCardProps) => {
-  const cardBg = useColorModeValue("gray.50", "gray.700");
-
   return (
-    <Box p={6} w="full" bg={cardBg} borderRadius="2xl">
-      <Heading size="md" mb={6} color="gray.600">
+    <Box p={{ base: 4, sm: 6, md: 8, lg: 10 }} w="full" borderRadius="2xl">
+      <Heading size={{ base: "sm", sm: "md", md: "lg" }} mb={{ base: 4, sm: 6, md: 8 }} color="white">
         {title}
       </Heading>
       {children}

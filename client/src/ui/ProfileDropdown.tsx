@@ -1,5 +1,5 @@
 import { Menu, Portal } from "@chakra-ui/react";
-import BaseButton from "@/components/shared/BaseButton";
+import BaseButton from "@/ui/BaseButton";
 
 type ProfileDropdownProps = {
   onSignOut: () => void;
@@ -15,10 +15,10 @@ const ProfileDropdown = ({
                     key={"profile"}
                     variant="outline"
                     color="white"
+                    size={{ base: "sm", sm: "md" }}
                     colorScheme="whiteAlpha.900"
                     borderColor="whiteAlpha.900"
                     fontWeight="bold"
-                    fontSize="lg"
                     _hover={{
                       bgColor: "whiteAlpha.900",
                       color: "blue.700",

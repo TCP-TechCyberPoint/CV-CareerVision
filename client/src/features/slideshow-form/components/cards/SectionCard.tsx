@@ -13,8 +13,10 @@ interface SectionCardProps {
   completion?: number;
   themeColor?: string;
   customContent?: ReactNode;
-  footer?: string;
   isBasic?: boolean; // For backward compatibility
+  // Margin props
+  ml?: string | number | Record<string, string | number>;
+  mr?: string | number | Record<string, string | number>;
 }
 
 const SectionCard = ({
@@ -25,8 +27,9 @@ const SectionCard = ({
   completion,
   themeColor = "teal",
   customContent,
-  footer,
   isBasic = false,
+  ml,
+  mr,
 }: SectionCardProps) => {
   // Use basic layout for simple cards or when isBasic is true
   if (isBasic || (!completion && !customContent)) {
@@ -35,6 +38,10 @@ const SectionCard = ({
         variant="navigation"
         themeColor={themeColor}
         onClick={onClick}
+        minH={{ base: "120px", md: "160px" }}
+        p={{ base: 3, md: 6 }}
+        ml={ml}
+        mr={mr}
       >
         <Flex align="center" gap={3} mb={2}>
           <Box
@@ -44,7 +51,7 @@ const SectionCard = ({
           >
             {icon}
           </Box>
-          <Text fontSize="lg" fontWeight="semibold">
+          <Text fontSize={{ base: "md", md: "lg" }} fontWeight="semibold" display={{ base: "none", md: "block" }}>
             {title}
           </Text>
         </Flex>
@@ -63,9 +70,13 @@ const SectionCard = ({
       variant="navigation"
       themeColor={themeColor}
       onClick={onClick}
+      minH={{ base: "120px", md: "160px" }}
+      p={{ base: 3, md: 6 }}
+      ml={ml}
+      mr={mr}
     >
-      {/* Header */}
-      <Flex align="center" justify="space-between" mb={4}>
+      {/* Header - hidden on mobile */}
+      <Flex align="center" justify="space-between" mb={4} display={{ base: "none", md: "flex" }}>
         <Flex align="center" gap={3}>
           <Box
             fontSize="2xl"
@@ -74,7 +85,7 @@ const SectionCard = ({
           >
             {icon}
           </Box>
-          <Text fontSize="lg" fontWeight="semibold">
+          <Text fontSize={{ base: "md", md: "lg" }} fontWeight="semibold">
             {title}
           </Text>
         </Flex>
@@ -91,7 +102,7 @@ const SectionCard = ({
 
       {/* Custom Content */}
       {customContent && (
-        <Box mb={4}>
+        <Box mb={{ base: 0, md: 4 }}>
           {customContent}
         </Box>
       )}
@@ -104,17 +115,6 @@ const SectionCard = ({
           mb={4}
         >
           {description}
-        </Text>
-      )}
-
-      {/* Footer */}
-      {footer && (
-        <Text 
-          fontSize="xs" 
-          color={{ base: "gray.500", _dark: "gray.400" }} 
-          mt={4}
-        >
-          {footer}
         </Text>
       )}
     </BaseCard>

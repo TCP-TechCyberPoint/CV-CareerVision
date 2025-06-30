@@ -14,12 +14,14 @@ export const MilitaryServiceStatusSection = ({
   error,
 }: MilitaryServiceStatusSectionProps) => {
   return (
-    <FormField label="Military Service Status" error={error}>
+    <FormField label="Military Service Status" error={error}
+    
+    >
       <RadioGroup.Root
         value={currentStatus ?? ""}
         onValueChange={(details) => onStatusChange(details.value ?? "")}
       >
-        <VStack align="start" gap={3}>
+        <VStack mt={4} align="start" gap={4} color="white" fontSize="sm">
           <RadioGroup.Item value="full_military">
             <RadioGroup.ItemHiddenInput />
             <RadioGroup.ItemIndicator />

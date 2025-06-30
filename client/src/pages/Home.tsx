@@ -13,7 +13,7 @@ import { FiBriefcase, FiTrendingUp, FiUsers } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import type { IconType } from "react-icons/lib";
 import { useCvData } from "@/features/slideshow-form/hooks/useCvData";
-import Navbar from "./Navbar";
+import Navbar from "@/ui/Navbar";
 
 const Feature = ({
   title,
@@ -28,15 +28,21 @@ const Feature = ({
     <Stack
       align="center"
       textAlign="center"
-      p={6}
+      p={{ base: 3, md: 6 }}
       bg={useColorModeValue("white", "gray.800")}
       rounded="xl"
       shadow="lg"
-      gap={4}
+      gap={{ base: 2, md: 4 }}
     >
-      <Icon as={icon} w={10} h={10} color="blue.500" />
-      <Heading size="md">{title}</Heading>
-      <Text color={useColorModeValue("gray.600", "gray.400")}>{text}</Text>
+      <Icon as={icon} w={{ base: 6, md: 10 }} h={{ base: 6, md: 10 }} color="blue.500" />
+      <Heading size={{ base: "xs", md: "md" }}>{title}</Heading>
+      <Text 
+        color={useColorModeValue("gray.600", "gray.400")}
+        fontSize={{ base: "sm", md: "md" }}
+        display={{ base: "none", md: "block" }}
+      >
+        {text}
+      </Text>
     </Stack>
   );
 };
@@ -51,12 +57,13 @@ const Home = () => {
       <Box as="main">
         
         {/* Hero Section */}
-        <Box bg={useColorModeValue("gray.50", "gray.900")} py={10}>
-          <Container maxW="container.xl">
-            <Stack align="center" textAlign="center" gap={8}>
+        <Box bg={useColorModeValue("gray.50", "gray.900")} py={{ base: 8, md: 10 }}>
+          <Container maxW={{ base: "container.sm", md: "container.md", lg: "container.xl" }} px={{ base: 4, md: 6 }}>
+            <Stack   mt={{ base: 8, md: 0 }} align="center" textAlign="center" gap={{ base: 6, md: 8 }} p={{ base: 4, md: 6 }}>
               <Heading
-                fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
+                fontSize={{ base: "xl", sm: "2xl", md: "3xl", lg: "4xl" }}
                 fontWeight="bold"
+                px={{ base: 2, md: 0 }}
               >
                 Your Career Journey
                 <Text as="span" color="blue.500">
@@ -65,30 +72,38 @@ const Home = () => {
                 </Text>
               </Heading>
        
-              <Stack direction={{ base: "column", md: "row" }} gap={4}>
+              <Stack 
+                direction="row" 
+                gap={{ base: 3, md: 4 }}
+                align="center"
+                justify="center"
+                flexWrap="wrap"
+              >
                 <Button
-                  size="lg"
+                  size={{ base: "md", md: "lg" }}
                   colorScheme="blue"
-                  px={8}
-                  fontSize="md"
+                  px={{ base: 6, sm: 8, md: 10 }}
+                  fontSize={{ base: "sm", md: "md" }}
                   borderLeftRadius="full"
                   borderRightRadius="lg"
                   bgColor="blue.700"
                   color="white"
                   onClick={() => navigate("/create-cv")}
+                  minW={{ base: "120px", sm: "180px", md: "240px" }}
                 >
                   Get Started
                 </Button>
                 <Button
-                  size="lg"
+                  size={{ base: "sm", md: "lg" }}
                   colorScheme="blue"
-                  px={8}
-                  fontSize="md"
+                  px={{ base: 6, sm: 8, md: 10 }}
+                  fontSize={{ base: "sm", md: "md" }}
                   borderLeftRadius="lg"
                   borderRightRadius="full"
                   bgColor="blue.700"
                   color="white"
                   onClick={() => navigate("/dashboard")}
+                  minW={{ base: "120px", sm: "180px", md: "200px" }}
                 >
                   Dashboard
                 </Button>
@@ -98,22 +113,34 @@ const Home = () => {
         </Box>
 
         {/* Features Section */}
-        <Box py={20}>
-          <Container maxW="container.xl">
-            <Stack gap={12}>
-              <Stack align="center" textAlign="center" gap={4}>
+        <Box py={{ base: 12, md: 20 }}>
+          <Container maxW={{ base: "container.sm", md: "container.md", lg: "container.xl" }} px={{ base: 4, md: 6 }}>
+            <Stack gap={{ base: 8, md: 12 }}>
+              <Stack align="center" textAlign="center" gap={{ base: 3, md: 4 }}>
                 <Heading 
-                fontSize={{ base: "xl", md: "2xl", lg: "3xl" }}
-                fontWeight="bold"
-                color="whiteAlpha.900"
-                >Why Choose Us</Heading>
-                <Text color="whiteAlpha.900" maxW="2xl">
+                  fontSize={{ base: "lg", sm: "xl", md: "2xl", lg: "3xl" }}
+                  fontWeight="bold"
+                  color="whiteAlpha.900"
+                  px={{ base: 2, md: 0 }}
+                >
+                  Why Choose Us
+                </Heading>
+                <Text 
+                  color="whiteAlpha.900" 
+                  maxW={{ base: "full", md: "2xl" }}
+                  fontSize={{ base: "sm", md: "md" }}
+                  px={{ base: 2, md: 0 }}
+                >
                   We provide the tools and insights you need to navigate your
                   career path effectively and achieve your professional goals.
                 </Text>
               </Stack>
 
-              <SimpleGrid columns={{ base: 1, md: 3 }} gap={10}>
+              <SimpleGrid 
+                columns={{ base: 3, md: 3 }} 
+                gap={{ base: 3, md: 10 }}
+                px={{ base: 2, md: 0 }}
+              >
                 <Feature
                   icon={FiBriefcase}
                   title="Career Tracking"

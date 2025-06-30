@@ -29,6 +29,15 @@ const SkillTag = ({
     return "subtle";
   };
 
+  const getColorScheme = ( colorScheme: string ) => {
+    if (isExpanded) return colorScheme + ".500";
+    return "";
+  };
+
+  const getTextColor = (  ) => {
+    if (isExpanded) return "white";
+  };
+
   const getSize = () => {
     if (size === "lg") return { px: 5, py: 3, fontSize: "md" };
     if (size === "sm") return { px: 3, py: 1, fontSize: "sm" };
@@ -40,7 +49,9 @@ const SkillTag = ({
   return (
     <MotionTag
       size={size}
-      variant={getVariant()}
+      variant={getVariant()}    
+      bg={getColorScheme(colorScheme)}
+      color={getTextColor()}
       colorPalette={colorScheme}
       cursor="pointer"
       onClick={onClick}

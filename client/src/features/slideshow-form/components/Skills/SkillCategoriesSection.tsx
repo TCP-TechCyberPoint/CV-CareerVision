@@ -22,7 +22,8 @@ export function SkillCategoriesSection<T extends string>({
   useGrid = false,
 }: SkillCategoriesSectionProps<T>) {
   const content = useGrid ? (
-    <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
+    <SimpleGrid  
+    columns={{ base: 1, md: 2, lg: 3 }} gap={{ base: 4, sm: 6, md: 8, lg: 10 }}>
       {categories.map((skill) => (
         <SkillTag
           key={skill}
@@ -35,7 +36,7 @@ export function SkillCategoriesSection<T extends string>({
       ))}
     </SimpleGrid>
   ) : (
-    <Wrap gap={4} mb={8}>
+    <Wrap gap={4} mb={8} bg="whiteAlpha.300" p={4} borderRadius="2xl" border="1px solid" borderColor="gray.600">
       {categories.map((skill) => (
         <WrapItem key={skill}>
           <SkillTag

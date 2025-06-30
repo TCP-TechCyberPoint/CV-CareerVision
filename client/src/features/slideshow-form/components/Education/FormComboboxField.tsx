@@ -43,7 +43,7 @@ const FormComboboxField = ({
       >
         <Combobox.Label>{label}</Combobox.Label>
         <Combobox.Control>
-          <Combobox.Input placeholder={placeholder} />
+          <Combobox.Input _placeholder={{ color: "whiteAlpha.600" }} placeholder={placeholder} />
           <Combobox.IndicatorGroup>
             <Combobox.ClearTrigger />
             <Combobox.Trigger />

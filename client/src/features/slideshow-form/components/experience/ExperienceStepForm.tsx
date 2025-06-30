@@ -45,7 +45,7 @@ const ExperienceStepForm = ({
       borderRadius="lg"
       borderWidth="2px"
       borderColor="purple.100"
-      bg="purple.50"
+      bg="purple.100"
       position="relative"
       mb={4}
     >

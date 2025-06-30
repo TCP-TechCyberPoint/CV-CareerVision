@@ -7,7 +7,6 @@ import {
   ContactInfoSection,
   AddressInfoSection,
 } from "../components/vitals";
-import containerStyles from "../components/vitals/containerStyles";
 
 // Main Component
 const StepVitals = ({
@@ -23,7 +22,6 @@ const StepVitals = ({
     errors,
     register,
     setValue,
-
     getValues,
   } = useStepVitals(nextStep);
 
@@ -43,12 +41,18 @@ const StepVitals = ({
   };
 
   return (
-    <Box {...containerStyles}>
+    <Box
+      mt={{ base: 10, sm: 12, md: 14, lg: 16 }}
+      mx="auto"
+      maxW={{ base: "100%", md: "75%" }}
+      p={{ base: 4, sm: 6, md: 8, lg: 10 }}
+      position="relative"
+    >
       {/* Return Dashboard Button */}
       <Box
-        position="absolute"
-        top={3}
-        left={3}
+        position="relative"
+        top={{ base: 2, sm: 3, md: 4 }}
+        left={{ base: 2, sm: 3, md: 4 }}
         zIndex={2}
         transform="translateY(0)"
         transition="all 0.3s ease"
@@ -57,7 +61,7 @@ const StepVitals = ({
         <ReturnDashboard />
       </Box>
 
-      <VStack gap={5} align="stretch" mt={6} position="relative" zIndex={1}>
+      <VStack gap={{ base: 4, sm: 6, md: 8, lg: 10 }} align="stretch" mt={{ base: 8, sm: 10, md: 12, lg: 14 }} position="relative" zIndex={1}>
         {/* Header Section */}
         <Box
           textAlign="center"
@@ -65,16 +69,19 @@ const StepVitals = ({
           opacity={1}
           transition="all 0.6s ease"
         >
-          <Text fontSize="2xl" fontWeight="bold" color="blue.600" mb={1}>
+          <Text fontSize={{ base: "xl", sm: "2xl", md: "3xl" }} fontWeight="bold" color="blue.600" mb={1}>
             Personal Information
           </Text>
-          <Text fontSize="sm" color="gray.600">
+          <Text fontSize={{ base: "sm", sm: "md", md: "lg" }} color="white">
             Help us get to know you better by filling out your personal details
           </Text>
         </Box>
 
         {/* Form Sections Grid */}
-        <Grid templateColumns="repeat(3, 1fr)" gap={5}>
+        <Grid 
+          templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} 
+          gap={{ base: 4, sm: 6, md: 8, lg: 10 }}
+        >
           <GridItem>
             <PersonalDetailsSection {...personalDetailsProps} />
           </GridItem>
@@ -89,7 +96,7 @@ const StepVitals = ({
         </Grid>
 
         {/* Navigation Buttons */}
-        <Box pt={3} transform="translateY(0)" transition="all 0.5s ease">
+        <Box pt={{ base: 3, sm: 4, md: 5, lg: 6 }} transform="translateY(0)" transition="all 0.5s ease">
           <StepNavigationButtons
             onPrevStep={prevStep}
             onNextStep={handleSubmit(onSubmit)}

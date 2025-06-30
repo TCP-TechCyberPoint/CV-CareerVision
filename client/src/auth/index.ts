@@ -9,7 +9,7 @@ export * from "./services/api";
 // Legacy exports for backward compatibility
 export { useAuth0Integration } from "./hooks/useAuth0Integration";
 export { ProtectedRoute } from "./components/ProtectedRoute";
-export { default as Login } from "./components/Login";
+export { default as Login } from "@/pages/Login";
 export { default as useAppInit } from "./hooks/useAppInit";
 
 // Default export for axiosInstance (backward compatibility)

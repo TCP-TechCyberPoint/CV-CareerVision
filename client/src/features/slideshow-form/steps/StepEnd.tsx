@@ -1,4 +1,4 @@
-import BaseButton from "@/components/shared/BaseButton";
+import BaseButton from "@/ui/BaseButton";
 import { Box, Text, Stack } from "@chakra-ui/react";
 import { useSlideshowFormStore } from "../store";
 import ReturnDashboard from "../components/ReturnDashboard";

@@ -165,6 +165,7 @@ const ExperienceFormFields = ({
         <Textarea
           {...register(`experience.${index}.description`)}
           placeholder="Describe your role and achievements..."
+          _placeholder={{ color: "whiteAlpha.200" }}
           size="lg"
           borderRadius="md"
           bg="white"

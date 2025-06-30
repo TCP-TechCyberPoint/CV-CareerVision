@@ -24,21 +24,27 @@ const PreferencesFormFields = ({
 }: PreferencesFormFieldsProps) => {
   return (
     <Box
+      bg="whiteAlpha.300"
+      borderRadius="2xl"
+      border="1px solid"
+      borderColor="gray.600"
+      p={{ base: 4, sm: 6, md: 8, lg: 10 }}
       display="grid"
-      gridTemplateColumns="repeat(2, 1fr)"
-      gap={6}
+      gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+      gap={{ base: 4, sm: 6, md: 8, lg: 10 }}
       width="100%"
     >
       {/* CV Style field - Radio buttons */}
-      <CvStyleField
-        error={errors.cvStyle?.message}
-        onValueChange={(value) => setValue("cvStyle", value)}
-        defaultValue="minimal"
-      />
+      <Box gridColumn={{ base: "1", md: "1 / -1" }}>
+        <CvStyleField
+          error={errors.cvStyle?.message}
+          onValueChange={(value) => setValue("cvStyle", value)}
+          defaultValue="minimal"
+        />
+      </Box>
 
       {/* CV Purpose field */}
       <PreferenceSelectField
-        label="CV Purpose"
         placeholder="Select your CV purpose"
         collection={cvPurposeCollection.items}
         error={errors.cvPurpose?.message}
@@ -49,7 +55,6 @@ const PreferencesFormFields = ({
 
       {/* Professional Preference field */}
       <PreferenceSelectField
-        label="Target Role"
         placeholder="Select your target role"
         collection={professionalPreferenceCollection.items}
         error={errors.professionalPreference?.message}
@@ -60,7 +65,6 @@ const PreferencesFormFields = ({
 
       {/* Experience Level field */}
       <PreferenceSelectField
-        label="Experience Level"
         placeholder="Select your experience level"
         collection={experienceLevelCollection.items}
         error={errors.experienceLevel?.message}
@@ -71,7 +75,6 @@ const PreferencesFormFields = ({
 
       {/* Industry Preference field */}
       <PreferenceSelectField
-        label="Preferred Industry"
         placeholder="Select your preferred industry"
         collection={industryCollection.items}
         error={errors.industryPreference?.message}
@@ -82,7 +85,6 @@ const PreferencesFormFields = ({
 
       {/* Target Salary Range field */}
       <PreferenceSelectField
-        label="Target Salary Range"
         placeholder="Select your target salary range"
         collection={salaryRangeCollection.items}
         error={errors.targetSalaryRange?.message}

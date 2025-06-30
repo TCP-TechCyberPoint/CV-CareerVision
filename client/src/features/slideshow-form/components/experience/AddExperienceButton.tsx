@@ -1,6 +1,6 @@
 import { Box, HStack } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
-import BaseButton from "@/components/shared/BaseButton";
+import BaseButton from "@/ui/BaseButton";
 
 interface AddExperienceButtonProps {
   onAdd: () => void;

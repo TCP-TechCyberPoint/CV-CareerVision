@@ -38,7 +38,8 @@ const BaseCard = ({
       {...cardBaseStyles}
       {...variantStyles}
       {...colorStyles}
-      p={cardContentStyles.padding}
+      p={{ base: 2, md: cardContentStyles.padding }}      
+      aspectRatio={{ base: "1", md: "auto" }}
       {...otherProps}
     >
       {children}

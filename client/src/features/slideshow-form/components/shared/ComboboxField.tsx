@@ -41,9 +41,12 @@ const ComboboxField = ({
           onValueChange(selected.value[0] || "");
         }}
       >
-        <Combobox.Label>{label}</Combobox.Label>
+        <Combobox.Label 
+        fontSize="sm" 
+        color={"white"}
+        >{label}</Combobox.Label>
         <Combobox.Control>
-          <Combobox.Input placeholder={placeholder} />
+          <Combobox.Input placeholder={placeholder} bg="whiteAlpha.300" />
           <Combobox.IndicatorGroup>
             <Combobox.ClearTrigger />
             <Combobox.Trigger />
@@ -51,7 +54,7 @@ const ComboboxField = ({
         </Combobox.Control>
         <Portal>
           <Combobox.Positioner>
-            <Combobox.Content maxHeight="200px">
+            <Combobox.Content bg="whiteAlpha.900" maxHeight="200px">
               <Combobox.Empty>No items found</Combobox.Empty>
               {listCollection.items.map((item: CollectionItem) => (
                 <Combobox.Item item={item} key={item.value}>
