@@ -1,6 +1,6 @@
 import { SLIDESHOW_PATHS } from "../routes";
 import { useNavigate } from "react-router-dom";
-import BaseButton from "@/components/shared/BaseButton";
+import BaseButton from "@/ui/BaseButton";
 
 const ReturnDashboard = () => {
   const navigate = useNavigate();

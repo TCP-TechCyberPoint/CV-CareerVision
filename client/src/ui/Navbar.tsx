@@ -7,7 +7,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import ProfileDropdown from "./ProfileDropdown";
-import BaseButton from "@/components/shared/BaseButton";
+import BaseButton from "@/ui/BaseButton";
 import { pages } from "@/constants/pages";
 
 const Navbar = () => {

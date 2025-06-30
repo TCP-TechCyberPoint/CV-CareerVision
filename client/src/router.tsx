@@ -1,8 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { Home, About } from "@/ui";
+import { Home, About } from "@/pages";
 import { Login, ProtectedRoute, useAuth0Integration } from "@/auth";
-import { slideshowRoutes } from "./features/slideshow-form/routes/slideshowRoutes";
-import Loading from "@/components/shared/Loading";
+import { slideshowRoutes } from "@slideshow-form/routes";
+import Loading from "@/ui/Loading";
 
 // Component to handle root route based on authentication
 const RootRedirect = () => {

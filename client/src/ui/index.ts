@@ -1,4 +1,5 @@
-export { default as Home } from './Home';
-export { default as About } from './About';
 export { default as Navbar } from './Navbar';
 export { default as ProfileDropdown } from './ProfileDropdown';
+export { default as Loading } from './Loading';
+export { default as BaseButton } from './BaseButton';
+export { default as Modal } from './Modal';

@@ -1,4 +1,4 @@
-import BaseButton from "@/components/shared/BaseButton";
+import BaseButton from "@/ui/BaseButton";
 import { Box, Heading, Text, Image, Flex, Stack } from "@chakra-ui/react";
 import introFormImage from "@/assets/images/intro-form.png";
 import ReturnDashboard from "../components/ReturnDashboard";

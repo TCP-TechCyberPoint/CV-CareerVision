@@ -10,10 +10,10 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
-import { useAuth0Integration } from "../hooks/useAuth0Integration";
+import { useAuth0Integration } from "../auth/hooks/useAuth0Integration";
 import Navbar from "@/ui/Navbar";
 import logo from "@/assets/images/career-vision-logo.png";
-import { AUTH_CONSTANTS } from "../constants";
+import { AUTH_CONSTANTS } from "../auth/constants";
 
 const Login = () => {
   const { isLoading, loginWithAuth0 } = useAuth0Integration();

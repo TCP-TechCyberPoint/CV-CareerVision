@@ -17,7 +17,17 @@ const VitalsCard = () => {
   const calculateAge = (dob: string | Date | undefined): string | number => {
     const date = new Date(dob ?? "");
     if (isNaN(date.getTime())) return "N/A";
-    return new Date().getFullYear() - date.getFullYear();
+    
+    const today = new Date();
+    let age = today.getFullYear() - date.getFullYear();
+    const monthDiff = today.getMonth() - date.getMonth();
+    
+    // If birthday hasn't occurred yet this year, subtract 1 from age
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < date.getDate())) {
+      age--;
+    }
+    
+    return age;
   };
 
   const customContent = (

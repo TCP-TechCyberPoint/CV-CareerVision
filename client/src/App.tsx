@@ -1,5 +1,5 @@
 import useAppInit from "@/auth/hooks/useAppInit";
-import Loading from "./components/shared/Loading";
+import Loading from "@/ui/Loading";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
 import { useAuth0Integration, setTokenGetter } from "@/auth";

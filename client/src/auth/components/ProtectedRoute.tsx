@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useAuth0Integration } from "../hooks/useAuth0Integration";
 import { useAuth0Timeout } from "../utils";
-import Loading from "@/components/shared/Loading";
+import Loading from "@/ui/Loading";
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useAuth0Integration();

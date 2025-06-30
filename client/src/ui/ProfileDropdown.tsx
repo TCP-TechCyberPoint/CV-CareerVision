@@ -1,5 +1,5 @@
 import { Menu, Portal } from "@chakra-ui/react";
-import BaseButton from "@/components/shared/BaseButton";
+import BaseButton from "@/ui/BaseButton";
 
 type ProfileDropdownProps = {
   onSignOut: () => void;

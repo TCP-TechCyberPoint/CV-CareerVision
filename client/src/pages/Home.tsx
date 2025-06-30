@@ -13,7 +13,7 @@ import { FiBriefcase, FiTrendingUp, FiUsers } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import type { IconType } from "react-icons/lib";
 import { useCvData } from "@/features/slideshow-form/hooks/useCvData";
-import Navbar from "./Navbar";
+import Navbar from "@/ui/Navbar";
 
 const Feature = ({
   title,

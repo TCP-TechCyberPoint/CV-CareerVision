@@ -1,5 +1,5 @@
 import { Box, HStack } from "@chakra-ui/react";
-import BaseButton from "@/components/shared/BaseButton";
+import BaseButton from "@/ui/BaseButton";
 import { FiPlus } from "react-icons/fi";
 
 interface AddProjectButtonProps {
