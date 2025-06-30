@@ -59,7 +59,7 @@ const Home = () => {
         {/* Hero Section */}
         <Box bg={useColorModeValue("gray.50", "gray.900")} py={{ base: 8, md: 10 }}>
           <Container maxW={{ base: "container.sm", md: "container.md", lg: "container.xl" }} px={{ base: 4, md: 6 }}>
-            <Stack align="center" textAlign="center" gap={{ base: 6, md: 8 }}>
+            <Stack   mt={{ base: 8, md: 0 }} align="center" textAlign="center" gap={{ base: 6, md: 8 }} p={{ base: 4, md: 6 }}>
               <Heading
                 fontSize={{ base: "xl", sm: "2xl", md: "3xl", lg: "4xl" }}
                 fontWeight="bold"
