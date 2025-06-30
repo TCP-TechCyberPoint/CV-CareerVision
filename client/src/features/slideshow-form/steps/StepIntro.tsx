@@ -6,64 +6,76 @@ import ReturnDashboard from "../components/ReturnDashboard";
 const StepIntro = ({ nextStep }: { nextStep: () => void }) => {
   return (
     <Box
-      mt={8}
+      mt={{ base: 4, sm: 6, md: 8, lg: 10 }}
       mx="auto"
-      maxW="600px"
-      p={8}
-      borderRadius="3xl"
-      boxShadow="xl"
-      bg="white"
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between"
-      border="1px solid"
-      borderColor="gray.100"
+      maxW={{ base: "100%", md: "75%" }}
+      p={{ base: 4, sm: 6, md: 8, lg: 10 }}
       position="relative"
-      _hover={{
-        boxShadow: "2xl",
-        transform: "translateY(-2px)",
-        transition: "all 0.3s ease"
-      }}
-      transition="all 0.3s ease"
     >
-      <Box position="absolute" top={4} left={4}>
+      <Box position="absolute" top={{ base: 2, sm: 3, md: 4 }} left={{ base: 2, sm: 3, md: 4 }}>
         <ReturnDashboard />
       </Box>
 
-      <Stack gap={6} mt={10}>
-        <Stack gap={3} textAlign="center">
-          <Heading size="xl" color="blue.600" fontWeight="bold">
+      <Stack gap={{ base: 4, sm: 6, md: 8, lg: 10 }} mt={{ base: 8, sm: 10, md: 12, lg: 14 }}>
+        <Stack gap={{ base: 2, sm: 3, md: 4, lg: 5 }} textAlign="center">
+          <Heading 
+            size={{ base: "lg", sm: "xl", md: "2xl", lg: "3xl" }} 
+            color="blue.600" 
+            fontWeight="bold"
+            px={{ base: 2, sm: 3, md: 0 }}
+          >
             Create Your Professional CV
           </Heading>
-          <Text fontSize="lg" color="gray.600" maxW="400px" mx="auto">
+          <Text 
+            fontSize={{ base: "md", sm: "lg", md: "xl", lg: "2xl" }} 
+            color="white" 
+            maxW={{ base: "full", sm: "500px", md: "600px", lg: "700px" }} 
+            mx="auto"
+            px={{ base: 2, sm: 3, md: 0 }}
+          >
             Let's build a compelling CV that showcases your professional journey
           </Text>
         </Stack>
 
-        <Stack gap={6}>
-          <Text fontSize="md" color="gray.700" fontWeight="semibold">
+        <Stack gap={{ base: 4, sm: 6, md: 8, lg: 10 }}>
+          <Text 
+            fontSize={{ base: "sm", sm: "md", md: "lg", lg: "xl" }} 
+            color="white" 
+            fontWeight="semibold"
+            px={{ base: 2, sm: 3, md: 0 }}
+          >
             In this guided process, we'll help you:
           </Text>
-          <Flex gap={8} align="center">
-            <Stack gap={3} flex={1}>
+          <Flex 
+            gap={{ base: 4, sm: 6, md: 12, lg: 16 }} 
+            align="center"
+            direction={{ base: "column", md: "row" }}
+          >
+            <Stack gap={{ base: 2, sm: 3, md: 4, lg: 5 }} flex={1} w="full">
               <Flex align="center" gap={3}>
                 <Box w={2} h={2} bg="blue.500" borderRadius="full" />
-                <Text fontSize="md" color="gray.600">Highlight your key skills and expertise</Text>
+                <Text fontSize={{ base: "sm", sm: "md", md: "lg", lg: "xl" }} color="white">
+                  Highlight your key skills and expertise
+                </Text>
               </Flex>
               <Flex align="center" gap={3}>
                 <Box w={2} h={2} bg="blue.500" borderRadius="full" />
-                <Text fontSize="md" color="gray.600">Showcase your professional experience</Text>
+                <Text fontSize={{ base: "sm", sm: "md", md: "lg", lg: "xl" }} color="white">
+                  Showcase your professional experience
+                </Text>
               </Flex>
               <Flex align="center" gap={3}>
                 <Box w={2} h={2} bg="blue.500" borderRadius="full" />
-                <Text fontSize="md" color="gray.600">Present your achievements and qualifications</Text>
+                <Text fontSize={{ base: "sm", sm: "md", md: "lg", lg: "xl" }} color="white">
+                  Present your achievements and qualifications
+                </Text>
               </Flex>
             </Stack>
             <Image
               src={introFormImage}
               alt="CV Creation Illustration"
               borderRadius="xl"
-              maxH="140px"
+              maxH={{ base: "100px", sm: "120px", md: "180px", lg: "220px" }}
               objectFit="contain"
               flex="0 0 auto"
             />
@@ -71,11 +83,13 @@ const StepIntro = ({ nextStep }: { nextStep: () => void }) => {
         </Stack>
       </Stack>
 
-      <Flex justify="center" mt={6}>
+      <Flex justify="center" mt={{ base: 4, sm: 6, md: 8, lg: 10 }}>
         <BaseButton 
           colorPalette="blue" 
-          size="lg" 
+          size={{ base: "md", sm: "lg", md: "lg", lg: "xl" }}
           onClick={nextStep}
+          w={{ base: "full", sm: "auto" }}
+          px={{ base: 6, sm: 8, md: 8, lg: 10 }}
         >
           Start Creating My CV
         </BaseButton>

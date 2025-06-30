@@ -50,25 +50,38 @@ const Login = () => {
     <Box minH="100vh">
       <Navbar />
       <Box as="main" display="flex" alignItems="center" minH="calc(100vh - 80px)" w="100%">
-        <Container maxW="container.xl">
-          <VStack gap={8} textAlign="center">
-            <Image src={logo} alt="Career Vision" width={200} height={70} />
+        <Container maxW={{ base: "container.sm", md: "container.md", lg: "container.xl" }} px={{ base: 4, md: 6 }}>
+          <VStack gap={{ base: 6, md: 8 }} textAlign="center">
+            <Image 
+              src={logo} 
+              alt="Career Vision" 
+              width={{ base: 150, md: 200 }} 
+              height={{ base: 50, md: 70 }} 
+            />
 
-            <VStack gap={4}>
-              <Heading fontSize="2xl" color="blue.300" maxW="md">
+            <VStack gap={{ base: 3, md: 4 }}>
+              <Heading 
+                fontSize={{ base: "xl", md: "2xl" }} 
+                color="blue.300" 
+                maxW={{ base: "sm", md: "md" }}
+              >
                 Your Career Journey Starts Here
               </Heading>
             </VStack>
 
-            <VStack gap={6} w="100%" maxW="md">
-              <Text color="blue.300" fontSize="lg">
+            <VStack gap={{ base: 4, md: 6 }} w="100%" maxW={{ base: "xs", sm: "sm", md: "md" }}>
+              <Text 
+                color="blue.300" 
+                fontSize={{ base: "md", md: "lg" }}
+                px={{ base: 2, md: 0 }}
+              >
                 Track your professional growth, set career goals, and visualize your path to success.
               </Text>
               
               <Button
                 size="lg"
-                fontSize="xl"
-                margin={6}
+                fontSize={{ base: "lg", md: "xl" }}
+                margin={{ base: 4, md: 6 }}
                 bgColor="rgba(66, 153, 225, 0.2)"
                 border="1px solid rgba(255, 255, 255, 0.9)"
                 _hover={{
@@ -79,16 +92,20 @@ const Login = () => {
                 }}
                 color="blue.300"
                 fontWeight="bold"
-                w="full"
+                w={{ base: "80%", sm: "70%", md: "full" }}
                 onClick={() => loginWithAuth0()}
-                py={6}
+                py={{ base: 4, md: 6 }}
               >
                 Sign In to Continue
               </Button>
             </VStack>
 
-            <VStack gap={4} pt={8}>
-              <Text fontSize="sm" color="blue.300">
+            <VStack gap={{ base: 3, md: 4 }} pt={{ base: 6, md: 8 }}>
+              <Text 
+                fontSize={{ base: "xs", md: "sm" }} 
+                color="blue.300"
+                px={{ base: 4, md: 0 }}
+              >
                 By signing in, you agree to our terms of service and privacy policy.
               </Text>
             </VStack>

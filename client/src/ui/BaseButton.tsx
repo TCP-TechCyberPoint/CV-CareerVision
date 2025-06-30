@@ -3,14 +3,16 @@ import { forwardRef } from "react";
 
 type ButtonProps = {
   children?: React.ReactNode;
-  variant?: "outline" | "solid" | "ghost" | "subtle" | "surface" | "plain";
+  variant?: "outline" | "solid" | "ghost" | "subtle" | "surface" | "plain" | { [key: string]: string };
   bg?: string;
   colorScheme?: string;
   color?: string;
   colorPalette?: string;
   onClick?: () => void;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | { [key: string]: string };
   minW?: string;
+  w?: string | { [key: string]: string };
+  px?: number | { [key: string]: number };
   type?: "button" | "submit" | "reset";
   _hover?: object;
   transition?: string;

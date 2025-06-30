@@ -34,7 +34,7 @@ const Navbar = () => {
         flexDir="row-reverse"
       >
         <Box>
-          <HStack gap={8} alignItems="center" flexDir="row-reverse">
+          <HStack gap={{ base: 4, md: 8 }} alignItems="center" flexDir="row-reverse">
             {isAuthenticated ? (
               <>
                 <ProfileDropdown onSignOut={handleSignOut} />
@@ -46,7 +46,7 @@ const Navbar = () => {
                     colorScheme="whiteAlpha.900"
                     borderColor="whiteAlpha.900"
                     fontWeight="bold"
-                    fontSize="lg"
+                    size={{ base: "sm", sm: "md" }}
                     _hover={{
                       bgColor: "whiteAlpha.900",
                       color: "blue.700",
@@ -66,6 +66,7 @@ const Navbar = () => {
                 variant="outline"
                 color="orange.500"
                 colorScheme="orange"
+                size={{ base: "sm", sm: "md" }}
                 onClick={handleLogin}
               >
                 Login
@@ -75,7 +76,7 @@ const Navbar = () => {
         </Box>
 
         {/* Logo */}
-        <Text fontSize="xl" color="white" fontWeight="bold">
+        <Text fontSize={{ base: "md", sm: "lg" }} color="white" fontWeight="bold">
           Career Vision
         </Text>
       </Flex>

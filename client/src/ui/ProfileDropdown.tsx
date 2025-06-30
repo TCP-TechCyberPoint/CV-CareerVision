@@ -15,10 +15,10 @@ const ProfileDropdown = ({
                     key={"profile"}
                     variant="outline"
                     color="white"
+                    size={{ base: "sm", sm: "md" }}
                     colorScheme="whiteAlpha.900"
                     borderColor="whiteAlpha.900"
                     fontWeight="bold"
-                    fontSize="lg"
                     _hover={{
                       bgColor: "whiteAlpha.900",
                       color: "blue.700",
