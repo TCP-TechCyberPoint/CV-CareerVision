@@ -29,8 +29,8 @@ const SkillSubcategoriesSection = <T extends string>({
     : Object.values(selectedSkills).flat();
 
   const content = (
-    <Box mt={10}>
-      <Heading size="sm" mb={6} color="gray.600">
+    <Box mt={10} bg="whiteAlpha.400" p={4} borderRadius="2xl" border="1px solid" borderColor="gray.600">
+      <Heading size={{ base: "xs", sm: "sm", md: "md" }} mb={{ base: 4, sm: 5, md: 6 }} color="white">
         Refine your selection:
       </Heading>
       <Wrap gap={3}>

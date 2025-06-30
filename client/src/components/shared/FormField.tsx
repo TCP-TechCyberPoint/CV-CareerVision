@@ -13,8 +13,8 @@ const FormField = ({
   children, 
   optional = false 
 }: FormFieldProps) => (
-  <Field.Root invalid={!!error}>
-    <Field.Label fontWeight="semibold" color="gray.700" fontSize="sm">
+  <Field.Root bg="whiteAlpha.300" borderRadius="2xl" border="1px solid" borderColor="gray.600" p={4} invalid={!!error} >
+    <Field.Label userSelect="text"  fontWeight="bold" color="white" fontSize="sm">
       {label}
       {optional && (
         <Text as="span" color="gray.500" fontWeight="normal" fontSize="xs">

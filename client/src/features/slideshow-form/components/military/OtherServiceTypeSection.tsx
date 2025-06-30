@@ -20,7 +20,8 @@ export const OtherServiceTypeSection = ({
 
   return (
     <FormField label="Specify Service Type" error={error}>
-      <Input
+      <Input 
+        _placeholder={{ color: "whiteAlpha.600" }}
         placeholder="Please specify your service type"
         {...register("otherServiceType")}
       />

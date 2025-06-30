@@ -10,6 +10,7 @@ interface SelectFieldProps {
   onValueChange: (value: string) => void;
   invalid?: boolean;
   value?: string;
+  color?: string;
 }
 
 const SelectField = ({
@@ -20,6 +21,7 @@ const SelectField = ({
   onValueChange,
   invalid = false,
   value,
+  
 }: SelectFieldProps) => {
   const listCollection = createListCollection({
     items: collection,
@@ -37,9 +39,9 @@ const SelectField = ({
         }}
       >
         <Select.HiddenSelect />
-        <Select.Label>{label}</Select.Label>
+        <Select.Label fontSize="sm" fontWeight="bold" color={"white"}>{label}</Select.Label>
         <Select.Control>
-          <Select.Trigger>
+          <Select.Trigger bg="whiteAlpha.300">
             <Select.ValueText placeholder={placeholder} />
           </Select.Trigger>
           <Select.IndicatorGroup>
@@ -48,7 +50,7 @@ const SelectField = ({
         </Select.Control>
         <Portal>
           <Select.Positioner>
-            <Select.Content>
+            <Select.Content bg="whiteAlpha.900">
               {listCollection.items.map((item: CollectionItem) => (
                 <Select.Item item={item.value} key={item.value}>
                   {item.label}

@@ -6,17 +6,17 @@ import ReturnDashboard from "../components/ReturnDashboard";
 const StepIntro = ({ nextStep }: { nextStep: () => void }) => {
   return (
     <Box
-      mt={{ base: 4, sm: 6, md: 8, lg: 10 }}
+      mt={{ base: 10, sm: 12, md: 14, lg: 16 }}
       mx="auto"
       maxW={{ base: "100%", md: "75%" }}
       p={{ base: 4, sm: 6, md: 8, lg: 10 }}
       position="relative"
     >
-      <Box position="absolute" top={{ base: 2, sm: 3, md: 4 }} left={{ base: 2, sm: 3, md: 4 }}>
+      <Box position="relative" top={{ base: 2, sm: 3, md: 4 }} left={{ base: 2, sm: 3, md: 4 }}>
         <ReturnDashboard />
       </Box>
 
-      <Stack gap={{ base: 4, sm: 6, md: 8, lg: 10 }} mt={{ base: 8, sm: 10, md: 12, lg: 14 }}>
+      <Stack mt={{ base: 8, sm: 10, md: 12, lg: 14 }} gap={{ base: 4, sm: 6, md: 8, lg: 10 }}>
         <Stack gap={{ base: 2, sm: 3, md: 4, lg: 5 }} textAlign="center">
           <Heading 
             size={{ base: "lg", sm: "xl", md: "2xl", lg: "3xl" }} 
@@ -85,7 +85,9 @@ const StepIntro = ({ nextStep }: { nextStep: () => void }) => {
 
       <Flex justify="center" mt={{ base: 4, sm: 6, md: 8, lg: 10 }}>
         <BaseButton 
-          colorPalette="blue" 
+          color="white"
+          variant="solid"
+          bg="blue.700"
           size={{ base: "md", sm: "lg", md: "lg", lg: "xl" }}
           onClick={nextStep}
           w={{ base: "full", sm: "auto" }}

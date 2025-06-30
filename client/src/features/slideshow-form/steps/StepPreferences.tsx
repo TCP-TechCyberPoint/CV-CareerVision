@@ -21,24 +21,20 @@ const StepPreferences = ({
 
   return (
     <MotionBox
+      mt={{ base: 4, sm: 0 }}
+      mx="auto"
+      maxW={{ base: "100%", md: "75%" }}
+      p={{ base: 4, md: 8, lg: 10 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      mt={20}
-      p={8}
-      maxW="800px"
-      mx="auto"
-      borderWidth="1px"
-      borderRadius="lg"
-      boxShadow="lg"
-      bg="white"
       position="relative"
     >
-      <Box position="absolute" top={4} left={4}>
+      <Box mt={{ base: 2, sm: 3, md: 4 }} position="relative" top={{ base: 2, sm: 3, md: 4 }} left={{ base: 2, sm: 3, md: 4 }}>
         <ReturnDashboard />
       </Box>
 
-      <VStack gap={8} align="stretch" mt={12}>
+      <VStack gap={{ base: 6 }} align="stretch" mt={{ base: 8, sm: 10, md: 12, lg: 14 }}>
         <PreferencesHeader />
         
         <PreferencesFormFields

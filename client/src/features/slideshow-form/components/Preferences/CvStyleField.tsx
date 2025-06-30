@@ -1,4 +1,4 @@
-import { RadioGroup, VStack, Text } from "@chakra-ui/react";
+import { RadioGroup, HStack, Text } from "@chakra-ui/react";
 import { Field } from "@chakra-ui/react";
 import { type CvStyle, cvStyleCollection } from "@slideshow-form/schemas/preferencesSchema";
 
@@ -15,10 +15,10 @@ const CvStyleField = ({
 }: CvStyleFieldProps) => {
   return (
     <Field.Root invalid={!!error}>
-      <Field.Label fontWeight="medium" fontSize="lg">
+      <Field.Label fontWeight="medium" fontSize="lg" color="white">
         CV Style
       </Field.Label>
-      <Text fontSize="sm" color="gray.600" mb={3}>
+      <Text fontSize="sm" color="white" mb={3}>
         Choose the visual style that best represents you
       </Text>
       <RadioGroup.Root
@@ -27,17 +27,17 @@ const CvStyleField = ({
           onValueChange(details.value as CvStyle);
         }}
       >
-        <VStack gap={3} py={2} align="start">
+        <HStack gap={{ base: 2, sm: 4, md: 6 }} py={2} align="start" flexWrap="wrap">
           {cvStyleCollection.items.map((styleItem) => (
             <RadioGroup.Item key={styleItem.value} value={styleItem.value}>
               <RadioGroup.ItemHiddenInput />
               <RadioGroup.ItemIndicator />
-              <RadioGroup.ItemText textTransform="capitalize" fontSize="md">
+              <RadioGroup.ItemText textTransform="capitalize" fontSize="md" color="white">
                 {styleItem.label}
               </RadioGroup.ItemText>
             </RadioGroup.Item>
           ))}
-        </VStack>
+        </HStack>
       </RadioGroup.Root>
       <Field.ErrorText>{error}</Field.ErrorText>
     </Field.Root>

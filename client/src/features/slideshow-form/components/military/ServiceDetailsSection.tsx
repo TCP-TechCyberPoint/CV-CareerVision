@@ -26,6 +26,7 @@ export const ServiceDetailsSection = ({
     <>
       <FormField label="Service Duration">
         <Input
+          _placeholder={{ color: "whiteAlpha.600" }}
           placeholder="e.g., 3 years, 2.5 years"
           {...register("serviceDuration")}
         />
@@ -34,6 +35,7 @@ export const ServiceDetailsSection = ({
       <FormField label="Service Details">
         <Textarea
           placeholder="Describe your role, responsibilities, achievements..."
+          _placeholder={{ color: "whiteAlpha.600" }}
           rows={4}
           {...register("serviceDetails")}
         />

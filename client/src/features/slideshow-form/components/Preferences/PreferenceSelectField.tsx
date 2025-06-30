@@ -1,21 +1,19 @@
-import { Text } from "@chakra-ui/react";
 import { SelectField } from "@slideshow-form/components";
-
-  import type { CollectionItem } from "@ark-ui/react";
-  import { createListCollection } from "@ark-ui/react";
+import { createListCollection } from "@ark-ui/react";
+import type { CollectionItem } from "@ark-ui/react";
 
 interface PreferenceSelectFieldProps {
-  label: string;
+  
   placeholder: string;
   collection: CollectionItem[];
   error?: string;
   value?: string;
   onValueChange: (value: string) => void;
-  description?: string;
+  description: string;
 }
 
 const PreferenceSelectField = ({
-  label,
+  
   placeholder,
   collection,
   error,
@@ -29,13 +27,9 @@ const PreferenceSelectField = ({
 
   return (
     <div>
-      {description && (
-        <Text fontSize="sm" color="gray.500" mb={2} fontWeight="medium" as="p">
-          {description}
-        </Text>
-      )}
+ 
       <SelectField
-        label={label}
+        label={description}
         placeholder={placeholder}
         collection={listCollection.items}
         error={error}

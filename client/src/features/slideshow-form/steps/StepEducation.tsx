@@ -45,80 +45,82 @@ const StepEducation = ({ nextStep, prevStep }: StepEducationProps) => {
 
   return (
     <MotionBox
-      mt={8}
+     
+      mt={{ base: 10, sm: 12, md: 14, lg: 16 }}
+      mx="auto"
+      maxW={{ base: "100%", md: "75%" }}
+      p={{ base: 4, sm: 6, md: 8, lg: 10 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
+      position="relative"
     >
-      <Box
-        p={8}
-        borderRadius="xl"
-        boxShadow="xl"
-        bg="white"
-        maxW="800px"
-        mx="auto"
-        position="relative"
-      >
-        <Box position="absolute" top={4} left={4}>
-          <ReturnDashboard />
+      <Box position="relative" top={{ base: 2, sm: 3, md: 4 }} left={{ base: 2, sm: 3, md: 4 }}>
+        <ReturnDashboard />
+      </Box>
+
+      <Stack gap={{ base: 4, sm: 6, md: 8, lg: 10 }} mt={{ base: 8, sm: 10, md: 12, lg: 14 }}>
+        <Text fontSize={{ base: "xl", sm: "2xl", md: "3xl" }} fontWeight="bold" color="blue.600" textAlign="center">
+          Education Information
+        </Text>
+
+        <Box
+         bg="whiteAlpha.300"
+         borderRadius="2xl"
+         border="1px solid"
+         borderColor="gray.600"
+         p={{ base: 4, sm: 6, md: 8, lg: 10 }}
+          display="grid"
+          gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+          gap={{ base: 4, sm: 6, md: 8, lg: 10 }}
+          width="100%"
+        >
+          <SelectField
+            label="Degree"
+            placeholder="Select a degree"
+            collection={degreesCollection.items}
+            error={errors.degree?.message}
+            invalid={!!errors.degree}
+            value={currentValues.degree}
+            onValueChange={(value) => setValue("degree", value as EducationFormData["degree"])}
+          />
+
+          <SelectField
+            label="Field of Study"
+            placeholder="Select a field of study"
+            collection={fieldsOfStudyCollection.items}
+            error={errors.fieldOfStudy?.message}
+            invalid={!!errors.fieldOfStudy}
+            value={currentValues.fieldOfStudy}
+            onValueChange={(value) => setValue("fieldOfStudy", value as EducationFormData["fieldOfStudy"])}
+          />
+
+          <ComboboxField
+            label="Institution"
+            placeholder="Type to search"
+            collection={institutesCollection.items}
+            error={errors.institution?.message}
+            invalid={!!errors.institution}
+            value={currentValues.institution}
+            onInputValueChange={filterInstitutes}
+            onValueChange={(value) => setValue("institution", value)}
+          />
+
+          <ComboboxField
+            label="Graduation Year"
+            placeholder="Type to search"
+            collection={yearsCollection.items}
+            error={errors.graduationYear?.message}
+            invalid={!!errors.graduationYear}
+            value={currentValues.graduationYear}
+            onInputValueChange={filterYears}
+            onValueChange={(value) => setValue("graduationYear", value as EducationFormData["graduationYear"])}
+          />
         </Box>
+      </Stack>
 
-        <Stack gap={6} mt={12}>
-          <Text fontSize="2xl" fontWeight="bold" color="blue.600">
-            Education Information
-          </Text>
-
-          <Box
-            display="grid"
-            gridTemplateColumns="repeat(2, 1fr)"
-            gap={6}
-            width="100%"
-          >
-            <SelectField
-              label="Degree"
-              placeholder="Select a degree"
-              collection={degreesCollection.items}
-              error={errors.degree?.message}
-              invalid={!!errors.degree}
-              value={currentValues.degree}
-              onValueChange={(value) => setValue("degree", value as EducationFormData["degree"])}
-            />
-
-            <SelectField
-              label="Field of Study"
-              placeholder="Select a field of study"
-              collection={fieldsOfStudyCollection.items}
-              error={errors.fieldOfStudy?.message}
-              invalid={!!errors.fieldOfStudy}
-              value={currentValues.fieldOfStudy}
-              onValueChange={(value) => setValue("fieldOfStudy", value as EducationFormData["fieldOfStudy"])}
-            />
-
-            <ComboboxField
-              label="Institution"
-              placeholder="Type to search"
-              collection={institutesCollection.items}
-              error={errors.institution?.message}
-              invalid={!!errors.institution}
-              value={currentValues.institution}
-              onInputValueChange={filterInstitutes}
-              onValueChange={(value) => setValue("institution", value)}
-            />
-
-            <ComboboxField
-              label="Graduation Year"
-              placeholder="Type to search"
-              collection={yearsCollection.items}
-              error={errors.graduationYear?.message}
-              invalid={!!errors.graduationYear}
-              value={currentValues.graduationYear}
-              onInputValueChange={filterYears}
-              onValueChange={(value) => setValue("graduationYear", value as EducationFormData["graduationYear"])}
-            />
-          </Box>
-        </Stack>
-
+      <Box mt={{ base: 4, sm: 6, md: 8, lg: 10 }}>
         <StepNavigationButtons
           onPrevStep={prevStep}
           onNextStep={handleSubmit(onSubmit)}

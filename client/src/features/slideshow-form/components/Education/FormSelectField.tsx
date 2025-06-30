@@ -41,7 +41,7 @@ const FormSelectField = ({
         <Select.Label>{label}</Select.Label>
         <Select.Control>
           <Select.Trigger>
-            <Select.ValueText placeholder={placeholder} />
+            <Select.ValueText _placeholder={{ color: "whiteAlpha.600" }} placeholder={placeholder} />
           </Select.Trigger>
           <Select.IndicatorGroup>
             <Select.Indicator />
