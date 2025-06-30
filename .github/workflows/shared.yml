@@ -61,6 +61,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Clean install for platform-specific binaries
+        run: |
+          # Remove node_modules and package-lock.json to ensure clean install
+          rm -rf node_modules package-lock.json
+          # Install dependencies fresh to get correct platform-specific binaries
+          npm install
+          # Explicitly install the Linux-specific Rollup binary
+          npm install @rollup/rollup-linux-x64-gnu
+        continue-on-error: false
+
       - name: Cache build
         uses: actions/cache@v4
         with:
