@@ -84,12 +84,11 @@ const Home = () => {
                   colorScheme="blue"
                   px={{ base: 6, sm: 8, md: 10 }}
                   fontSize={{ base: "sm", md: "md" }}
-                  borderLeftRadius="full"
-                  borderRightRadius="lg"
-                  bgColor="blue.700"
+                  borderRadius="lg"
+                  bgColor="blue.600"
                   color="white"
                   onClick={() => navigate("/create-cv")}
-                  minW={{ base: "120px", sm: "180px", md: "240px" }}
+                  minW={{ base: "120px", sm: "180px", md: "200px" }}
                 >
                   Get Started
                 </Button>
@@ -98,14 +97,26 @@ const Home = () => {
                   colorScheme="blue"
                   px={{ base: 6, sm: 8, md: 10 }}
                   fontSize={{ base: "sm", md: "md" }}
-                  borderLeftRadius="lg"
-                  borderRightRadius="full"
+                  borderRadius="lg"
                   bgColor="blue.700"
                   color="white"
                   onClick={() => navigate("/dashboard")}
                   minW={{ base: "120px", sm: "180px", md: "200px" }}
                 >
                   Dashboard
+                </Button>
+                <Button
+                  size={{ base: "sm", md: "lg" }}
+                  colorScheme="blue"
+                  px={{ base: 6, sm: 8, md: 10 }}
+                  fontSize={{ base: "sm", md: "md" }}
+                  borderRadius="lg"
+                  bgColor="blue.800"
+                  color="white"
+                  onClick={() => navigate("/chatbot")}
+                  minW={{ base: "120px", sm: "180px", md: "200px" }}
+                >
+                  Chatbot
                 </Button>
               </Stack>
             </Stack>

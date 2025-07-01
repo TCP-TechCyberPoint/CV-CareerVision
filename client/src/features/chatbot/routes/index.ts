@@ -1,0 +1,1 @@
+export { chatbotRoutes } from "./chatbotRoutes";

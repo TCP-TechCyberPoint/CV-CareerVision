@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import { Home, About } from "@/pages";
 import { Login, ProtectedRoute, useAuth0Integration } from "@/auth";
 import { slideshowRoutes } from "@slideshow-form/routes";
+import { chatbotRoutes } from "@chatbot/routes";
 import Loading from "@/ui/Loading";
 
 // Component to handle root route based on authentication
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
     ),
   },
   ...slideshowRoutes.map(route => ({
+    ...route,
+    element: <ProtectedRoute>{route.element}</ProtectedRoute>
+  })),
+  ...chatbotRoutes.map(route => ({
     ...route,
     element: <ProtectedRoute>{route.element}</ProtectedRoute>
   })),

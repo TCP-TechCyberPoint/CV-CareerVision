@@ -12,6 +12,7 @@
     "paths": {
       "@/*": ["./*"], // General alias for everything inside `src`
       "@slideshow-form/*": ["./features/slideshow-form/*"], // Existing alias
+      "@chatbot/*": ["./features/chatbot/*"],
       "@@/features/*": ["./features/*"] // Alternative alias for features
     },
     "types": ["react"],
