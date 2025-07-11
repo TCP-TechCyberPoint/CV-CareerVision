@@ -90,7 +90,6 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
     content = JSON.parse(text);
   }
 
-  // ✅ Truncate experience to 3 entries, with military fallback
   if (Array.isArray(content.experience)) {
     const professional = content.experience.filter((e: any) => e.startYear && e.endYear);
     const military = content.experience.filter((e: any) => !e.startYear && !e.endYear);
@@ -102,7 +101,6 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
     content.experience = trimmedExperience;
   }
 
-  // ✅ Truncate projects to 3
   if (Array.isArray(content.projects)) {
     content.projects = content.projects.slice(0, 3);
   }
@@ -114,6 +112,7 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
       children: [new TextRun({ text, bold: true, size })],
       alignment: AlignmentType.CENTER,
       spacing: { after: 50 },
+      bidirectional: false, // 🔄 added bidirectional: false
     });
 
   const addSectionHeading = (label: string) =>
@@ -122,6 +121,7 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
         children: [new TextRun({ text: label.toUpperCase(), bold: true, size: 24 })],
         alignment: AlignmentType.LEFT,
         spacing: { after: 100 },
+        bidirectional: false, // 🔄 added bidirectional: false
       })
     );
 
@@ -130,6 +130,7 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
       new Paragraph({
         border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: "auto" } },
         spacing: { after: 80 },
+        bidirectional: false, // 🔄 added bidirectional: false
       })
     );
 
@@ -137,6 +138,7 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
     new Paragraph({
       text,
       spacing: { after: 80, line: 200 },
+      bidirectional: false, // 🔄 added bidirectional: false
       ...(isBullet ? { bullet: { level: 0 } } : {}),
     });
 
@@ -192,6 +194,7 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
       children: contactItems,
       alignment: AlignmentType.CENTER,
       spacing: { after: 200 },
+      bidirectional: false, // 🔄 added bidirectional: false
     })
   );
 
