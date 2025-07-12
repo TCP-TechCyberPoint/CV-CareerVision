@@ -1,91 +1,68 @@
-import type { User } from "../types";
-import { AUTH_CONSTANTS } from "../constants";
+// client/src/auth/utils/storage.ts
+import type { User } from '../types';
+import type { User as Auth0User } from '@auth0/auth0-react';
 
-// Storage utility functions for authentication
 export const storageUtils = {
-  // Set authentication token
-  setToken: (token: string) => {
-    document.cookie = `${AUTH_CONSTANTS.TOKEN_KEY}=${token}; path=${AUTH_CONSTANTS.COOKIE_PATH}; max-age=${AUTH_CONSTANTS.COOKIE_MAX_AGE}; secure; samesite=${AUTH_CONSTANTS.COOKIE_SAME_SITE}`;
-  },
-
-  // Get authentication token
   getToken: (): string | null => {
-    const cookies = document.cookie.split(";");
-    const tokenCookie = cookies.find((cookie) => 
-      cookie.trim().startsWith(`${AUTH_CONSTANTS.TOKEN_KEY}=`)
-    );
-    return tokenCookie ? tokenCookie.split("=")[1] : null;
-  },
-
-  // Set user data
-  setUser: (user: User) => {
-    const userString = encodeURIComponent(JSON.stringify(user));
-    document.cookie = `${AUTH_CONSTANTS.USER_KEY}=${userString}; path=${AUTH_CONSTANTS.COOKIE_PATH}; max-age=${AUTH_CONSTANTS.COOKIE_MAX_AGE}; secure; samesite=${AUTH_CONSTANTS.COOKIE_SAME_SITE}`;
-  },
-
-  // Get user data
-  getUser: (): User | null => {
-    const cookies = document.cookie.split(";");
-    const userCookie = cookies.find((cookie) => 
-      cookie.trim().startsWith(`${AUTH_CONSTANTS.USER_KEY}=`)
-    );
-    
-    if (!userCookie) return null;
-    
     try {
-      const userString = userCookie.split("=")[1];
-      return JSON.parse(decodeURIComponent(userString));
+      return localStorage.getItem('access_token');
     } catch {
       return null;
     }
   },
 
-  // Clear authentication cookies
-  clearCookies: () => {
-    const expireDate = "Thu, 01 Jan 1970 00:00:00 UTC";
-    document.cookie = `${AUTH_CONSTANTS.TOKEN_KEY}=; path=${AUTH_CONSTANTS.COOKIE_PATH}; expires=${expireDate};`;
-    document.cookie = `${AUTH_CONSTANTS.USER_KEY}=; path=${AUTH_CONSTANTS.COOKIE_PATH}; expires=${expireDate};`;
-  },
-
-  // Clear localStorage
-  clearLocalStorage: () => {
+  setToken: (token: string): void => {
     try {
-      localStorage.clear();
-      
-      // Specifically clear Auth0 keys
-      const auth0Keys = Object.keys(localStorage).filter(key => 
-        key.includes('auth0') || 
-        key.includes('Auth0') || 
-        key.includes('access_token') ||
-        key.includes('id_token')
-      );
-      
-      auth0Keys.forEach(key => {
-        localStorage.removeItem(key);
-      });
-    } catch (e) {
-      console.error("Failed to clear localStorage:", e);
+      localStorage.setItem('access_token', token);
+    } catch (error) {
+      console.error('Failed to store token:', error);
     }
   },
 
-  // Clear sessionStorage
-  clearSessionStorage: () => {
+  getUser: (): User | null => {
     try {
-      sessionStorage.clear();
-    } catch (e) {
-      console.error("Failed to clear sessionStorage:", e);
+      const userStr = localStorage.getItem('user');
+      return userStr ? JSON.parse(userStr) : null;
+    } catch {
+      return null;
     }
   },
 
-  // Clear all browser storage
-  clearAllStorage: () => {
-    storageUtils.clearCookies();
-    storageUtils.clearLocalStorage();
-    storageUtils.clearSessionStorage();
+  setUser: (user: User): void => {
+    try {
+      localStorage.setItem('user', JSON.stringify(user));
+    } catch (error) {
+      console.error('Failed to store user:', error);
+    }
   },
 
-  // Check if user is authenticated based on cookies
-  isAuthenticated: (): boolean => {
-    return !!storageUtils.getToken();
-  }
-}; 
+  clearAllStorage: (): void => {
+    try {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('user');
+    } catch (error) {
+      console.error('Failed to clear storage:', error);
+    }
+  },
+};
+
+
+// client/src/auth/utils/auth-helpers.ts
+
+export const authHelpers = {
+  convertAuth0User: (auth0User: Auth0User): User => ({
+    id: auth0User.sub!,
+    email: auth0User.email!,
+    name: auth0User.name!,
+
+  }),
+
+  getAuth0Params: () => ({
+    audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+    scope: 'openid profile email',
+  }),
+
+  getLogoutParams: () => ({
+    returnTo: window.location.origin,
+  }),
+};

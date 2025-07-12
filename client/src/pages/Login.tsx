@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+// client/src/pages/Login.tsx
+import React from 'react';
 import {
   Box,
   Container,
@@ -8,29 +9,22 @@ import {
   Button,
   Image,
   Spinner,
-} from "@chakra-ui/react";
-import { useColorModeValue } from "@chakra-ui/system";
-import { useAuth0Integration } from "../auth/hooks/useAuth0Integration";
-import Navbar from "@/ui/Navbar";
-import logo from "@/assets/images/career-vision-logo.png";
-import { AUTH_CONSTANTS } from "../auth/constants";
+} from '@chakra-ui/react';
+import { useColorModeValue } from '@chakra-ui/system';
+import { useAuth } from '../auth/context/useAuth';
+import type { AuthContextType } from '../auth/types';
+import Navbar from '@/ui/Navbar';
+import logo from '@/assets/images/career-vision-logo.png';
 
-const Login = () => {
-  const { isLoading, loginWithAuth0 } = useAuth0Integration();
-  const bgColor = useColorModeValue("gray.50", "gray.900");
-  const [shouldRender, setShouldRender] = useState(false);
+const Login: React.FC = () => {
+  const { login, isLoading } = useAuth() as AuthContextType;
+  const bgColor = useColorModeValue('gray.50', 'gray.900');
 
-  // Add a small delay to prevent race conditions
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShouldRender(true);
-    }, AUTH_CONSTANTS.APP_INIT_DELAY);
+  const handleLogin = () => {
+    login();
+  };
 
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Show loading spinner while Auth0 is initializing or during delay
-  if (isLoading || !shouldRender) {
+  if (isLoading) {
     return (
       <Box minH="100vh" bg={bgColor}>
         <Navbar />
@@ -50,7 +44,7 @@ const Login = () => {
     <Box minH="100vh">
       <Navbar />
       <Box as="main" display="flex" alignItems="center" minH="calc(100vh - 80px)" w="100%">
-        <Container maxW={{ base: "container.sm", md: "container.md", lg: "container.xl" }} px={{ base: 4, md: 6 }}>
+        <Container maxW={{ base: 'container.sm', md: 'container.md', lg: 'container.xl' }} px={{ base: 4, md: 6 }}>
           <VStack gap={{ base: 6, md: 8 }} textAlign="center">
             <Image 
               src={logo} 
@@ -61,18 +55,18 @@ const Login = () => {
 
             <VStack gap={{ base: 3, md: 4 }}>
               <Heading 
-                fontSize={{ base: "xl", md: "2xl" }} 
+                fontSize={{ base: 'xl', md: '2xl' }} 
                 color="blue.300" 
-                maxW={{ base: "sm", md: "md" }}
+                maxW={{ base: 'sm', md: 'md' }}
               >
                 Your Career Journey Starts Here
               </Heading>
             </VStack>
 
-            <VStack gap={{ base: 4, md: 6 }} w="100%" maxW={{ base: "xs", sm: "sm", md: "md" }}>
+            <VStack gap={{ base: 4, md: 6 }} w="100%" maxW={{ base: 'xs', sm: 'sm', md: 'md' }}>
               <Text 
                 color="blue.300" 
-                fontSize={{ base: "md", md: "lg" }}
+                fontSize={{ base: 'md', md: 'lg' }}
                 px={{ base: 2, md: 0 }}
               >
                 Track your professional growth, set career goals, and visualize your path to success.
@@ -80,20 +74,20 @@ const Login = () => {
               
               <Button
                 size="lg"
-                fontSize={{ base: "lg", md: "xl" }}
+                fontSize={{ base: 'lg', md: 'xl' }}
                 margin={{ base: 4, md: 6 }}
                 bgColor="rgba(66, 153, 225, 0.2)"
                 border="1px solid rgba(255, 255, 255, 0.9)"
                 _hover={{
-                  bgColor: "rgba(66, 153, 225, 0.2)",
-                  color: "white",
-                  border: "1px solid white",
-                  boxShadow: "0 0 8px rgba(66, 153, 225, 0.5)",
+                  bgColor: 'rgba(66, 153, 225, 0.2)',
+                  color: 'white',
+                  border: '1px solid white',
+                  boxShadow: '0 0 8px rgba(66, 153, 225, 0.5)',
                 }}
                 color="blue.300"
                 fontWeight="bold"
-                w={{ base: "80%", sm: "70%", md: "full" }}
-                onClick={() => loginWithAuth0()}
+                w={{ base: '80%', sm: '70%', md: 'full' }}
+                onClick={handleLogin}
                 py={{ base: 4, md: 6 }}
               >
                 Sign In to Continue
@@ -102,7 +96,7 @@ const Login = () => {
 
             <VStack gap={{ base: 3, md: 4 }} pt={{ base: 6, md: 8 }}>
               <Text 
-                fontSize={{ base: "xs", md: "sm" }} 
+                fontSize={{ base: 'xs', md: 'sm' }} 
                 color="blue.300"
                 px={{ base: 4, md: 0 }}
               >
@@ -116,4 +110,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;

@@ -1,21 +1,24 @@
-import { Navigate } from "react-router-dom";
-import { useAuth0Integration } from "../hooks/useAuth0Integration";
-import { useAuth0Timeout } from "../utils";
-import Loading from "@/ui/Loading";
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../context/useAuth';
+import type { AuthContextType,ProtectedRouteProps  } from '@/auth';
+import Loading from '@/ui/Loading';
 
-export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useAuth0Integration();
-  const auth0Timeout = useAuth0Timeout(isLoading);
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
+  children, 
+  fallback = <Loading message="Authenticating..." /> 
+}) => {
+  const { isAuthenticated, isLoading, isInitialized } = useAuth() as AuthContextType;
 
-  // Show loading only briefly during Auth0 initialization
-  if (isLoading && !auth0Timeout) {
-    return <Loading />;
+  // Show loading while initializing or Auth0 is loading
+  if (!isInitialized || isLoading) {
+    return <>{fallback}</>;
   }
 
-  // If Auth0 timed out and still not authenticated, redirect to login
+  // Redirect to login if not authenticated
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
   return <>{children}</>;
-}; 
+};

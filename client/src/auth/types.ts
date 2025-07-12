@@ -25,27 +25,26 @@ export interface RegisterCredentials {
   password: string;
 }
 
-export interface AuthState {
-  user: User | null;
-  token: string | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  error: string | null;
-}
-
-export interface AuthContextType extends AuthState {
-  login: (credentials: LoginCredentials) => Promise<AuthResponse>;
-  register: (credentials: RegisterCredentials) => Promise<AuthResponse>;
-  logout: () => void;
-  clearError: () => void;
-  setLoading: (loading: boolean) => void;
-  initializeAuth: () => void;
-  validateToken: () => Promise<boolean>;
-}
-
 export interface AxiosError {
   response?: {
     status?: number;
     data?: { message?: string };
   };
+}
+
+export interface AuthState {
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  user: User | null;
+  isInitialized: boolean;
+}
+
+export interface AuthContextType extends AuthState {
+  login: (returnTo?: string) => Promise<void>;
+  logout: () => Promise<void>;
+  getAccessToken: () => Promise<string | null>;
+}
+export interface ProtectedRouteProps {
+  children: React.ReactNode;
+  fallback?: React.ReactNode;
 }

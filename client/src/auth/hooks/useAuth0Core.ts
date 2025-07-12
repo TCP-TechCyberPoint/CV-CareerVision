@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import type { User } from "../types";
-import { storageUtils, useAuth0Timeout, authHelpers } from "../utils";
-import { AUTH_CONSTANTS } from "../constants";
+import { storageUtils, useAuth0Timeout, authHelpers } from "@/auth";
+import { AUTH_CONSTANTS } from "@/auth/constants";
+import type { User } from "@/auth/types";
 
 export const useAuth0Core = () => {
   const { 
@@ -94,6 +94,7 @@ export const useAuth0Core = () => {
       setHasValidToken(false);
       storageUtils.clearAllStorage();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth0IsAuthenticated, auth0User, auth0IsLoading, isInitialized, auth0Timeout]); // Removed getAccessTokenSilently
 
   // Cleanup when auth state changes

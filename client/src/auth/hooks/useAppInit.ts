@@ -1,53 +1,54 @@
-import { useEffect, useRef, useState } from "react";
-import { useSlideshowFormStore } from "@/features/slideshow-form/store/store";
-import { useAuth0Integration } from "./useAuth0Integration";
-import { AUTH_CONSTANTS } from "../constants";
+import { useEffect, useRef, useState } from 'react';
+import { useAuth } from '../context/useAuth';
+import type { AuthContextType } from '../types';
+import { useSlideshowFormStore } from '@/features/slideshow-form/store/store';
+
+export enum LoadingStep {
+  INITIALIZING = 'Initializing...',
+  AUTHENTICATING = 'Authenticating...',
+  LOADING_DATA = 'Loading data...',
+  READY = 'Ready',
+}
 
 const useAppInit = () => {
-  const { isAuthenticated, isLoading: auth0IsLoading } = useAuth0Integration();
-  
+  const { isAuthenticated, isLoading: authLoading } = useAuth() as AuthContextType;
+  const [loadingStep, setLoadingStep] = useState<LoadingStep>(LoadingStep.INITIALIZING);
   const initializationRef = useRef(false);
-  const [loadingStep, setLoadingStep] = useState<string>(AUTH_CONSTANTS.LOADING_STEPS.INITIALIZING);
-  
+
   const fetchInitialFormData = useSlideshowFormStore((state) => state.fetchInitialFormData);
   const formDataInitialized = useSlideshowFormStore((state) => state.initialized);
 
   useEffect(() => {
-    if (auth0IsLoading) {
-      setLoadingStep(AUTH_CONSTANTS.LOADING_STEPS.AUTHENTICATING);
-      return;
-    }
-
-    if (initializationRef.current) {
-      return;
-    }
-
-    if (isAuthenticated && !formDataInitialized) {
-      initializationRef.current = true;
-      setLoadingStep(AUTH_CONSTANTS.LOADING_STEPS.LOADING_DATA);
-      fetchInitialFormData();
-    } else {
-      setLoadingStep(AUTH_CONSTANTS.LOADING_STEPS.READY);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated, auth0IsLoading, formDataInitialized]);
-
-  // Reset initialization flag when authentication state changes
-  useEffect(() => {
+    // Reset initialization when authentication changes
     if (!isAuthenticated) {
       initializationRef.current = false;
-      setLoadingStep(AUTH_CONSTANTS.LOADING_STEPS.INITIALIZING);
+      setLoadingStep(LoadingStep.INITIALIZING);
+      return;
     }
-  }, [isAuthenticated]);
 
-  // Calculate overall loading state
-  const isLoading = auth0IsLoading && !isAuthenticated;
+    // Set loading step based on auth state
+    if (authLoading) {
+      setLoadingStep(LoadingStep.AUTHENTICATING);
+      return;
+    }
+
+    // Initialize app data once authenticated
+    if (isAuthenticated && !initializationRef.current && !formDataInitialized) {
+      initializationRef.current = true;
+      setLoadingStep(LoadingStep.LOADING_DATA);
+      fetchInitialFormData();
+    } else if (isAuthenticated && (initializationRef.current || formDataInitialized)) {
+      setLoadingStep(LoadingStep.READY);
+    }
+  }, [isAuthenticated, authLoading, formDataInitialized, fetchInitialFormData]);
+
+  const isLoading = loadingStep !== LoadingStep.READY;
 
   return {
     isAuthenticated,
     isLoading,
-    loadingStep
+    loadingStep,
   };
 };
 
-export default useAppInit; 
+export default useAppInit;
