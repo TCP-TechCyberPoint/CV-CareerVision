@@ -162,9 +162,7 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
     }, 0);
   }
 
-  const headerLine = `${name} | ${role}${
-    totalYears > 0 ? ` | +${totalYears} Years Experience` : ""
-  }`;
+  const headerLine = `${name} | ${role}`;
 
   const contactItems: (TextRun | ExternalHyperlink)[] = [];
   if (vitals.email) contactItems.push(new TextRun({ text: vitals.email }));
