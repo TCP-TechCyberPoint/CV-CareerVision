@@ -107,21 +107,21 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
 
   const sectionChildren: Paragraph[] = [];
 
-  const centeredHeader = (text: string, size = 28) =>
+  const centeredHeader = (text: string, size = 36) =>
     new Paragraph({
-      children: [new TextRun({ text, bold: true, size })],
+      children: [new TextRun({ text, bold: true, size, font: "Calibri" })],
       alignment: AlignmentType.CENTER,
       spacing: { after: 50 },
-      bidirectional: false, // 🔄 added bidirectional: false
+      bidirectional: false,
     });
 
   const addSectionHeading = (label: string) =>
     sectionChildren.push(
       new Paragraph({
-        children: [new TextRun({ text: label.toUpperCase(), bold: true, size: 24 })],
+        children: [new TextRun({ text: label.toUpperCase(), bold: true, size: 28, font: "Calibri" })],
         alignment: AlignmentType.LEFT,
         spacing: { after: 100 },
-        bidirectional: false, // 🔄 added bidirectional: false
+        bidirectional: false,
       })
     );
 
@@ -130,15 +130,15 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
       new Paragraph({
         border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: "auto" } },
         spacing: { after: 80 },
-        bidirectional: false, // 🔄 added bidirectional: false
+        bidirectional: false,
       })
     );
 
   const spacedParagraph = (text: string, isBullet = false) =>
     new Paragraph({
-      text,
+      children: [new TextRun({ text, size: 22, font: "Calibri" })],
       spacing: { after: 80, line: 200 },
-      bidirectional: false, // 🔄 added bidirectional: false
+      bidirectional: false,
       ...(isBullet ? { bullet: { level: 0 } } : {}),
     });
 
@@ -165,23 +165,23 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
   const headerLine = `${name} | ${role}`;
 
   const contactItems: (TextRun | ExternalHyperlink)[] = [];
-  if (vitals.email) contactItems.push(new TextRun({ text: vitals.email }));
-  if (vitals.phone) contactItems.push(new TextRun({ text: ` | ${vitals.phone}` }));
+  if (vitals.email) contactItems.push(new TextRun({ text: vitals.email, size: 22, font: "Calibri" }));
+  if (vitals.phone) contactItems.push(new TextRun({ text: ` | ${vitals.phone}`, size: 22, font: "Calibri" }));
   if (vitals.linkedin) {
-    contactItems.push(new TextRun({ text: " | " }));
+    contactItems.push(new TextRun({ text: " | ", size: 22, font: "Calibri" }));
     contactItems.push(
       new ExternalHyperlink({
         link: vitals.linkedin,
-        children: [new TextRun({ text: "LinkedIn", underline: {} })],
+        children: [new TextRun({ text: "LinkedIn", underline: {}, size: 22, font: "Calibri" })],
       })
     );
   }
   if (vitals.github) {
-    contactItems.push(new TextRun({ text: " | " }));
+    contactItems.push(new TextRun({ text: " | ", size: 22, font: "Calibri" }));
     contactItems.push(
       new ExternalHyperlink({
         link: vitals.github,
-        children: [new TextRun({ text: "GitHub", underline: {} })],
+        children: [new TextRun({ text: "GitHub", underline: {}, size: 22, font: "Calibri" })],
       })
     );
   }
@@ -192,7 +192,7 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
       children: contactItems,
       alignment: AlignmentType.CENTER,
       spacing: { after: 200 },
-      bidirectional: false, // 🔄 added bidirectional: false
+      bidirectional: false,
     })
   );
 
