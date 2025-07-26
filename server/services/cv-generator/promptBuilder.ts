@@ -12,7 +12,7 @@ You are a professional resume writer and English editor. Based on the user data 
 ### Section Logic
 
 **Summary**
-- Write a 3-4 sentence summary targeting the role: "${formData?.preferences?.professionalPreference || 'unspecified'}".
+- Write a 2-3 sentence summary targeting the role: "${formData?.preferences?.professionalPreference || 'unspecified'}".
 
 **Experience**
 - Use up to 3 entries from \`experience\`.
@@ -23,8 +23,8 @@ You are a professional resume writer and English editor. Based on the user data 
 - Do not include education in this section.
 
 **Projects**
-- Use up to 3 \`projects\` from user data.
-- If fewer than 3:
+- Use up to 2 \`projects\` from user data.
+- If fewer than 2:
   - Add relevant projects from professional \`experience\` (not military).
   - If missing a name, generate a clear and realistic one (e.g., “Internal CRM System”).
 - Each project must include **exactly 3 bullet points** in the \`description\` array.
