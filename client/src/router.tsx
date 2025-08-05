@@ -1,53 +1,44 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { Home, About } from "@/pages";
-import { Login, ProtectedRoute, useAuth0Integration } from "@/auth";
+import { Login, useAuth0Integration } from "@/auth";
 import { slideshowRoutes } from "@slideshow-form/routes";
 import Loading from "@/ui/Loading";
 
-// Component to handle root route based on authentication
-const RootRedirect = () => {
+// Auth wrapper for protected routes
+const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated, isLoading } = useAuth0Integration();
 
-  // Show loading while Auth0 is initializing
-  if (isLoading) {
-    return <Loading message="Initializing..." />;
-  }
-
-  // Redirect based on authentication state
-  if (isAuthenticated) {
-    return <Navigate to="/home" replace />;
-  } else {
-    return <Navigate to="/login" replace />;
-  }
+  if (isLoading) return <Loading message="Initializing..." />;
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootRedirect />,
+    element: <Home />, // Publicly accessible Home page
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <Login />, // Publicly accessible login
   },
   {
     path: "/home",
     element: (
-      <ProtectedRoute>
+      <RequireAuth>
         <Home />
-      </ProtectedRoute>
+      </RequireAuth>
     ),
   },
   {
     path: "/about",
     element: (
-      <ProtectedRoute>
+      <RequireAuth>
         <About />
-      </ProtectedRoute>
+      </RequireAuth>
     ),
   },
   ...slideshowRoutes.map(route => ({
     ...route,
-    element: <ProtectedRoute>{route.element}</ProtectedRoute>
+    element: <RequireAuth>{route.element}</RequireAuth>,
   })),
 ]);
