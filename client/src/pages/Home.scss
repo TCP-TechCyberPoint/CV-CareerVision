@@ -1,0 +1,364 @@
+/* Career Vision – Home page (Sass) */
+
+/* Tokens */
+$bg: #ffffff;
+$card: #d9d9d9;
+$gray: #888888;
+$ink: #1e1e1e;
+$glass: rgba(200, 200, 200, 0.7);
+
+$max-wrap: 1268px; // inner card width from the spec
+$section-gap: 160px;
+
+.cv {
+  background: $bg;
+  color: #000;
+  font-family: "Rubik", system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  line-height: 1.3;
+
+  /* =========================
+     HEADER (spec-accurate)
+     ========================= */
+  &__header {
+    /* Your earlier version used sticky; keeping that behavior while matching spec visuals */
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    background: $glass;           /* Header */
+    backdrop-filter: blur(6px);
+  }
+
+  &__headerInner {
+    /* Frame 40739 numbers */
+    width: min(1760.66px, 92vw);
+    height: 62.33px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between; /* space-between per Figma */
+    align-items: center;
+    gap: 64px;
+  }
+
+  &__logo {
+    /* Logo Placeholder (149.66 × 62) */
+    display: flex;
+    align-items: center;
+    width: 149.66px;
+    height: 62px;
+
+    .cv-logo { display: block; width: 100%; height: auto; }
+
+    /* In case you use a PNG instead of SVG in TSX */
+    img.cv__logoImg { display: block; width: 100%; height: auto; }
+  }
+
+  &__nav {
+    /* UX/Header Buttons (row, gap:20, 666×44) */
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 44px;
+
+    a {
+      /* UX/Section Links */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      height: 44px;
+      border-radius: 16px;
+      color: $gray;                       /* Section Bttn color */
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 24px;
+      text-decoration: none;
+
+      &:hover { background: rgba(0, 0, 0, 0.06); }
+    }
+  }
+
+  &__loginBtn {
+    /* UX/Login Links / Login Bttn */
+    display: inline-flex;
+    align-items: center;
+    padding: 14px 30px;
+    gap: 14px;
+    height: 62.33px;
+    border-radius: 20px;
+    background: $gray;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  /* =========================
+     PAGE SECTIONS WRAP
+     ========================= */
+  &__sections {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: $section-gap;
+    width: 100%;
+    margin: 0 auto;
+    padding-bottom: 80px;
+  }
+
+  /* =========================
+     HERO
+     ========================= */
+  &__hero {
+    width: 100%;
+    min-height: 750px;
+    display: grid;
+    place-items: center;
+    padding-top: 40px;
+  }
+
+  &__heroInner {
+    width: min(1157px, 92vw);
+    display: grid;
+    grid-template-columns: 1fr 362px;
+    gap: clamp(32px, 8vw, 178.59px);
+    align-items: center;
+  }
+
+  &__heroText { display: grid; gap: 12px; }
+
+  &__heroImage {
+    width: 362px; height: 362px;
+    .imgPlaceholder--square {
+      width: 100%; height: 100%;
+      background: $gray; position: relative;
+    }
+  }
+
+  &__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 30px;
+    gap: 14px;
+    height: 62.33px;
+    background: $gray;
+    color: #fff;
+    border-radius: 20px;
+    border: 0;
+    margin-top: 36px;
+    font-weight: 500;
+    font-size: 30px;
+    cursor: pointer;
+  }
+
+  /* =========================
+     INFO SECTIONS
+     ========================= */
+  &__info { width: 100%; display: grid; place-items: center; }
+
+  &__card { width: min($max-wrap, 92vw); position: relative; }
+
+  &__cardInner {
+    background: $card;
+    border-radius: 93px;
+    padding: 32px 35px;
+    display: grid;
+    grid-template-columns: 1fr min(566.93px, 45vw);
+    gap: 112px;
+    align-items: center;
+    min-height: 630px;
+  }
+
+  &__cardText { display: grid; gap: 12px; }
+
+  &__cardMedia .imgPlaceholder--round {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background: $gray;
+    border-radius: 82px;
+    position: relative;
+  }
+
+  /* robots near cards (small gray tiles) */
+  .robotTile {
+    background: $gray;
+    filter: drop-shadow(-10px 5px 20px rgba(0,0,0,.25));
+    border-radius: 12px;
+  }
+
+  &__robot {
+    position: absolute;
+    &--topCenter { left: 50%; translate: -50% -50%; top: -8px; }
+    &--topLeft { left: -12px; top: -32px; }
+    &--midLeft { left: -36px; top: 50%; translate: 0 -50%; }
+    &--midRight { right: -36px; top: 50%; translate: 0 -50%; }
+  }
+
+  /* =========================
+     CTA STRIP
+     ========================= */
+  &__ctaStrip { display: grid; place-items: center; gap: 40px; }
+
+  &__ctaText { width: min(950px, 92vw); display: grid; gap: 12px; }
+
+  /* === Bottom Robot Icon Group — EXACT Figma numbers === */
+  &__robotRow {
+    width: 950px;
+    height: 228.54px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 97.95px;
+    align-self: stretch;
+
+    @media (max-width: 980px) {
+      width: min(950px, 92vw);
+      gap: clamp(24px, 8vw, 97.95px);
+      justify-content: center;
+      flex-wrap: wrap;
+      height: auto;
+    }
+  }
+
+  &__robotBox {
+    position: relative;
+    width: 251.37px;
+    height: 228.54px;
+    flex: 0 0 auto;
+  }
+
+  &__robotFill {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background: $gray;
+    box-shadow: -17.5783px 8.78913px 35.1565px rgba(0, 0, 0, 0.25);
+    display: block;
+  }
+
+  &__cta--center { margin-inline: auto; }
+
+  /* =========================
+     FOOTER
+     ========================= */
+  &__footer {
+    position: relative;
+    background: $card;
+    padding: 60px 0;
+    margin-top: 80px;
+  }
+
+  &__footerInner {
+    width: min(1760px, 92vw);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+
+    @media (max-width: 980px) { grid-template-columns: 1fr; }
+  }
+
+  &__footerBrand {
+    display: grid;
+    gap: 42px;
+    align-content: start;
+
+    .cv-logo { width: 270px; }
+  }
+
+  &__socials {
+    display: flex; gap: 20px;
+
+    .ico {
+      width: 42px; height: 42px; border-radius: 4px;
+      display: grid; place-items: center; background: transparent;
+
+      .dot { width: 30px; height: 30px; background: #545454; display: block; border-radius: 4px; }
+    }
+  }
+
+  &__footerLinks {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-content: end;
+    gap: 72px;
+
+    @media (max-width: 980px) {
+      justify-content: start;
+      gap: 40px;
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
+    }
+
+    .col {
+      display: grid; gap: 20px;
+
+      h6 {
+        margin: 0 0 10px 0;
+        font-weight: 400;
+        font-size: 20px;
+        color: $gray;
+      }
+
+      a {
+        color: $gray;
+        font-size: 20px;
+        text-decoration: none;
+        line-height: 24px;
+      }
+    }
+  }
+}
+
+/* ---------- Utilities & placeholders ---------- */
+.skel {
+  height: 24px;
+  background: $gray;
+  border-radius: 6px;
+
+  &--lg { height: 30px; }
+  &--xl { height: 70px; }
+  &--title { height: 70px; }
+}
+
+.w-90 { width: 90%; }
+.w-85 { width: 85%; }
+.w-80 { width: 80%; }
+.w-76 { width: 76%; }
+.w-70 { width: 70%; }
+.w-60 { width: 60%; }
+.w-55 { width: 55%; }
+.w-50 { width: 50%; }
+.w-44 { width: 44%; }
+.w-40 { width: 40%; }
+.w-35 { width: 35%; }
+.center { margin-inline: auto; }
+
+/* X placeholder */
+.imgPlaceholder {
+  position: relative; background: $gray;
+
+  &--square { aspect-ratio: 1/1; }
+  &--round { border-radius: 82px; }
+
+  .xline {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 140%;
+    border-top: 3.6px solid $ink;
+    &--a { transform: translate(-50%, -50%) rotate(45deg); }
+    &--b { transform: translate(-50%, -50%) rotate(-45deg); }
+  }
+}
+
+/* ---------- Responsive tweaks ---------- */
+@media (max-width: 1100px) {
+  .cv__cardInner { grid-template-columns: 1fr; gap: 32px; padding: 28px; }
+  .cv__cardMedia .imgPlaceholder--round { border-radius: 48px; }
+}
+@media (max-width: 860px) {
+  .cv__heroInner { grid-template-columns: 1fr; justify-items: center; }
+  .cv__nav { display: none; } /* mobile simplicity like mock */
+}

@@ -1,167 +1,342 @@
-import {
-  Box,
-  Container,
-  Heading,
-  Text,
-  Button,
-  Stack,
-  SimpleGrid,
-  Icon,
-} from "@chakra-ui/react";
-import { useColorModeValue } from "@chakra-ui/system";
-import { FiBriefcase, FiTrendingUp, FiUsers } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
-import type { IconType } from "react-icons/lib";
-import { useCvData } from "@/features/slideshow-form/hooks/useCvData";
-import Navbar from "@/ui/Navbar";
+// src/pages/Home.tsx
+import React from "react";
+import "./Home.scss";
+import CareerVisionLogo from "../assets/images/CareerVisionLogo.png"; // client/src/assets/images/CareerVisionLogo.png
 
-const Feature = ({
-  title,
-  text,
-  icon,
-}: {
-  title: string;
-  text: string;
-  icon: IconType;
+const RobotIcon: React.FC<{
+  size?: number;
+  rotate?: number;
+  variant?: "solid" | "outlined" | "love";
+  className?: string;
+  shadow?: boolean;
+}> = ({
+  size = 130,
+  rotate = 0,
+  variant = "solid",
+  className = "",
+  shadow = true,
 }) => {
+  const stroke = "#000000";
+  const fill = "#888888";
+
   return (
-    <Stack
-      align="center"
-      textAlign="center"
-      p={{ base: 3, md: 6 }}
-      bg={useColorModeValue("white", "gray.800")}
-      rounded="xl"
-      shadow="lg"
-      gap={{ base: 2, md: 4 }}
+    <svg
+      className={`robot ${className} ${shadow ? "robot--shadow" : ""}`}
+      width={size}
+      height={size}
+      viewBox="0 0 256 256"
+      style={{ transform: `rotate(${rotate}deg)` }}
+      aria-hidden
     >
-      <Icon as={icon} w={{ base: 6, md: 10 }} h={{ base: 6, md: 10 }} color="blue.500" />
-      <Heading size={{ base: "xs", md: "md" }}>{title}</Heading>
-      <Text 
-        color={useColorModeValue("gray.600", "gray.400")}
-        fontSize={{ base: "sm", md: "md" }}
-        display={{ base: "none", md: "block" }}
-      >
-        {text}
-      </Text>
-    </Stack>
+      <defs>
+        <filter id="rshadow" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow
+            dx="-10"
+            dy="5"
+            stdDeviation="12"
+            floodColor="rgba(0,0,0,0.25)"
+          />
+        </filter>
+        <clipPath id="roundedHead">
+          <rect x="16" y="56" width="224" height="160" rx="48" ry="48" />
+        </clipPath>
+        <path
+          id="heart"
+          d="M12 22C12 15 7 12 4 12C1 12 0 14 0 16C0 21 7 26 12 30C17 26 24 21 24 16C24 14 23 12 20 12C17 12 12 15 12 22Z"
+        />
+      </defs>
+
+      {/* Antenna */}
+      <line
+        x1="128"
+        y1="24"
+        x2="128"
+        y2="48"
+        stroke={stroke}
+        strokeWidth="10"
+        strokeLinecap="round"
+      />
+      <circle cx="128" cy="16" r="12" fill={fill} stroke={stroke} strokeWidth="6" />
+
+      {/* Ears */}
+      <rect
+        x="4"
+        y="110"
+        width="28"
+        height="60"
+        rx="10"
+        fill={fill}
+        stroke={stroke}
+        strokeWidth="6"
+      />
+      <rect
+        x="224"
+        y="110"
+        width="28"
+        height="60"
+        rx="10"
+        fill={fill}
+        stroke={stroke}
+        strokeWidth="6"
+      />
+
+      {/* Head */}
+      <g filter="url(#rshadow)">
+        <rect x="16" y="56" width="224" height="160" rx="48" ry="48" fill={fill} />
+        <rect
+          x="16"
+          y="56"
+          width="224"
+          height="160"
+          rx="48"
+          ry="48"
+          fill="none"
+          stroke={stroke}
+          strokeWidth="0"
+        />
+      </g>
+
+      {/* Eyes */}
+      {variant === "love" ? (
+        <g transform="translate(72,112) scale(2)">
+          <use href="#heart" fill="#FFFFFF" />
+          <g transform="translate(28,0)">
+            <use href="#heart" fill="#FFFFFF" />
+          </g>
+        </g>
+      ) : variant === "outlined" ? (
+        <>
+          <circle cx="96" cy="136" r="16" fill="#FFFFFF" stroke={stroke} strokeWidth="8" />
+          <circle cx="160" cy="136" r="16" fill="#FFFFFF" stroke={stroke} strokeWidth="8" />
+        </>
+      ) : (
+        <>
+          <circle cx="96" cy="136" r="18" fill="#FFFFFF" />
+          <circle cx="160" cy="136" r="18" fill="#FFFFFF" />
+        </>
+      )}
+    </svg>
   );
 };
 
-const Home = () => {
-  const navigate = useNavigate();
-  useCvData();
+/** PNG logo component (from client/src/assets/images/CareerVisionLogo.png) */
+const LogoCV: React.FC<{ width?: number }> = ({ width = 150 }) => (
+  <img
+    src={CareerVisionLogo}
+    alt="Career Vision logo"
+    width={width}
+    className="cv-logo"
+  />
+);
 
+const Home: React.FC = () => {
   return (
-    <Box minH="100vh">
-      <Navbar />
-      <Box as="main">
-        
-        {/* Hero Section */}
-        <Box bg={useColorModeValue("gray.50", "gray.900")} py={{ base: 8, md: 10 }}>
-          <Container maxW={{ base: "container.sm", md: "container.md", lg: "container.xl" }} px={{ base: 4, md: 6 }}>
-            <Stack   mt={{ base: 8, md: 0 }} align="center" textAlign="center" gap={{ base: 6, md: 8 }} p={{ base: 4, md: 6 }}>
-              <Heading
-                fontSize={{ base: "xl", sm: "2xl", md: "3xl", lg: "4xl" }}
-                fontWeight="bold"
-                px={{ base: 2, md: 0 }}
-              >
-                Your Career Journey
-                <Text as="span" color="blue.500">
-                  {" "}
-                  Starts Here
-                </Text>
-              </Heading>
-       
-              <Stack 
-                direction="row" 
-                gap={{ base: 3, md: 4 }}
-                align="center"
-                justify="center"
-                flexWrap="wrap"
-              >
-                <Button
-                  size={{ base: "md", md: "lg" }}
-                  colorScheme="blue"
-                  px={{ base: 6, sm: 8, md: 10 }}
-                  fontSize={{ base: "sm", md: "md" }}
-                  borderLeftRadius="full"
-                  borderRightRadius="lg"
-                  bgColor="blue.700"
-                  color="white"
-                  onClick={() => navigate("/create-cv")}
-                  minW={{ base: "120px", sm: "180px", md: "240px" }}
-                >
-                  Get Started
-                </Button>
-                <Button
-                  size={{ base: "sm", md: "lg" }}
-                  colorScheme="blue"
-                  px={{ base: 6, sm: 8, md: 10 }}
-                  fontSize={{ base: "sm", md: "md" }}
-                  borderLeftRadius="lg"
-                  borderRightRadius="full"
-                  bgColor="blue.700"
-                  color="white"
-                  onClick={() => navigate("/dashboard")}
-                  minW={{ base: "120px", sm: "180px", md: "200px" }}
-                >
-                  Dashboard
-                </Button>
-              </Stack>
-            </Stack>
-          </Container>
-        </Box>
+    <main className="cv">
+      {/* HEADER */}
+      <header className="cv__header">
+        <div className="cv__headerInner">
+          <div className="cv__logo">
+            <LogoCV />
+          </div>
+          <nav className="cv__nav" aria-label="Main">
+            <a href="#about">About</a>
+            <a href="#expert">Call an Expert</a>
+            <a href="#community">TCP Community</a>
+            <a href="#memberships">Memberships</a>
+          </nav>
+          <a className="cv__loginBtn" href="#login" role="button">
+            Login
+          </a>
+        </div>
+      </header>
 
-        {/* Features Section */}
-        <Box py={{ base: 12, md: 20 }}>
-          <Container maxW={{ base: "container.sm", md: "container.md", lg: "container.xl" }} px={{ base: 4, md: 6 }}>
-            <Stack gap={{ base: 8, md: 12 }}>
-              <Stack align="center" textAlign="center" gap={{ base: 3, md: 4 }}>
-                <Heading 
-                  fontSize={{ base: "lg", sm: "xl", md: "2xl", lg: "3xl" }}
-                  fontWeight="bold"
-                  color="whiteAlpha.900"
-                  px={{ base: 2, md: 0 }}
-                >
-                  Why Choose Us
-                </Heading>
-                <Text 
-                  color="whiteAlpha.900" 
-                  maxW={{ base: "full", md: "2xl" }}
-                  fontSize={{ base: "sm", md: "md" }}
-                  px={{ base: 2, md: 0 }}
-                >
-                  We provide the tools and insights you need to navigate your
-                  career path effectively and achieve your professional goals.
-                </Text>
-              </Stack>
+      {/* PAGE SECTIONS WRAP */}
+      <div className="cv__sections">
+        {/* HERO */}
+        <section className="cv__hero">
+          <div className="cv__heroInner">
+            <div className="cv__heroText">
+              <div className="skel skel--lg w-80" />
+              <div className="skel skel--lg w-60" />
+              <div className="skel w-90" />
+              <div className="skel w-85" />
+              <div className="skel w-50" />
+            </div>
 
-              <SimpleGrid 
-                columns={{ base: 3, md: 3 }} 
-                gap={{ base: 3, md: 10 }}
-                px={{ base: 2, md: 0 }}
-              >
-                <Feature
-                  icon={FiBriefcase}
-                  title="Career Tracking"
-                  text="Monitor your professional journey and track your achievements over time."
-                />
-                <Feature
-                  icon={FiTrendingUp}
-                  title="Growth Analytics"
-                  text="Get insights into your career progression with detailed analytics."
-                />
-                <Feature
-                  icon={FiUsers}
-                  title="Community Support"
-                  text="Connect with like-minded professionals and share experience."
-                />
-              </SimpleGrid>
-            </Stack>
-          </Container>
-        </Box>
-      </Box>
-    </Box>
+            <div className="cv__heroImage">
+              <div className="imgPlaceholder imgPlaceholder--square" aria-hidden>
+                <span className="xline xline--a" />
+                <span className="xline xline--b" />
+              </div>
+            </div>
+          </div>
+
+          <button className="cv__cta" type="button">
+            Call To Action Bttn
+          </button>
+        </section>
+
+        {/* INFO 1 */}
+        <section className="cv__info">
+          <div className="cv__card">
+            <RobotIcon className="cv__robot cv__robot--topCenter" size={130} />
+            <div className="cv__cardInner">
+              <div className="cv__cardText">
+                <div className="skel skel--title w-70" />
+                <div className="skel skel--title w-40" />
+                <div className="skel w-80" />
+                <div className="skel w-82" />
+                <div className="skel w-76" />
+                <div className="skel w-44" />
+              </div>
+              <div className="cv__cardMedia">
+                <div className="imgPlaceholder imgPlaceholder--round" aria-hidden>
+                  <span className="xline xline--a" />
+                  <span className="xline xline--b" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* INFO 2 (robot tilted left) */}
+        <section className="cv__info">
+          <div className="cv__card">
+            <RobotIcon
+              className="cv__robot cv__robot--topLeft"
+              size={130}
+              rotate={-45}
+            />
+            <div className="cv__cardInner">
+              <div className="cv__cardText">
+                <div className="skel skel--title w-70" />
+                <div className="skel skel--title w-40" />
+                <div className="skel w-80" />
+                <div className="skel w-82" />
+                <div className="skel w-76" />
+                <div className="skel w-44" />
+              </div>
+              <div className="cv__cardMedia">
+                <div className="imgPlaceholder imgPlaceholder--round" aria-hidden>
+                  <span className="xline xline--a" />
+                  <span className="xline xline--b" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* INFO 3 (robots left & right) */}
+        <section className="cv__info">
+          <div className="cv__card">
+            <RobotIcon
+              className="cv__robot cv__robot--midLeft"
+              size={110}
+              rotate={-90}
+            />
+            <RobotIcon
+              className="cv__robot cv__robot--midRight"
+              size={110}
+              rotate={90}
+            />
+            <div className="cv__cardInner">
+              <div className="cv__cardText">
+                <div className="skel skel--title w-70" />
+                <div className="skel skel--title w-40" />
+                <div className="skel w-80" />
+                <div className="skel w-82" />
+                <div className="skel w-76" />
+                <div className="skel w-44" />
+              </div>
+              <div className="cv__cardMedia">
+                <div className="imgPlaceholder imgPlaceholder--round" aria-hidden>
+                  <span className="xline xline--a" />
+                  <span className="xline xline--b" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA STRIP */}
+        <section className="cv__ctaStrip">
+          <div className="cv__ctaText">
+            <div className="skel skel--xl w-55" />
+            <div className="skel skel--lg w-35 center" />
+          </div>
+
+          <button className="cv__cta cv__cta--center" type="button">
+            Call To Action Bttn
+          </button>
+
+          {/* Bottom Robot Icon Group — rectangles per Figma spec */}
+          <div className="cv__robotRow" aria-hidden>
+            <div className="cv__robotBox">
+              <span className="cv__robotFill" />
+            </div>
+            <div className="cv__robotBox">
+              <span className="cv__robotFill" />
+            </div>
+            <div className="cv__robotBox">
+              <span className="cv__robotFill" />
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* FOOTER */}
+      <footer className="cv__footer" role="contentinfo">
+        <div className="cv__footerInner">
+          <div className="cv__footerBrand">
+            <LogoCV width={270} />
+            <div className="cv__socials" aria-label="Social links">
+              <a className="ico" aria-label="X">
+                <span className="dot" />
+              </a>
+              <a className="ico" aria-label="Instagram">
+                <span className="dot" />
+              </a>
+              <a className="ico" aria-label="Facebook">
+                <span className="dot" />
+              </a>
+              <a className="ico" aria-label="YouTube">
+                <span className="dot" />
+              </a>
+              <a className="ico" aria-label="TikTok">
+                <span className="dot" />
+              </a>
+            </div>
+          </div>
+
+          <div className="cv__footerLinks">
+            <div className="col">
+              <h6>Product</h6>
+              <a>Sign Up</a>
+              <a>Call an Expert</a>
+              <a>Memberships</a>
+            </div>
+            <div className="col">
+              <h6>Company</h6>
+              <a>About</a>
+              <a>TCP Community</a>
+              <a>Sponsors</a>
+              <a>Team CV</a>
+            </div>
+            <div className="col">
+              <h6>Resources</h6>
+              <a>FAQ</a>
+              <a>Blog</a>
+            </div>
+            <div className="col">
+              <h6>Policies</h6>
+              <a>Terms of Use</a>
+              <a>Privacy</a>
+              <a>Licensing</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </main>
   );
 };
 

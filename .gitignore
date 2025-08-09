@@ -42,3 +42,4 @@ docs/
 
 # Scripts
 server/scripts/
+client/src/pages/HomeOld.tsx
