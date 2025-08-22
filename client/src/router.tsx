@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { Home, About } from "@/pages";
+import { Home, About, Register } from "@/pages";
 import { Login, ProtectedRoute, useAuth0Integration } from "@/auth";
 import { slideshowRoutes } from "@slideshow-form/routes";
 import Loading from "@/ui/Loading";
@@ -29,6 +29,10 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
   {
     path: "/home",

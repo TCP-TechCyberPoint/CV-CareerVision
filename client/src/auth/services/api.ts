@@ -6,29 +6,18 @@ const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
 });
 
-let getAccessToken: (() => Promise<string | null>) | null = null;
-
-export const setTokenGetter = (tokenGetter: () => Promise<string | null>) => {
-  getAccessToken = tokenGetter;
-};
-
-// Request interceptor
+// Request interceptor: attach JWT from storage if present
 axiosInstance.interceptors.request.use(
   async (config) => {
     try {
-      if (getAccessToken) {
-        const token = await getAccessToken();
-
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        } else if (config.url?.includes(API_ENDPOINTS.CV)) {
-          return Promise.reject(new Error(AUTH_ERRORS.AUTHENTICATION_REQUIRED));
-        }
+      const token = storageUtils.getToken();
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
       } else if (config.url?.includes(API_ENDPOINTS.CV)) {
-        return Promise.reject(new Error(AUTH_ERRORS.AUTH_NOT_INITIALIZED));
+        return Promise.reject(new Error(AUTH_ERRORS.AUTHENTICATION_REQUIRED));
       }
     } catch (error) {
-      console.error("Error getting access token:", error);
+      console.error("Error reading access token:", error);
       if (config.url?.includes(API_ENDPOINTS.CV)) {
         return Promise.reject(new Error(AUTH_ERRORS.AUTHENTICATION_FAILED));
       }

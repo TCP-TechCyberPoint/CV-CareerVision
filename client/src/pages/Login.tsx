@@ -14,11 +14,19 @@ import { useAuth0Integration } from "../auth/hooks/useAuth0Integration";
 import Navbar from "@/ui/Navbar";
 import logo from "@/assets/images/career-vision-logo.png";
 import { AUTH_CONSTANTS } from "../auth/constants";
+import axios from "@/auth/services/api";
+import { storageUtils } from "@/auth/utils";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
-  const { isLoading, loginWithAuth0 } = useAuth0Integration();
+  const { isLoading } = useAuth0Integration();
   const bgColor = useColorModeValue("gray.50", "gray.900");
   const [shouldRender, setShouldRender] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   // Add a small delay to prevent race conditions
   useEffect(() => {
@@ -46,6 +54,26 @@ const Login = () => {
     );
   }
 
+  const handleSubmit = async () => {
+    setError(null);
+    setSubmitting(true);
+    try {
+      const res = await axios.post(`/auth/login`, { email, password });
+      const { token, user } = res.data;
+      if (token && user) {
+        storageUtils.setToken(token);
+        storageUtils.setUser(user);
+        navigate("/home", { replace: true });
+      } else {
+        setError("Invalid response from server");
+      }
+    } catch (e: any) {
+      setError(e?.response?.data?.message || "Login failed");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <Box minH="100vh">
       <Navbar />
@@ -67,6 +95,9 @@ const Login = () => {
               >
                 Your Career Journey Starts Here
               </Heading>
+              <Text color="blue.300" fontSize={{ base: "sm", md: "md" }}>
+                Don’t have an account? <Link to="/register">Create one</Link>
+              </Text>
             </VStack>
 
             <VStack gap={{ base: 4, md: 6 }} w="100%" maxW={{ base: "xs", sm: "sm", md: "md" }}>
@@ -77,27 +108,46 @@ const Login = () => {
               >
                 Track your professional growth, set career goals, and visualize your path to success.
               </Text>
-              
-              <Button
-                size="lg"
-                fontSize={{ base: "lg", md: "xl" }}
-                margin={{ base: 4, md: 6 }}
-                bgColor="rgba(66, 153, 225, 0.2)"
-                border="1px solid rgba(255, 255, 255, 0.9)"
-                _hover={{
-                  bgColor: "rgba(66, 153, 225, 0.2)",
-                  color: "white",
-                  border: "1px solid white",
-                  boxShadow: "0 0 8px rgba(66, 153, 225, 0.5)",
-                }}
-                color="blue.300"
-                fontWeight="bold"
-                w={{ base: "80%", sm: "70%", md: "full" }}
-                onClick={() => loginWithAuth0()}
-                py={{ base: 4, md: 6 }}
-              >
-                Sign In to Continue
-              </Button>
+              <VStack w="full" gap={3}>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={{ width: "100%", padding: "12px", borderRadius: 6 }}
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{ width: "100%", padding: "12px", borderRadius: 6 }}
+                />
+                {error && (
+                  <Text color="red.300" fontSize="sm">{error}</Text>
+                )}
+                <Button
+                  size="lg"
+                  fontSize={{ base: "lg", md: "xl" }}
+                  margin={{ base: 4, md: 6 }}
+                  bgColor="rgba(66, 153, 225, 0.2)"
+                  border="1px solid rgba(255, 255, 255, 0.9)"
+                  _hover={{
+                    bgColor: "rgba(66, 153, 225, 0.2)",
+                    color: "white",
+                    border: "1px solid white",
+                    boxShadow: "0 0 8px rgba(66, 153, 225, 0.5)",
+                  }}
+                  color="blue.300"
+                  fontWeight="bold"
+                  w={{ base: "80%", sm: "70%", md: "full" }}
+                  onClick={handleSubmit}
+                  isLoading={submitting}
+                  py={{ base: 4, md: 6 }}
+                >
+                  Sign In
+                </Button>
+              </VStack>
             </VStack>
 
             <VStack gap={{ base: 3, md: 4 }} pt={{ base: 6, md: 8 }}>
