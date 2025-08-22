@@ -1,14 +1,12 @@
 import { Navigate } from "react-router-dom";
 import { useAuth0Integration } from "../hooks/useAuth0Integration";
-import { useAuth0Timeout } from "../utils";
 import Loading from "@/ui/Loading";
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useAuth0Integration();
-  const auth0Timeout = useAuth0Timeout(isLoading);
 
   // Show loading only briefly during Auth0 initialization
-  if (isLoading && !auth0Timeout) {
+  if (isLoading) {
     return <Loading />;
   }
 

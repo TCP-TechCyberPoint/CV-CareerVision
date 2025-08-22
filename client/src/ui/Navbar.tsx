@@ -17,8 +17,9 @@ const Navbar = () => {
 
   const isLoginPage = location.pathname === "/login";
 
-  const handleSignOut = () => {
-    logout();
+  const handleSignOut = async () => {
+    await logout();
+    navigate("/login", { replace: true });
   };
 
   const handleLogin = () => {

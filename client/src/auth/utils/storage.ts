@@ -6,6 +6,7 @@ export const storageUtils = {
   // Set authentication token
   setToken: (token: string) => {
     document.cookie = `${AUTH_CONSTANTS.TOKEN_KEY}=${token}; path=${AUTH_CONSTANTS.COOKIE_PATH}; max-age=${AUTH_CONSTANTS.COOKIE_MAX_AGE}; secure; samesite=${AUTH_CONSTANTS.COOKIE_SAME_SITE}`;
+    window.dispatchEvent(new Event('auth-changed'));
   },
 
   // Get authentication token
@@ -21,6 +22,7 @@ export const storageUtils = {
   setUser: (user: User) => {
     const userString = encodeURIComponent(JSON.stringify(user));
     document.cookie = `${AUTH_CONSTANTS.USER_KEY}=${userString}; path=${AUTH_CONSTANTS.COOKIE_PATH}; max-age=${AUTH_CONSTANTS.COOKIE_MAX_AGE}; secure; samesite=${AUTH_CONSTANTS.COOKIE_SAME_SITE}`;
+    window.dispatchEvent(new Event('auth-changed'));
   },
 
   // Get user data
@@ -82,6 +84,7 @@ export const storageUtils = {
     storageUtils.clearCookies();
     storageUtils.clearLocalStorage();
     storageUtils.clearSessionStorage();
+    window.dispatchEvent(new Event('auth-changed'));
   },
 
   // Check if user is authenticated based on cookies

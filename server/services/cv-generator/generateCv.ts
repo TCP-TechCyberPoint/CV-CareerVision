@@ -15,6 +15,7 @@ import cloudinary from "../../utils/cloudinary";
 import streamifier from "streamifier";
 
 dotenv.config();
+
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
 
@@ -43,7 +44,10 @@ export const generateCvDocx = async (req: Request, res: Response) => {
     const email = formData?.vitals?.email || "unknown";
     const publicId = `cv_${email.replace(/[^a-zA-Z0-9]/g, "_")}`;
     await uploadBufferToCloudinary(buffer, publicId);
-    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    );
     res.setHeader("Content-Disposition", "attachment; filename=cv.docx");
     res.send(buffer);
   } catch (err: any) {
@@ -73,11 +77,19 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
 
     let text = openrouterRes.data?.choices?.[0]?.message?.content?.trim();
     if (!text) throw new Error("Empty OpenRouter response");
-    const jsonMatch = text.match(/```json\n([\s\S]*?)\n```/);
-    const jsonString = jsonMatch ? jsonMatch[1].trim() : text;
-    content = JSON.parse(jsonString);
+
+    // Sanitize possible markdown fences
+    text = text
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
+      .replace(/^json/i, "")
+      .trim();
+
+    const match = text.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error("No JSON object found in OpenRouter response");
+    content = JSON.parse(match[0]);
   } catch (err) {
-    console.warn("⚠️ OpenRouter failed, falling back to Gemini");
+    console.warn("⚠ OpenRouter failed, falling back to Gemini");
     const geminiRes = await axios.post(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
       { contents: [{ parts: [{ text: prompt }] }] },
@@ -86,82 +98,72 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
 
     let text = geminiRes.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
     if (!text) throw new Error("Empty Gemini response");
-    text = text.replace(/^```json/, "").replace(/```$/, "").trim();
-    content = JSON.parse(text);
+
+    // Sanitize possible markdown fences
+    text = text
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
+      .replace(/^json/i, "")
+      .trim();
+
+    const match = text.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error("No JSON object found in Gemini response");
+    content = JSON.parse(match[0]);
   }
 
+  // Keep only professional experience (with dates), max 3
   if (Array.isArray(content.experience)) {
-    const professional = content.experience.filter((e: any) => e.startYear && e.endYear);
-    const military = content.experience.filter((e: any) => !e.startYear && !e.endYear);
-    const trimmedExperience = professional.slice(0, 3);
-    const remainingSlots = 3 - trimmedExperience.length;
-    if (remainingSlots > 0) {
-      trimmedExperience.push(...military.slice(0, remainingSlots));
-    }
-    content.experience = trimmedExperience;
+    content.experience = content.experience
+      .filter((e: any) => e.startYear && e.endYear)
+      .slice(0, 3);
   }
 
+  // Limit projects to 2
   if (Array.isArray(content.projects)) {
-    content.projects = content.projects.slice(0, 3);
+    content.projects = content.projects.slice(0, 2);
   }
 
   const sectionChildren: Paragraph[] = [];
 
-  const centeredHeader = (text: string, size = 36) =>
+  const centeredHeader = (text: string, size = 36): Paragraph =>
     new Paragraph({
       children: [new TextRun({ text, bold: true, size, font: "Calibri" })],
       alignment: AlignmentType.CENTER,
       spacing: { after: 50 },
-      bidirectional: false,
     });
 
-  const addSectionHeading = (label: string) =>
+  const addSectionHeading = (label: string): void => {
     sectionChildren.push(
       new Paragraph({
         children: [new TextRun({ text: label.toUpperCase(), bold: true, size: 28, font: "Calibri" })],
         alignment: AlignmentType.LEFT,
         spacing: { after: 100 },
-        bidirectional: false,
       })
     );
+  };
 
-  const addLine = () =>
+  const addLine = (): void => {
     sectionChildren.push(
       new Paragraph({
         border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: "auto" } },
         spacing: { after: 80 },
-        bidirectional: false,
       })
     );
+  };
 
-  const spacedParagraph = (text: string, isBullet = false) =>
-    new Paragraph({
+  const spacedParagraph = (text: string, isBullet = false): Paragraph => {
+    return new Paragraph({
       children: [new TextRun({ text, size: 22, font: "Calibri" })],
       spacing: { after: 80, line: 200 },
       bidirectional: false,
       ...(isBullet ? { bullet: { level: 0 } } : {}),
     });
+  };
 
   const vitals = formData.vitals || {};
   const preferences = formData.preferences || {};
-  const name = vitals.name || "Full Name";
-  const role = preferences.professionalPreference || "Job Title";
-
-  let totalYears = 0;
-  if (content.experience?.length) {
-    totalYears = content.experience.reduce((acc: number, e: any) => {
-      const start = parseInt(e.startYear);
-      const end =
-        e.endYear?.toLowerCase() === "present"
-          ? new Date().getFullYear()
-          : parseInt(e.endYear);
-      if (!isNaN(start) && !isNaN(end) && end >= start) {
-        return acc + (end - start);
-      }
-      return acc;
-    }, 0);
-  }
-
+  const name: string = vitals.name || "Full Name";
+  const role: string = preferences.professionalPreference || "Job Title";
   const headerLine = `${name} | ${role}`;
 
   const contactItems: (TextRun | ExternalHyperlink)[] = [];
@@ -192,7 +194,6 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
       children: contactItems,
       alignment: AlignmentType.CENTER,
       spacing: { after: 200 },
-      bidirectional: false,
     })
   );
 
@@ -211,11 +212,11 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
       sectionChildren.push(spacedParagraph(bullet, true));
     }
   }
+
   addLine();
 
   addSectionHeading("PROJECTS");
   const allProjectTechs = new Set<string>();
-
   for (const proj of content.projects || []) {
     sectionChildren.push(spacedParagraph(proj.name));
     for (const bullet of proj.description || []) {
@@ -237,6 +238,14 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
 
   addLine();
 
+  if (Array.isArray(content.militaryExperience) && content.militaryExperience.length > 0) {
+    addSectionHeading("MILITARY EXPERIENCE");
+    for (const mExp of content.militaryExperience) {
+      sectionChildren.push(spacedParagraph(`${mExp.company} | ${mExp.title}`));
+    }
+    addLine();
+  }
+
   addSectionHeading("SKILLS");
   const baseSkills = content.skills || [];
   const listedSkills = new Set(baseSkills.map((s: string) => s.toLowerCase()));
@@ -247,7 +256,6 @@ export const generateCvBufferOnly = async (formData: any): Promise<Buffer> => {
   const formattedSkills = allSkills.map(
     (s) => s.charAt(0).toUpperCase() + s.slice(1)
   );
-
   sectionChildren.push(spacedParagraph(formattedSkills.join(" • ")));
 
   const doc = new Document({ sections: [{ children: sectionChildren }] });
