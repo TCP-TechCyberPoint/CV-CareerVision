@@ -1,23 +1,23 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useSlideshowFormStore } from "../store";
-import { useAuth0Integration } from "@/auth";
+import { useAuth } from "@/auth/AuthProvider";
 import cvService from "../services/cvService";
 
 export const useCvData = () => {
   const updateFormData = useSlideshowFormStore((state) => state.updateFormData);
-  const { isAuthenticated, isLoading, user } = useAuth0Integration();
+  const { authenticated, ready } = useAuth();
   const isFetchingRef = useRef(false);
   const retryCountRef = useRef(0);
   const maxRetries = 3;
 
   // Use refs to track the latest values without causing re-renders
-  const authRef = useRef({ isAuthenticated, isLoading, user });
+  const authRef = useRef({ authenticated, ready });
   const updateFormDataRef = useRef(updateFormData);
 
   // Update refs when values change
   useEffect(() => {
-    authRef.current = { isAuthenticated, isLoading, user };
-  }, [isAuthenticated, isLoading, user]);
+    authRef.current = { authenticated, ready };
+  }, [authenticated, ready]);
 
   useEffect(() => {
     updateFormDataRef.current = updateFormData;
@@ -28,22 +28,12 @@ export const useCvData = () => {
       return;
     }
    
-    if (authRef.current.isLoading) {
+    if (!authRef.current.ready) {
       return;
     }
     
-    if (!authRef.current.isAuthenticated) {
+    if (!authRef.current.authenticated) {
       retryCountRef.current = 0; // Reset retry count when not authenticated
-      return;
-    }
-
-    // SECURITY CHECK: Ensure we have a valid user before fetching
-    if (!authRef.current.user?.email) {
-      console.error("No user email available, cannot fetch CV data");
-      if (retryCountRef.current < maxRetries) {
-        retryCountRef.current++;
-        setTimeout(() => fetchCvData(), 1000); // Retry after 1 second
-      }
       return;
     }
 
@@ -72,5 +62,5 @@ export const useCvData = () => {
 
   useEffect(() => {
     fetchCvData();
-  }, [isAuthenticated, isLoading, user]); // Direct dependencies instead of fetchCvData
+  }, [authenticated, ready]); // Direct dependencies instead of fetchCvData
 };

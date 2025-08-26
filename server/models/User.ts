@@ -2,30 +2,37 @@ import mongoose, { Document, Schema } from "mongoose";
 import { ICv, cvSchema } from "./types";
 
 export interface IUser extends Document {
-  name: string;
-  email: string;
-  password: string;
+  name?: string;
+  email?: string;
+  keycloakId: string;
   cv: ICv;
 }
 
 const userSchema = new Schema<IUser>({
-  name: { type: String, required: true },
+  name: { type: String, required: false },
   email: { 
     type: String, 
-    required: true, 
+    required: false, 
     unique: true,
     index: true,
+    sparse: true,
     lowercase: true,
     trim: true,
     validate: {
       validator: function(email: string) {
+        if (!email) return true; // Allow empty email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
       },
       message: 'Please provide a valid email address'
     }
   },
-  password: { type: String, required: true },
+  keycloakId: { 
+    type: String, 
+    required: true, 
+    unique: true, 
+    index: true 
+  },
   cv: {
     type: cvSchema,
     required: false,
@@ -35,7 +42,8 @@ const userSchema = new Schema<IUser>({
   timestamps: true
 });
 
-userSchema.index({ email: 1 }, { unique: true });
+userSchema.index({ keycloakId: 1 }, { unique: true });
+userSchema.index({ email: 1 }, { unique: true, sparse: true });
 
 userSchema.pre('save', function(next) {
   if (this.email) {

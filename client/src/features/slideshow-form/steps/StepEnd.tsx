@@ -1,101 +1,103 @@
-import BaseButton from "@/ui/BaseButton";
-import { Box, Text, Stack } from "@chakra-ui/react";
-import { useSlideshowFormStore } from "../store";
-import ReturnDashboard from "../components/ReturnDashboard";
-import axiosInstance from "@/auth/services/api";
 import { useState } from "react";
+import { Box, Button, VStack, Text, Spinner } from "@chakra-ui/react";
+import { useSlideshowFormStore } from "../store";
+import { api } from "@/api/axios";
+import { useNavigate } from "react-router-dom";
 
-interface StepEndProps {
-  nextStep: () => void;
-  prevStep: () => void;
-}
-
-const StepEnd = ({ prevStep }: StepEndProps) => {
-  const formData = useSlideshowFormStore((state) => state.formData);
+const StepEnd = () => {
   const [isGenerating, setIsGenerating] = useState(false);
-  const [cvGenerated, setCvGenerated] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const formData = useSlideshowFormStore((state) => state.formData);
+  const navigate = useNavigate();
 
-  const handleGenerateCv = async () => {
+  const handleGenerateAndUpload = async () => {
     setIsGenerating(true);
-    setCvGenerated(false);
+    setError(null);
 
     try {
-      const response = await axiosInstance.post("/api/cv/generate", formData, {
+      // Generate CV
+      const response = await api.post("/api/cv/generate", formData, {
         responseType: "blob",
       });
 
-      const blob = new Blob([response.data], {
-        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      });
-
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "cv.docx";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+      // Create a download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "cv.docx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
       window.URL.revokeObjectURL(url);
 
-      setCvGenerated(true);
-    } catch (err) {
-      console.error("CV generation/download failed:", err);
-      alert("Failed to generate CV.");
-    } finally {
       setIsGenerating(false);
-    }
-  };
+      setIsUploading(true);
 
-  const handleSaveCv = async () => {
-    if (!formData?.vitals?.email) {
-      alert("Missing email. Cannot save CV.");
-      return;
-    }
-
-    setIsSaving(true);
-    try {
+      // Save CV data
       const payload = {
-        email: formData.vitals.email,
-        ...formData,
+        vitals: formData.vitals,
+        experience: formData.experience,
+        education: formData.education,
+        projects: formData.projects,
+        skills: formData.skills,
+        preferences: formData.preferences,
+        military: formData.military,
       };
 
-      // Save structured CV data
-      await axiosInstance.post("/api/cv/save", payload);
+      await api.post("/api/cv/save", payload);
+      await api.post("/api/cv/upload", payload);
 
-      // Upload .docx version to Cloudinary
-      await axiosInstance.post("/api/cv/upload", payload);
-
-      alert("CV data saved and uploaded successfully.");
-    } catch (err) {
-      console.error("Saving CV failed:", err);
-      alert("Something went wrong while saving.");
-    } finally {
-      setIsSaving(false);
+      setIsUploading(false);
+      navigate("/home");
+    } catch (err: any) {
+      setError(err.response?.data?.message || "An error occurred");
+      setIsGenerating(false);
+      setIsUploading(false);
     }
   };
 
   return (
-    <Box position="relative" p={8}>
-      <Box position="absolute" top={4} left={4}>
-        <ReturnDashboard />
-      </Box>
+    <Box p={6}>
+      <VStack spacing={6} align="center">
+        <Text fontSize="xl" fontWeight="bold" textAlign="center">
+          Congratulations! You've completed your CV
+        </Text>
+        
+        <Text textAlign="center" color="gray.600">
+          Click the button below to generate and download your CV, then save it to your account.
+        </Text>
 
-      <Box mt={12}>
-        <Text fontSize="xl" fontWeight="bold">You're all set!</Text>
-        <Stack direction="row" gap={4} mt={4}>
-          <BaseButton onClick={prevStep}>Back</BaseButton>
-          <BaseButton onClick={handleGenerateCv} disabled={isGenerating}>
-            {isGenerating ? "Generating..." : "Generate CV"}
-          </BaseButton>
-          <BaseButton
-            onClick={handleSaveCv}
-            disabled={!cvGenerated || isSaving || isGenerating}
-          >
-            {isSaving ? "Saving..." : "Save CV"}
-          </BaseButton>
-        </Stack>
-      </Box>
+        {error && (
+          <Text color="red.500" textAlign="center">
+            {error}
+          </Text>
+        )}
+
+        <Button
+          colorScheme="blue"
+          size="lg"
+          onClick={handleGenerateAndUpload}
+          isLoading={isGenerating || isUploading}
+          loadingText={isGenerating ? "Generating CV..." : "Uploading..."}
+          disabled={isGenerating || isUploading}
+        >
+          {isGenerating || isUploading ? (
+            <VStack spacing={2}>
+              <Spinner size="sm" />
+              <Text fontSize="sm">
+                {isGenerating ? "Generating CV..." : "Uploading..."}
+              </Text>
+            </VStack>
+          ) : (
+            "Generate & Download CV"
+          )}
+        </Button>
+
+        <Text fontSize="sm" color="gray.500" textAlign="center">
+          Your CV will be automatically saved to your account after generation.
+        </Text>
+      </VStack>
     </Box>
   );
 };
