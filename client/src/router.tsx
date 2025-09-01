@@ -1,57 +1,73 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
-import { Home, About, Register } from "@/pages";
-import { Login, ProtectedRoute, useAuth0Integration } from "@/auth";
+// client/src/router.tsx
+import { createBrowserRouter, Navigate, useLocation } from "react-router-dom";
+import { Home, About, Register } from "@/pages"; // <- add Register if you need it
+import { Login, useAuth0Integration } from "@/auth";
 import { slideshowRoutes } from "@slideshow-form/routes";
 import Loading from "@/ui/Loading";
 
-// Component to handle root route based on authentication
-const RootRedirect = () => {
+// Auth wrapper for protected routes – now preserves "from"
+const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated, isLoading } = useAuth0Integration();
+  const location = useLocation();
 
-  // Show loading while Auth0 is initializing
-  if (isLoading) {
-    return <Loading message="Initializing..." />;
-  }
+  if (isLoading) return <Loading message="Initializing..." />;
+  return isAuthenticated
+    ? children
+    : <Navigate to="/login" replace state={{ from: location }} />;
+};
 
-  // Redirect based on authentication state
+// Minimal “unauth only” wrapper for /login (and /register if desired)
+const UnauthOnly = ({ children }: { children: JSX.Element }) => {
+  const { isAuthenticated, isLoading } = useAuth0Integration();
+  const location = useLocation();
+
+  if (isLoading) return <Loading message="Initializing..." />;
   if (isAuthenticated) {
-    return <Navigate to="/home" replace />;
-  } else {
-    return <Navigate to="/login" replace />;
+    const from = (location.state as any)?.from?.pathname ?? "/home";
+    return <Navigate to={from} replace />;
   }
+  return children;
 };
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootRedirect />,
+    element: <Home />, // Public landing
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <UnauthOnly>
+        <Login />
+      </UnauthOnly>
+    ),
   },
   {
     path: "/register",
-    element: <Register />,
+    element: (
+      <UnauthOnly>
+        <Register />
+      </UnauthOnly>
+    ),
   },
   {
     path: "/home",
     element: (
-      <ProtectedRoute>
+      <RequireAuth>
         <Home />
-      </ProtectedRoute>
+      </RequireAuth>
     ),
   },
   {
     path: "/about",
     element: (
-      <ProtectedRoute>
+      <RequireAuth>
         <About />
-      </ProtectedRoute>
+      </RequireAuth>
     ),
   },
   ...slideshowRoutes.map(route => ({
     ...route,
-    element: <ProtectedRoute>{route.element}</ProtectedRoute>
+    element: <RequireAuth>{route.element}</RequireAuth>,
   })),
 ]);
