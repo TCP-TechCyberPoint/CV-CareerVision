@@ -1,11 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import authRoutes from "./routes/authRoutes";
 import cvRoutes from "./routes/cvRoutes"; // ✅ Import this
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
+import { authenticateJwt } from "./middlewares/authenticateJwt";
+import { ensureUser } from "./middlewares/ensureUser";
 
 dotenv.config();
 
@@ -42,8 +43,8 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// CORS configuration
-const allowedOrigins = [
+// CORS configuration using environment variables
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
   "http://localhost:5173",
   "http://localhost:5174", 
   "http://localhost:3000",
@@ -88,8 +89,18 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use("/auth", authRoutes);
-app.use("/api/cv", cvRoutes);
+
+// New protected routes with Keycloak authentication
+app.get('/api/me', authenticateJwt, (req, res) => {
+  res.json((req as any).auth);
+});
+
+app.post('/api/bootstrap', authenticateJwt, ensureUser, (req, res) => {
+  res.sendStatus(204);
+});
+
+// Protected CV routes
+app.use("/api/cv", authenticateJwt, ensureUser, cvRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI || "", {})

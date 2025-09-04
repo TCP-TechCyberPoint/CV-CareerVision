@@ -5,6 +5,10 @@ export const findByEmail = async (email: string): Promise<IUser | null> => {
   return User.findOne({ email });
 };
 
+export const findByKeycloakId = async (keycloakId: string): Promise<IUser | null> => {
+  return User.findOne({ keycloakId });
+};
+
 export const findById = async (id: string): Promise<IUser | null> => {
   return User.findById(id);
 };
@@ -14,10 +18,17 @@ export const userExists = async (email: string): Promise<boolean> => {
   return !!user;
 };
 
+export const userExistsByKeycloakId = async (keycloakId: string): Promise<boolean> => {
+  const user = await User.findOne({ keycloakId }).select('_id');
+  return !!user;
+};
+
 export const createUser = async (userData: Partial<IUser>): Promise<IUser> => {
-  const existingUser = await findByEmail(userData.email!);
-  if (existingUser) {
-    throw new Error(`User with email ${userData.email} already exists`);
+  if (userData.email) {
+    const existingUser = await findByEmail(userData.email);
+    if (existingUser) {
+      throw new Error(`User with email ${userData.email} already exists`);
+    }
   }
 
   try {
@@ -32,13 +43,13 @@ export const createUser = async (userData: Partial<IUser>): Promise<IUser> => {
   }
 };
 
-export const getUserCv = async (email: string): Promise<ICv | null> => {
-  const user = await User.findOne({ email });
+export const getUserCv = async (keycloakId: string): Promise<ICv | null> => {
+  const user = await User.findOne({ keycloakId });
   return user?.cv || null;
 };
 
 export const updateUserCv = async (
-  email: string,
+  keycloakId: string,
   cvData: Partial<ICv>
 ): Promise<IUser | null> => {
   const updateQuery = Object.entries(cvData).reduce((acc, [key, value]) => {
@@ -51,7 +62,7 @@ export const updateUserCv = async (
   }, {} as Record<string, any>);
 
   const updatedUser = await User.findOneAndUpdate(
-    { email },
+    { keycloakId },
     { $set: updateQuery },
     { new: true }
   );

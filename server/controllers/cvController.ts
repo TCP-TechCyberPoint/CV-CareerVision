@@ -7,11 +7,10 @@ export const generateCv = generateCvDocx;
 
 export const getCvData = async (req: Request, res: Response) => {
   try {
-    const { email } = req.body;
-    console.log(email, "email");
-    if (!email) return res.status(400).json({ error: "Email is required" });
+    const keycloakId = (req as any).auth?.userId;
+    if (!keycloakId) return res.status(401).json({ error: "Unauthorized" });
 
-    const cv = await getUserCv(email);
+    const cv = await getUserCv(keycloakId);
     if (!cv) return res.status(404).json({ error: "CV data not found" });
 
     res.status(200).json({ message: "CV data fetched successfully", cv });
@@ -22,10 +21,11 @@ export const getCvData = async (req: Request, res: Response) => {
 
 export const saveCvData = async (req: Request, res: Response) => {
   try {
-    const { email, ...cvData } = req.body;
-    if (!email) return res.status(400).json({ error: "Email is required" });
+    const keycloakId = (req as any).auth?.userId;
+    if (!keycloakId) return res.status(401).json({ error: "Unauthorized" });
+    const cvData = req.body as Partial<ICv>;
 
-    const updatedUser = await updateUserCv(email, cvData as Partial<ICv>);
+    const updatedUser = await updateUserCv(keycloakId, cvData as Partial<ICv>);
     if (!updatedUser) return res.status(404).json({ error: "User not found" });
 
     res.status(200).json({ message: "CV data saved successfully", cv: updatedUser.cv });
@@ -37,11 +37,12 @@ export const saveCvData = async (req: Request, res: Response) => {
 export const uploadCvOnly = async (req: Request, res: Response) => {
   try {
     const formData = req.body;
-    const email = formData?.vitals?.email;
-    if (!email) return res.status(400).json({ error: "Email is required" });
+    const email = (req as any).auth?.email;
+    const keycloakId = (req as any).auth?.userId;
+    if (!keycloakId) return res.status(401).json({ error: "Unauthorized" });
 
     const buffer = await generateCvBufferOnly(formData);
-    const publicId = `cv_${email.replace(/[^a-zA-Z0-9]/g, "_")}`;
+    const publicId = `cv_${(email || keycloakId).replace(/[^a-zA-Z0-9]/g, "_")}`;
     const result = await uploadBufferToCloudinary(buffer, publicId);
 
     res.status(200).json({ message: "Uploaded to Cloudinary", url: result.secure_url });

@@ -1,18 +1,18 @@
 import { Navigate } from "react-router-dom";
-import { useAuth0Integration } from "../hooks/useAuth0Integration";
+import { useAuth } from "../AuthProvider";
 import Loading from "@/ui/Loading";
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useAuth0Integration();
+  const { ready, authenticated } = useAuth();
 
-  // Show loading only briefly during Auth0 initialization
-  if (isLoading) {
-    return <Loading />;
+  // Show loading while Keycloak is initializing
+  if (!ready) {
+    return <Loading message="Initializing authentication..." />;
   }
 
-  // If Auth0 timed out and still not authenticated, redirect to login
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+  // If not authenticated, redirect to signin
+  if (!authenticated) {
+    return <Navigate to="/signin" replace />;
   }
 
   return <>{children}</>;

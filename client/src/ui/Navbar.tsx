@@ -1,4 +1,4 @@
-import { useAuth0Integration } from "@/auth";
+import { useAuth } from "@/auth/AuthProvider";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Box,
@@ -13,17 +13,17 @@ import { pages } from "@/constants/pages";
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout, isAuthenticated, loginWithAuth0 } = useAuth0Integration();
+  const { logout, authenticated, login } = useAuth();
 
-  const isLoginPage = location.pathname === "/login";
+  const isSignInPage = location.pathname === "/signin";
 
   const handleSignOut = async () => {
     await logout();
-    navigate("/login", { replace: true });
+    navigate("/signin", { replace: true });
   };
 
   const handleLogin = () => {
-    loginWithAuth0();
+    login();
   };
 
   return (
@@ -36,7 +36,7 @@ const Navbar = () => {
       >
         <Box>
           <HStack gap={{ base: 4, md: 8 }} alignItems="center" flexDir="row-reverse">
-            {isAuthenticated ? (
+            {authenticated ? (
               <>
                 <ProfileDropdown onSignOut={handleSignOut} />
                 {pages.map(({ label, path }) => (
@@ -59,8 +59,8 @@ const Navbar = () => {
                   </BaseButton>       
                 ))}
               </>
-            ) : isLoginPage ? (
-              // On login page, show nothing in the right side since login form is in the main content
+            ) : isSignInPage ? (
+              // On signin page, show nothing in the right side since signin form is in the main content
               <></>
             ) : (
               <BaseButton
@@ -70,7 +70,7 @@ const Navbar = () => {
                 size={{ base: "sm", sm: "md" }}
                 onClick={handleLogin}
               >
-                Login
+                Sign In
               </BaseButton>
             )}
           </HStack>

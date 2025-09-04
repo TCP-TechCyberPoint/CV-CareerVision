@@ -71,6 +71,7 @@ Career Vision is a digital platform designed to empower job seekers in the Israe
 
 - **Node.js** (v18+)  
 - **Git**  
+- **Docker** (for local Keycloak)
 
 ### 💾 2. Local Installation
 
@@ -95,18 +96,88 @@ npm install
 cd ../server
 npm install
 ```
-### 🧪 3. Environment Setup
 
-- Create a `.env` file in both `client/` and `server/` directories.  
-- Request environment variables from the **Career Vision Team**.  
-- Add them accordingly and save the files.  
+### 🔐 3. Keycloak Authentication Setup
 
-### ▶️ 4. Running the Project
-
-Open **two terminals** in the root directory:
+#### 🐳 Step 1: Start Keycloak Locally
 
 ```bash
-# Terminal 1 – Start the client
+# Start Keycloak in development mode
+docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:latest start-dev
+```
+
+#### ⚙️ Step 2: Configure Keycloak Realm
+
+1. **Access Keycloak Admin Console**: http://localhost:8080
+2. **Login**: admin / admin
+3. **Create Realm**: `cv-app`
+4. **Create Frontend Client**:
+   - Client ID: `cv-frontend`
+   - Client Protocol: `openid-connect`
+   - Access Type: `public`
+   - Valid Redirect URIs: `http://localhost:5173/*`
+   - Web Origins: `http://localhost:5173`
+   - Standard Flow: `ON`
+   - PKCE: `S256`
+   - Client Authentication: `OFF`
+
+5. **Create API Client**:
+   - Client ID: `cv-api`
+   - Client Protocol: `openid-connect`
+   - Access Type: `confidential`
+   - Client Authentication: `ON`
+
+6. **Configure Audience Mapper**:
+   - On `cv-frontend` client, add audience mapper
+   - Audience: `cv-api`
+
+### 🧪 4. Environment Setup
+
+#### 📁 Server Environment (`.env`)
+
+Create a `.env` file in the `server/` directory:
+
+```env
+# Keycloak Configuration
+KEYCLOAK_URL=http://localhost:8080
+KEYCLOAK_REALM=cv-app
+KEYCLOAK_API_AUDIENCE=cv-api
+ALLOWED_ORIGINS=http://localhost:5173
+
+# MongoDB
+MONGO_URI=mongodb://localhost:27017/cv-careervision
+
+# Cloudinary (keep existing)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+
+# Other existing environment variables...
+```
+
+#### 📁 Client Environment (`.env`)
+
+Create a `.env` file in the `client/` directory:
+
+```env
+# Keycloak Configuration
+VITE_KEYCLOAK_URL=http://localhost:8080
+VITE_KEYCLOAK_REALM=cv-app
+VITE_KEYCLOAK_CLIENT_ID=cv-frontend
+VITE_API_URL=http://localhost:5000
+
+# Other existing environment variables...
+```
+
+### ▶️ 5. Running the Project
+
+Open **three terminals** in the root directory:
+
+```bash
+# Terminal 1 – Start Keycloak (if not using Docker)
+# Keycloak should be running on http://localhost:8080
+
+# Terminal 2 – Start the client
 cd client
 npm run dev
 
@@ -115,13 +186,21 @@ npm run dev
 # ➡️  Local:   http://localhost:####
 # ➡️  Network: use --host to expose
 
-# Terminal 2 – Start the backend server
+# Terminal 3 – Start the backend server
 cd server
 npm run dev
 
 # ✅ Should display:
 # 🚀 Server running on port ####
 ```
+
+#### 🌐 Access URLs
+
+- **Frontend App**: http://localhost:5173
+- **Backend API**: http://localhost:5000
+- **Keycloak Admin**: http://localhost:8080
+- **API Documentation**: http://localhost:5000/api-docs
+
 ## 💰 Subscription Plans
 
 ### 🆓 Free Tier
@@ -165,10 +244,10 @@ npm run dev
 
 ### 🔧 Backend
 
-- **API Framework**: ___  
+- **API Framework**: Express.js  
 - **Database**: MongoDB  
-- **Authentication**: Auth0  
-- **Storage**: Firebase Storage  
+- **Authentication**: Keycloak  
+- **Storage**: Cloudinary  
 - **Real-time**: ___  
 - **Caching**: ___  
 - **Containerization**: Docker Compose  
@@ -185,7 +264,9 @@ npm run dev
 
 ### 🔒 Data Protection
 
-- JWT authentication  
+- Keycloak OAuth2/OIDC authentication  
+- JWT tokens with PKCE  
+- No password storage  
 
 > ‼️ _Needed to be filled..._
 
@@ -204,6 +285,7 @@ npm run dev
 ### 📐 Design Principles
 
 > ‼️ _Needed to be filled..._
+
 ## 👥 Development Team
 
 ### 🧭 Leadership

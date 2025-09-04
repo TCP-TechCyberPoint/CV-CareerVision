@@ -29,6 +29,7 @@
     "axios": "^1.9.0",
     "framer-motion": "^12.12.1",
     "globals": "^16.1.0",
+    "keycloak-js": "^26.2.0",
     "path": "^0.12.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

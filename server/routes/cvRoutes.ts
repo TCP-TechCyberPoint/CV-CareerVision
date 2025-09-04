@@ -5,7 +5,7 @@ import {
   saveCvData,
   uploadCvOnly,
 } from "../controllers/cvController";
-import { authMiddleware } from "../middlewares/auth.middleware";
+import { authenticateJwt } from "../middlewares/authenticateJwt";
 
 const router = Router();
 
@@ -29,7 +29,7 @@ const router = Router();
  *       500:
  *         description: Server error
  */
-router.post("/generate", authMiddleware, generateCv);
+router.post("/generate", authenticateJwt, generateCv);
 
 /**
  * @swagger
@@ -68,7 +68,7 @@ router.post("/generate", authMiddleware, generateCv);
  *       500:
  *         description: Server error
  */
-router.post("/save", authMiddleware, saveCvData);
+router.post("/save", authenticateJwt, saveCvData);
 
 /**
  * @swagger
@@ -100,7 +100,7 @@ router.post("/save", authMiddleware, saveCvData);
  *       500:
  *         description: Server error
  */
-router.post("/upload", authMiddleware, uploadCvOnly);
+router.post("/upload", authenticateJwt, uploadCvOnly);
 
 /**
  * @swagger
@@ -116,6 +116,6 @@ router.post("/upload", authMiddleware, uploadCvOnly);
  *       500:
  *         description: Server error
  */
-router.get("/get", authMiddleware, getCvData);
+router.get("/get", authenticateJwt, getCvData);
 
 export default router;
