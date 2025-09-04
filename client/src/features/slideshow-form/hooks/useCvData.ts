@@ -14,7 +14,6 @@ export const useCvData = () => {
   const authRef = useRef({ authenticated, ready });
   const updateFormDataRef = useRef(updateFormData);
 
-  // Update refs when values change
   useEffect(() => {
     authRef.current = { authenticated, ready };
   }, [authenticated, ready]);
