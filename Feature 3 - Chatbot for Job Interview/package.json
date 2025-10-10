@@ -1,0 +1,31 @@
+{
+    "name": "interview-coach",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "tsx watch src/server.ts",
+        "start": "node dist/server.js",
+        "build": "npm run build:api && npm run build:ui && npm run bundle:ui",
+        "build:api": "tsc -p tsconfig.json",
+        "build:ui": "npm --prefix interview-coach-ui ci && npm --prefix interview-coach-ui run build",
+        "bundle:ui": "node scripts/copy-ui.mjs",
+        "lint": "eslint ."
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "openai": "^4.57.0"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "autoprefixer": "^10.4.21",
+        "postcss": "^8.5.6",
+        "tailwindcss": "^4.1.13",
+        "tsx": "^4.19.0",
+        "typescript": "^5.6.3",
+        "zod": "^3.23.8"
+    }
+}
