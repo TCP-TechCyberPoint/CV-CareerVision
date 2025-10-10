@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: interview-coach-api
+    env: node
+    plan: free
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      # Set at deploy time in the Render dashboard (Settings -> Environment)
+      # - key: GOOGLE_API_KEY
+      #   value: "<your-google-api-key>"
+      # Optionally pin model
+      # - key: GOOGLE_CHAT_MODEL
+      #   value: gemini-2.5-pro
+
+  - type: static
+    name: interview-coach-ui
+    rootDir: interview-coach-ui
+    buildCommand: npm ci && npm run build
+    publishPath: dist
+    envVars:
+      # Inject the backend URL into the Vite build at build-time
+      - key: VITE_COACH_API
+        fromService:
+          type: web
+          name: interview-coach-api
+          property: url
